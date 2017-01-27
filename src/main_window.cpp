@@ -38,10 +38,13 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 {
 	setWindowIcon(QIcon(":/images/icon.png"));
 	ui.setupUi(this); // Calling this incidentally connects all ui's triggers to on_...() callbacks in this class.
-	ui.tab_manager->setCurrentIndex(0); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
+	ui.mainTabs->setCurrentIndex(0); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
 
     QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); // qApp is a global variable for the application
-
+    QObject::connect(ui.sparusLoadStreamButton, SIGNAL(clicked()), this, SLOT(sparusLoadStream()));
+    QObject::connect(ui.sparusStreamIP, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream_returnPressed()));
+    QObject::connect(ui.g500LoadStreamButton, SIGNAL(clicked()), this, SLOT(g500LoadStream()));
+    QObject::connect(ui.g500StreamIP, SIGNAL(returnPressed()), this, SLOT(g500LoadStream_returnPressed()));
 
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 }
@@ -66,8 +69,33 @@ void MainWindow::showNoMasterMessage() {
 /*****************************************************************************
 ** Implemenation [Slots][manually connected]
 *****************************************************************************/
+void MainWindow::g500LoadStream()
+{
+    QString text = "http://" + ui.g500StreamIP->text() + ":8080/stream?topic=" \
+     				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
+    cout << "New G500 stream: " <<  text.toUtf8().constData() << endl;
+    ui.g500StreamView->load(QUrl("http://www.google.com"));
+    //ui.g500StreamView->load(text);
+}
 
+void MainWindow::g500LoadStream_returnPressed()
+{
+	g500LoadStream();
+}
 
+void MainWindow::sparusLoadStream()
+{
+    QString text = "http://" + ui.sparusStreamIP->text() + ":8080/stream?topic=" \
+     				+ ui.sparusStreamTopic->text() + "&type=" + ui.sparusStreamType->currentText();
+    cout << "New SPARUS stream: " <<  text.toUtf8().constData() << endl;
+    ui.sparusStreamView->load(QUrl("http://www.google.com"));
+    //ui.sparusStreamView->load(text);
+}
+
+void MainWindow::sparusLoadStream_returnPressed()
+{
+	sparusLoadStream();
+}
 /*****************************************************************************
 ** Implementation [Menu]
 *****************************************************************************/

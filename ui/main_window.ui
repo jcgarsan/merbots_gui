@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QRosApp</string>
+   <string>MERBOTS GUI</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/images.qrc">
@@ -23,7 +23,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout">
     <item>
-     <widget class="QTabWidget" name="tab_manager">
+     <widget class="QTabWidget" name="mainTabs">
       <property name="minimumSize">
        <size>
         <width>100</width>
@@ -36,7 +36,7 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tab_vehicle">
+      <widget class="QWidget" name="mainTabs_vehicle">
        <attribute name="title">
         <string>Vehicle control</string>
        </attribute>
@@ -53,6 +53,26 @@
            <string>G500 and SPARUS control</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="1" column="0">
+            <widget class="QTabWidget" name="tabLogs">
+             <property name="tabPosition">
+              <enum>QTabWidget::West</enum>
+             </property>
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="tab">
+              <attribute name="title">
+               <string>Odometry</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="tab_2">
+              <attribute name="title">
+               <string>Arm</string>
+              </attribute>
+             </widget>
+            </widget>
+           </item>
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout">
              <property name="spacing">
@@ -60,55 +80,453 @@
              </property>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <widget class="QGroupBox" name="groupBox">
-                   <property name="title">
-                    <string>GroupBox</string>
+                   <property name="font">
+                    <font>
+                     <underline>false</underline>
+                    </font>
                    </property>
+                   <property name="title">
+                    <string>G500 control</string>
+                   </property>
+                   <widget class="QWidget" name="verticalLayoutWidget_5">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>20</y>
+                      <width>121</width>
+                      <height>211</height>
+                     </rect>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_5">
+                     <property name="spacing">
+                      <number>5</number>
+                     </property>
+                     <item>
+                      <widget class="QCheckBox" name="g500AutonomousCheckBox">
+                       <property name="text">
+                        <string>Autonomous</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0">
+                       <property name="spacing">
+                        <number>1</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="text">
+                          <string>Robot depth</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QDoubleSpinBox" name="g500DepthSpinBox">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="specialValueText">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="g500MoveRobotButton">
+                       <property name="text">
+                        <string>Move robot</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="g500GoToPositionButton">
+                       <property name="text">
+                        <string>Go to position</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="g500GoToSurfaceButton">
+                       <property name="text">
+                        <string>Go to surface</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_3">
+                   <property name="title">
+                    <string>SPARUS control</string>
+                   </property>
+                   <widget class="QWidget" name="verticalLayoutWidget_7">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>20</y>
+                      <width>121</width>
+                      <height>201</height>
+                     </rect>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_7">
+                     <property name="spacing">
+                      <number>5</number>
+                     </property>
+                     <item>
+                      <widget class="QCheckBox" name="sparusAutonomousCheckBox">
+                       <property name="text">
+                        <string>Autonomous</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,0">
+                       <property name="spacing">
+                        <number>1</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label_2">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="text">
+                          <string>Robot depth</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QDoubleSpinBox" name="sparusDepthSpinBox"/>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="sparusMoveRobotButton">
+                       <property name="text">
+                        <string>Move robot</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="sparusGoToPoseButton">
+                       <property name="text">
+                        <string>Go to position</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="sparusGoToSurfaceButton">
+                       <property name="text">
+                        <string>Go to surface</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                   <zorder>groupBox</zorder>
+                   <zorder>verticalLayoutWidget_7</zorder>
                   </widget>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QWebView" name="webView_2">
-                 <property name="url">
-                  <url>
-                   <string>about:blank</string>
-                  </url>
+                <layout class="QVBoxLayout" name="g500StreamLayout">
+                 <property name="spacing">
+                  <number>3</number>
                  </property>
-                </widget>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QWebView" name="g500StreamView">
+                   <property name="url">
+                    <url>
+                     <string>about:blank</string>
+                    </url>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="g500URrlLayout">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QLineEdit" name="g500StreamIP">
+                     <property name="text">
+                      <string>http://192.168.100.100</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="g500StreamTopic">
+                     <property name="text">
+                      <string>/image_topic/raw</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="g500StreamType">
+                     <item>
+                      <property name="text">
+                       <string>mjpeg</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ros_compression</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="g500StreamButtonLayout">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <spacer name="horizontalSpacer_2">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="g500LoadStreamButton">
+                     <property name="text">
+                      <string>Load G500 stream</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
                </item>
                <item>
-                <widget class="QWebView" name="webView">
-                 <property name="url">
-                  <url>
-                   <string>about:blank</string>
-                  </url>
+                <layout class="QVBoxLayout" name="sparusStreamLayout">
+                 <property name="spacing">
+                  <number>3</number>
                  </property>
-                </widget>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QWebView" name="sparusStreamView">
+                   <property name="url">
+                    <url>
+                     <string>about:blank</string>
+                    </url>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="sparusURrlLayout">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QLineEdit" name="sparusStreamIP">
+                     <property name="text">
+                      <string>http://192.168.100.200</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="sparusStreamTopic">
+                     <property name="text">
+                      <string>/image_topic/raw</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="sparusStreamType">
+                     <item>
+                      <property name="text">
+                       <string>ros</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ros_compression</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="sparusStreamButtonLayout">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <spacer name="horizontalSpacer_4">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="sparusLoadStreamButton">
+                     <property name="text">
+                      <string>Load SPARUS stream</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_3">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
                </item>
               </layout>
              </item>
             </layout>
+           </item>
+           <item row="2" column="0">
+            <widget class="QGroupBox" name="serviceStatusGroup">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Services status</string>
+             </property>
+             <widget class="QLabel" name="label_3">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>0</y>
+                <width>121</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>SPARUS battery</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_4">
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>0</y>
+                <width>101</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>G500 battery</string>
+              </property>
+             </widget>
+            </widget>
            </item>
           </layout>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_roi">
+      <widget class="QWidget" name="mainTabs_roi">
        <attribute name="title">
         <string>RoI selection</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tab_toi">
+      <widget class="QWidget" name="mainTabs_toi">
        <attribute name="title">
         <string>ToI selection</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tab_manipulation">
+      <widget class="QWidget" name="mainTabs_manipulation">
        <attribute name="title">
         <string>Manipulation</string>
        </attribute>
@@ -152,6 +570,9 @@
    </property>
   </action>
   <action name="action_Preferences">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Preferences</string>
    </property>
