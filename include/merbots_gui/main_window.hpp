@@ -50,9 +50,13 @@ public Q_SLOTS:
     ** Manual connections
     *******************************************/
     void g500LoadStream();
-    void g500LoadStream_returnPressed();
     void sparusLoadStream();
-    void sparusLoadStream_returnPressed();
+
+	/******************************************
+	** Implemenation [Callbacks]
+	*******************************************/
+	//void g500BatteryChecker();
+
 
 private:
 	Ui::MainWindowDesign ui;

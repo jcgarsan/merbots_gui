@@ -483,7 +483,7 @@
              <property name="title">
               <string>Services status</string>
              </property>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="sparusBatteryLabel">
               <property name="geometry">
                <rect>
                 <x>230</x>
@@ -496,7 +496,7 @@
                <string>SPARUS battery</string>
               </property>
              </widget>
-             <widget class="QLabel" name="label_4">
+             <widget class="QLabel" name="g500BatteryLabel">
               <property name="geometry">
                <rect>
                 <x>120</x>

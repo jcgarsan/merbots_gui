@@ -41,10 +41,14 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.mainTabs->setCurrentIndex(0); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
 
     QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); // qApp is a global variable for the application
-    QObject::connect(ui.sparusLoadStreamButton, SIGNAL(clicked()), this, SLOT(sparusLoadStream()));
-    QObject::connect(ui.sparusStreamIP, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream_returnPressed()));
     QObject::connect(ui.g500LoadStreamButton, SIGNAL(clicked()), this, SLOT(g500LoadStream()));
-    QObject::connect(ui.g500StreamIP, SIGNAL(returnPressed()), this, SLOT(g500LoadStream_returnPressed()));
+    QObject::connect(ui.g500StreamIP, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
+    QObject::connect(ui.g500StreamTopic, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
+    QObject::connect(ui.g500StreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(g500LoadStream()));
+    QObject::connect(ui.sparusLoadStreamButton, SIGNAL(clicked()), this, SLOT(sparusLoadStream()));
+    QObject::connect(ui.sparusStreamIP, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
+    QObject::connect(ui.sparusStreamTopic, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
+    QObject::connect(ui.sparusStreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(sparusLoadStream()));
 
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 }
@@ -78,10 +82,7 @@ void MainWindow::g500LoadStream()
     //ui.g500StreamView->load(text);
 }
 
-void MainWindow::g500LoadStream_returnPressed()
-{
-	g500LoadStream();
-}
+
 
 void MainWindow::sparusLoadStream()
 {
@@ -92,10 +93,17 @@ void MainWindow::sparusLoadStream()
     //ui.sparusStreamView->load(text);
 }
 
-void MainWindow::sparusLoadStream_returnPressed()
+
+/*****************************************************************************
+** Implemenation [Callbacks]
+*****************************************************************************/
+
+/*void MainWindow::g500BatteryChecker()
 {
-	sparusLoadStream();
-}
+	ui.g500BatteryLabel->setText("G500 battery");
+	ui.g500BatteryLabel->setStyleSheet("QLabel {color: red}");
+}*/
+
 /*****************************************************************************
 ** Implementation [Menu]
 *****************************************************************************/
