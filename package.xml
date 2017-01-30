@@ -3,15 +3,13 @@
   <name>merbots_gui</name>
   <version>0.1.0</version>
   <description>
-
-     merbots_gui
-
+      Graphical User Interface for "MERBOTS" research project. More info about the project: http://www.irs.uji.es/merbots
   </description>
-  <maintainer email="jcgarsan@gmail.com">jcgarsan</maintainer>
-  <author>jcgarsan</author>
+  
+  <maintainer email="garciaju@uji.es">Juan Carlos Garcia</maintainer>
   <license>BSD</license>
-  <!-- <url type="bugtracker">https://github.com/stonier/qt_ros/issues</url> -->
-  <!-- <url type="repository">https://github.com/stonier/qt_ros</url> -->
+  <author email="garciaju@uji.es">Juan Carlos Garcia</author>
+  <url>https://github.com/jcgarsan/merbots_gui</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>qt_build</build_depend>

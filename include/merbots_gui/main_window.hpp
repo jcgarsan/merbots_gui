@@ -45,7 +45,7 @@ public Q_SLOTS:
 	** Auto-connections (connectSlotsByName())
 	*******************************************/
 	void on_actionAbout_triggered();
-
+	
     /******************************************
     ** Manual connections
     *******************************************/

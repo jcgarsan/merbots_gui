@@ -1,0 +1,12 @@
+{
+        "name": "value",
+        "number": 20,
+        "anothernumber": 15.3,
+        "stuff": true,
+        "listOfStuff": [
+                "json",
+                "more stuff",
+                null,
+                false
+        ]
+}

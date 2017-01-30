@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include "../include/merbots_gui/main_window.hpp"
+#include "../include/merbots_gui/Jzon.h"
+
 
 #include <QtGui>
 #include <QMessageBox>
@@ -22,11 +24,12 @@
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
-
 namespace merbots_gui {
 
 using namespace std;
 using namespace Qt;
+using namespace Jzon;
+
 
 /*****************************************************************************
 ** Implementation [MainWindow]
@@ -51,6 +54,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.sparusStreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(sparusLoadStream()));
 
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
+
+
 }
 
 MainWindow::~MainWindow() {}
