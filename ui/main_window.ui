@@ -34,7 +34,7 @@
        <locale language="English" country="Australia"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="mainTabs_vehicle">
        <attribute name="title">
@@ -53,26 +53,6 @@
            <string>G500 and SPARUS control</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
-           <item row="1" column="0">
-            <widget class="QTabWidget" name="tabLogs">
-             <property name="tabPosition">
-              <enum>QTabWidget::West</enum>
-             </property>
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <widget class="QWidget" name="tab">
-              <attribute name="title">
-               <string>Odometry</string>
-              </attribute>
-             </widget>
-             <widget class="QWidget" name="tab_2">
-              <attribute name="title">
-               <string>Arm</string>
-              </attribute>
-             </widget>
-            </widget>
-           </item>
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout">
              <property name="spacing">
@@ -256,8 +236,6 @@
                      </item>
                     </layout>
                    </widget>
-                   <zorder>groupBox</zorder>
-                   <zorder>verticalLayoutWidget_7</zorder>
                   </widget>
                  </item>
                 </layout>
@@ -342,6 +320,13 @@
                     <widget class="QPushButton" name="g500LoadStreamButton">
                      <property name="text">
                       <string>Load G500 stream</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="g500StopStreamButton">
+                     <property name="text">
+                      <string>Stop streaming</string>
                      </property>
                     </widget>
                    </item>
@@ -452,6 +437,13 @@
                     </widget>
                    </item>
                    <item>
+                    <widget class="QPushButton" name="sparusStopStreamButton">
+                     <property name="text">
+                      <string>Stop streaming</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <spacer name="horizontalSpacer_3">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
@@ -511,6 +503,164 @@
              </widget>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QTabWidget" name="tabLogs">
+             <property name="tabPosition">
+              <enum>QTabWidget::West</enum>
+             </property>
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="tab">
+              <attribute name="title">
+               <string>Odometry</string>
+              </attribute>
+              <widget class="QWidget" name="horizontalLayoutWidget">
+               <property name="geometry">
+                <rect>
+                 <x>110</x>
+                 <y>3</y>
+                 <width>1071</width>
+                 <height>91</height>
+                </rect>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <item>
+                 <widget class="QTableWidget" name="g500OdometryTable">
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>65</number>
+                  </attribute>
+                  <row>
+                   <property name="text">
+                    <string>Current pose</string>
+                   </property>
+                  </row>
+                  <row>
+                   <property name="text">
+                    <string>Current twist</string>
+                   </property>
+                  </row>
+                  <column>
+                   <property name="text">
+                    <string>X</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Y</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Z</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>ROLL</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>PITCH</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>YAW</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_5">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Preferred</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>65</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QTableWidget" name="sparusOdometryTable">
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>65</number>
+                  </attribute>
+                  <row>
+                   <property name="text">
+                    <string>Current pose</string>
+                   </property>
+                  </row>
+                  <row>
+                   <property name="text">
+                    <string>Current twist</string>
+                   </property>
+                  </row>
+                  <column>
+                   <property name="text">
+                    <string>X</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Y</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Z</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>ROLL</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>PITCH</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>YAW</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QPushButton" name="pushButton">
+               <property name="geometry">
+                <rect>
+                 <x>310</x>
+                 <y>95</y>
+                 <width>99</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QWidget" name="tab_2">
+              <attribute name="title">
+               <string>Arm</string>
+              </attribute>
+             </widget>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -530,6 +680,191 @@
        <attribute name="title">
         <string>Manipulation</string>
        </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Settings</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>1241</width>
+          <height>491</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="bottomMargin">
+          <number>50</number>
+         </property>
+         <item>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>G500</string>
+           </property>
+           <widget class="QWidget" name="formLayoutWidget_2">
+            <property name="geometry">
+             <rect>
+              <x>9</x>
+              <y>29</y>
+              <width>1221</width>
+              <height>161</height>
+             </rect>
+            </property>
+            <layout class="QFormLayout" name="formLayout_2">
+             <property name="verticalSpacing">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Odometry</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string>Battery level</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="g500TopicOdometry">
+               <property name="text">
+                <string>joystick_out</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="g500TopicBatteryLevel"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Running time</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Other topic</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Other topic</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="g500TopicRunningTime"/>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="lineEdit_4"/>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="lineEdit_5"/>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="g500TopicsButton">
+           <property name="text">
+            <string>Reconnect G500 topics</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_4">
+           <property name="title">
+            <string>SPARUS</string>
+           </property>
+           <widget class="QWidget" name="formLayoutWidget">
+            <property name="geometry">
+             <rect>
+              <x>9</x>
+              <y>29</y>
+              <width>1221</width>
+              <height>164</height>
+             </rect>
+            </property>
+            <layout class="QFormLayout" name="formLayout">
+             <property name="verticalSpacing">
+              <number>2</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Odometry</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="sparusTopicOdometry"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>Battery level</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="sparusTopicBatteryLevel"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Running time</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="sparusTopicRunningTime"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Other topic</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="lineEdit_9"/>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Other topic</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="lineEdit_10"/>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="sparusTopicsButton">
+           <property name="text">
+            <string>Reconnect SPARUS topics</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>

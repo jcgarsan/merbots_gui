@@ -15,7 +15,16 @@ include_directories(${catkin_INCLUDE_DIRS})
 # Use this to define what the package will export (e.g. libs, headers).
 # Since the default here is to produce only a binary, we don't worry about
 # exporting anything. 
-catkin_package()
+##catkin_package()
+catkin_package(
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS
+	roscpp
+	std_msgs
+	geometry_msgs
+	nav_msgs
+	sensor_msgs
+)
 
 ##############################################################################
 # Qt Environment
@@ -23,7 +32,7 @@ catkin_package()
 
 # this comes from qt_build's qt-ros.cmake which is automatically 
 # included via the dependency call in package.xml
-rosbuild_prepare_qt4(QtCore QtGui QtWebKit ) # Add the appropriate components to the component list here
+rosbuild_prepare_qt4(QtCore QtGui QtWebKit QtNetwork) # Add the appropriate components to the component list here
 
 ##############################################################################
 # Sections
