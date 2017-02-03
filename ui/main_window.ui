@@ -34,7 +34,7 @@
        <locale language="English" country="Australia"/>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="mainTabs_vehicle">
        <attribute name="title">
@@ -478,7 +478,7 @@
              <widget class="QLabel" name="sparusBatteryLabel">
               <property name="geometry">
                <rect>
-                <x>230</x>
+                <x>280</x>
                 <y>0</y>
                 <width>121</width>
                 <height>39</height>
@@ -499,6 +499,32 @@
               </property>
               <property name="text">
                <string>G500 battery</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="g500TimeLabel">
+              <property name="geometry">
+               <rect>
+                <x>470</x>
+                <y>0</y>
+                <width>181</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>G500 RunningTime</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="sparusTimeLabel">
+              <property name="geometry">
+               <rect>
+                <x>700</x>
+                <y>0</y>
+                <width>191</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>SPARUS RunningTime</string>
               </property>
              </widget>
             </widget>
@@ -640,19 +666,6 @@
                 </item>
                </layout>
               </widget>
-              <widget class="QPushButton" name="pushButton">
-               <property name="geometry">
-                <rect>
-                 <x>310</x>
-                 <y>95</y>
-                 <width>99</width>
-                 <height>27</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-              </widget>
              </widget>
              <widget class="QWidget" name="tab_2">
               <attribute name="title">
@@ -736,12 +749,16 @@
              <item row="0" column="1">
               <widget class="QLineEdit" name="g500TopicOdometry">
                <property name="text">
-                <string>joystick_out</string>
+                <string>/g500/cola2_navigation/nav_sts_hz</string>
                </property>
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QLineEdit" name="g500TopicBatteryLevel"/>
+              <widget class="QLineEdit" name="g500TopicBatteryLevel">
+               <property name="text">
+                <string>/g500/cola2_safety/ocean_server_batteries</string>
+               </property>
+              </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_3">
@@ -753,7 +770,7 @@
              <item row="3" column="0">
               <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Other topic</string>
+                <string>Diagnostics</string>
                </property>
               </widget>
              </item>
@@ -765,10 +782,18 @@
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLineEdit" name="g500TopicRunningTime"/>
+              <widget class="QLineEdit" name="g500TopicRunningTime">
+               <property name="text">
+                <string>/g500/cola2_safety/total_time</string>
+               </property>
+              </widget>
              </item>
              <item row="3" column="1">
-              <widget class="QLineEdit" name="lineEdit_4"/>
+              <widget class="QLineEdit" name="g500TopicDiagnostics">
+               <property name="text">
+                <string>/g500/diagnostics_agg</string>
+               </property>
+              </widget>
              </item>
              <item row="4" column="1">
               <widget class="QLineEdit" name="lineEdit_5"/>
@@ -810,7 +835,11 @@
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLineEdit" name="sparusTopicOdometry"/>
+              <widget class="QLineEdit" name="sparusTopicOdometry">
+               <property name="text">
+                <string>/sparus/cola2_navigation/nav_sts_hz</string>
+               </property>
+              </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_7">
@@ -820,7 +849,11 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QLineEdit" name="sparusTopicBatteryLevel"/>
+              <widget class="QLineEdit" name="sparusTopicBatteryLevel">
+               <property name="text">
+                <string>/sparus/cola2_safety/ocean_server_batteries</string>
+               </property>
+              </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_8">
@@ -830,17 +863,25 @@
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLineEdit" name="sparusTopicRunningTime"/>
+              <widget class="QLineEdit" name="sparusTopicRunningTime">
+               <property name="text">
+                <string>/sparus/cola2_safety/total_time</string>
+               </property>
+              </widget>
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="label_9">
                <property name="text">
-                <string>Other topic</string>
+                <string>Diagnostics</string>
                </property>
               </widget>
              </item>
              <item row="3" column="1">
-              <widget class="QLineEdit" name="lineEdit_9"/>
+              <widget class="QLineEdit" name="sparusTopicDiagnostics">
+               <property name="text">
+                <string>/sparus/diagnostics_agg</string>
+               </property>
+              </widget>
              </item>
              <item row="4" column="0">
               <widget class="QLabel" name="label_10">

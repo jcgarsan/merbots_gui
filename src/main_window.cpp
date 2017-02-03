@@ -32,6 +32,7 @@
 
 #include <ros/package.h>
 
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
@@ -51,20 +52,20 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 {
 	setWindowIcon(QIcon(":/images/icon.png"));
 	ui.setupUi(this); // Calling this incidentally connects all ui's triggers to on_...() callbacks in this class.
-	ui.mainTabs->setCurrentIndex(4); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
+	ui.mainTabs->setCurrentIndex(0);
 
 
 	//Init section
 	ros::init(argc,argv,"merbots_gui");
 	ros::start(); 	//explicitly needed since our nodehandle is going out of scope
-	
 	if (!ros::master::check())
 	{
-		qDebug()<<"No ROS master";
+		qDebug()<<"No ROS master found";
 		showNoMasterMessage();
 	}
 
-	for (int i=0; i<2; i++) //Odometry tables init
+	//Odometry tables init
+	for (int i=0; i<2; i++)
 		for (int j=0; j<6; j++)
 		{
 			ui.g500OdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
@@ -84,40 +85,42 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.g500StreamIP, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
     QObject::connect(ui.g500StreamTopic, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
     QObject::connect(ui.g500StreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(g500LoadStream()));
+    QObject::connect(ui.g500TopicsButton, SIGNAL(clicked()), this, SLOT(g500TopicsButtonClicked()));
+
     QObject::connect(ui.sparusLoadStreamButton, SIGNAL(clicked()), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusStopStreamButton, SIGNAL(clicked()), this, SLOT(sparusStopStream()));
     QObject::connect(ui.sparusStreamIP, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusStreamTopic, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusStreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(sparusLoadStream()));
+    QObject::connect(ui.sparusTopicsButton, SIGNAL(clicked()), this, SLOT(sparusTopicsButtonClicked()));
     
 
-    QObject::connect(ui.g500TopicsButton, SIGNAL(clicked()), this, SLOT(g500TopicsButtonClicked()));
 
-	//ros::NodeHandle *nh;
+	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
-    sub_g500Odometry = nh->subscribe<sensor_msgs::Joy>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::joystickCallback, this); 
-	pub_armControlRequest = nh->advertise<std_msgs::Bool>("armControlRequest", 1);
-	armControlRequest.data = 1;
+	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
+	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
+	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
+	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
 
+	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
+	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
+	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
+	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
+
+
+    //Timer to ensure the ROS communications
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
     timer->start();
 
-    ijoy = 0;
 	
 }
 
 
 
-void MainWindow::g500TopicsButtonClicked()
-{
-	qDebug()<<"g500TopicsButton";
-	pub_armControlRequest.publish(armControlRequest);
-    sub_g500Odometry = nh->subscribe<sensor_msgs::Joy>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::joystickCallback, this); 
-    ijoy = 0;
-}
 
-void MainWindow::joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick)
+/*void MainWindow::joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick)
 {
 	ros::Time currentPressUserControl = ros::Time::now();
 	ros::Duration difTimeUserControl = currentPressUserControl - lastPressUserControl;
@@ -134,7 +137,7 @@ void MainWindow::joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick)
 		ui.g500OdometryTable->item(0, i)->setText(QString::number(joystick->axes[i]));
 	for (int i=0; i<4; i++)
 		ui.g500OdometryTable->item(1, i)->setText(QString::number(joystick->buttons[i]));
-}
+}*/
 
 MainWindow::~MainWindow() { }
 
@@ -159,9 +162,34 @@ void MainWindow::processSpinOnce()
 }
 
 
-/*****************************************************************************
-** Implemenation [Slots][manually connected]
-*****************************************************************************/
+void MainWindow::g500TopicsButtonClicked()
+{
+	qDebug()<<"g500TopicsButton clicked: reconnecting all the G500 topics";
+	sub_g500Odometry.shutdown();
+	sub_g500Battery.shutdown();
+	sub_g500Runningtime.shutdown();
+	sub_g500Diagnostics.shutdown();
+	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
+	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
+	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
+	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
+}
+
+
+void MainWindow::sparusTopicsButtonClicked()
+{
+	qDebug()<<"g500TopicsButton clicked: reconnecting all the G500 topics";
+	sub_sparusOdometry.shutdown();
+	sub_sparusBattery.shutdown();
+	sub_sparusRunningtime.shutdown();
+	sub_sparusDiagnostics.shutdown();
+	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
+	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
+	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
+	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
+}
+
+
 void MainWindow::g500LoadStream()
 {
     QString text = "http://" + ui.g500StreamIP->text() + ":8080/stream?topic=" \
@@ -197,22 +225,59 @@ void MainWindow::sparusStopStream()
 }
 
 
-void MainWindow::g500OdometryTableUpdate()
-{
-//	ui.g500OdometryTable->item(row, col)->setText(data);
-}
-
-
-void MainWindow::sparusOdometryTableUpdate()
-{
-//	ui.sparusOdometryTable->item(row, col)->setText(data);
-}
-
 
 /*****************************************************************************
 ** Implemenation [Callbacks]
 *****************************************************************************/
 
+void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo)
+{
+//	ui.g500OdometryTable->item(0, i)->setText(QString::number(g500OdometryInfo->));
+}
+
+
+void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo)
+{
+	QString labelText = "G500 BatteryLevel: " + QString::number(g500BatteryInfo->charge);
+	ui.g500BatteryLabel->setText(labelText);
+}
+
+
+void MainWindow::g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo)
+{
+	QString labelText = "G500 RunningTime: " + QString::number(g500RunningTimeInfo->total_time);
+	ui.g500TimeLabel->setText(labelText);
+}
+
+
+void MainWindow::g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& g500DiagnosticsInfo)
+{
+	//stuff
+}
+
+
+void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo)
+{
+//	ui.sparusOdometryTable->item(row, col)->setText(data);
+}
+
+void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo)
+{
+	QString labelText = "SPARUS BatteryLevel: " + QString::number(sparusBatteryInfo->charge);
+	ui.sparusBatteryLabel->setText(labelText);
+}
+
+void MainWindow::sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo)
+{
+	QString labelText = "SPARUS RunningTime: " + QString::number(sparusRunningTimeInfo->total_time);
+	ui.sparusTimeLabel->setText(labelText);
+}
+
+
+void MainWindow::sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo)
+{
+	//stuff
+}
 
 /*****************************************************************************
 ** Implementation [Menu]

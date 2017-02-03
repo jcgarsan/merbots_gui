@@ -10,12 +10,19 @@ project(merbots_gui)
 ##############################################################################
 
 # qt_build provides the qt cmake glue, roscpp the comms for a default talker
-find_package(catkin REQUIRED COMPONENTS qt_build roscpp)
-include_directories(${catkin_INCLUDE_DIRS})
-# Use this to define what the package will export (e.g. libs, headers).
-# Since the default here is to produce only a binary, we don't worry about
-# exporting anything. 
-##catkin_package()
+find_package(
+	catkin
+	REQUIRED COMPONENTS
+		qt_build
+		roscpp
+		std_msgs
+		geometry_msgs
+		nav_msgs
+		sensor_msgs
+		cola2_msgs
+		auv_msgs
+)
+
 catkin_package(
   INCLUDE_DIRS include
   CATKIN_DEPENDS
@@ -24,7 +31,11 @@ catkin_package(
 	geometry_msgs
 	nav_msgs
 	sensor_msgs
+	cola2_msgs
+	auv_msgs
 )
+
+include_directories(${catkin_INCLUDE_DIRS})
 
 ##############################################################################
 # Qt Environment

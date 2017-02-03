@@ -12,6 +12,7 @@
   <url>https://github.com/jcgarsan/merbots_gui</url>
 
   <buildtool_depend>catkin</buildtool_depend>
+  
   <build_depend>qt_build</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>libqt4-dev</build_depend>
@@ -19,6 +20,9 @@
   <build_depend>std_msgs</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>nav_msgs</build_depend>
+  <build_depend>auv_msgs</build_depend>
+  <build_depend>diagnostic_msgs</build_depend>
+  <build_depend>cola2_msgs</build_depend>
 
   <run_depend>qt_build</run_depend>
   <run_depend>roscpp</run_depend>
@@ -27,5 +31,8 @@
   <run_depend>std_msgs</run_depend>
   <run_depend>geometry_msgs</run_depend>
   <run_depend>nav_msgs</run_depend>
+  <run_depend>auv_msgs</run_depend>
+  <run_depend>diagnostic_msgs</run_depend>
+  <run_depend>cola2_msgs</run_depend>
  
 </package>

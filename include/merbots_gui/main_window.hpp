@@ -26,8 +26,11 @@
 #include <QtGui/QMainWindow>
 #include <QtWebKit/QWebView>
 
-#include <sensor_msgs/Joy.h>
 #include <std_msgs/Bool.h>
+#include <auv_msgs/NavSts.h>
+#include <cola2_msgs/BatteryLevel.h>
+#include <cola2_msgs/TotalTime.h>
+#include <diagnostic_msgs/DiagnosticArray.h>
 
 /*****************************************************************************
 ** Namespace
@@ -44,13 +47,9 @@ class MainWindow : public QMainWindow {
 Q_OBJECT
 
 public:
-	int 				ijoy;
-	ros::Time 			lastPressUserControl;
-	std_msgs::Bool		armControlRequest;
-
 	ros::NodeHandle		*nh;
-	ros::Subscriber		sub_g500Odometry;
-	ros::Publisher		pub_armControlRequest;
+	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
+	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
 
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();
@@ -58,31 +57,33 @@ public:
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
 
+
 public Q_SLOTS:
-	/******************************************
-	** Auto-connections (connectSlotsByName())
-	*******************************************/
 	void on_actionAbout_triggered();
 	void processSpinOnce();
-	
-    /******************************************
-    ** Manual connections
-    *******************************************/
+
+	void g500TopicsButtonClicked();
     void g500LoadStream();
     void g500StopStream();
+
+	void sparusTopicsButtonClicked();
     void sparusLoadStream();
     void sparusStopStream();
-
 
 	/******************************************
 	** Implemenation [Callbacks]
 	*******************************************/
-//	void g500OdometryTableUpdate(int row, int col, QString data);
-	void g500OdometryTableUpdate();
-	void sparusOdometryTableUpdate();
-	void g500TopicsButtonClicked();
+	void g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo);
+	void g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo);
+	void g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo);
+	void g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& g500DiagnosticsInfo);
 
-	void joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick);
+	void sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo);
+	void sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo);
+	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
+	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
+
+//	void joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick);
 
 
 private Q_SLOTS:
