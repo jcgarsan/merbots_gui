@@ -164,15 +164,17 @@ void MainWindow::processSpinOnce()
 
 void MainWindow::g500TopicsButtonClicked()
 {
-	qDebug()<<"g500TopicsButton clicked: reconnecting all the G500 topics";
+	qDebug()<<"g500TopicsButton clicked: reconnecting all the G500 topics...";
 	sub_g500Odometry.shutdown();
 	sub_g500Battery.shutdown();
 	sub_g500Runningtime.shutdown();
 	sub_g500Diagnostics.shutdown();
+	qDebug()<<"g500Topics has been shutdown";
 	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
 	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
 	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
 	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
+	qDebug()<<"g500Topics has been reconnected";
 }
 
 
@@ -183,10 +185,12 @@ void MainWindow::sparusTopicsButtonClicked()
 	sub_sparusBattery.shutdown();
 	sub_sparusRunningtime.shutdown();
 	sub_sparusDiagnostics.shutdown();
+	qDebug()<<"g500Topics has been shutdown";
 	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
 	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
+	qDebug()<<"g500Topics has been reconnected";
 }
 
 
