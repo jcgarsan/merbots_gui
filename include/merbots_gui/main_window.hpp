@@ -30,6 +30,7 @@
 #include <auv_msgs/NavSts.h>
 #include <cola2_msgs/BatteryLevel.h>
 #include <cola2_msgs/TotalTime.h>
+#include <cola2_msgs/Goto.h>
 #include <diagnostic_msgs/DiagnosticArray.h>
 
 /*****************************************************************************
@@ -50,6 +51,7 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
+	ros::ServiceClient 	srv_g500GoTo;
 
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();
@@ -65,6 +67,7 @@ public Q_SLOTS:
 	void g500TopicsButtonClicked();
     void g500LoadStream();
     void g500StopStream();
+    void g500GoToSurface();
 
 	void sparusTopicsButtonClicked();
     void sparusLoadStream();
