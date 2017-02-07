@@ -116,6 +116,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
     timer->start();
 
+	//sub_joystick		= nh->subscribe<sensor_msgs::Joy>("/joystick_out", 1, &MainWindow::joystickCallback, this); 
 	
 }
 
@@ -129,9 +130,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ros::Duration difTimeUserControl = currentPressUserControl - lastPressUserControl;
 	if ((difTimeUserControl.toSec() > 0.5) and (joystick->buttons[0] == 1))
 	{
-		qDebug()<<"Inside if. ijoy= " << ijoy;
+		qDebug()<<"Inside if. ijoy= ";
 		lastPressUserControl = currentPressUserControl;
-		ijoy++;
+	
+		QString labelText = "G500 BatteryLevel: " + QString::number(joystick->axes[1]);
+		ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : blue; }");
+		ui.g500BatteryLabel->setText(labelText);
 	}
 	if (ijoy>3)
 		sub_g500Odometry.shutdown();
@@ -139,8 +143,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	for (int i=0; i<4; i++)
 		ui.g500OdometryTable->item(0, i)->setText(QString::number(joystick->axes[i]));
 	for (int i=0; i<4; i++)
-		ui.g500OdometryTable->item(1, i)->setText(QString::number(joystick->buttons[i]));
+		ui.g500OdometryTable->item(1, i)->setText(QString::number(joystick->buttons[i])); 
 }*/
+
+
 
 MainWindow::~MainWindow() { }
 
@@ -271,6 +277,7 @@ void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500Odom
 void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo)
 {
 	QString labelText = "G500 BatteryLevel: " + QString::number(g500BatteryInfo->charge);
+	ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
 	ui.g500BatteryLabel->setText(labelText);
 }
 
@@ -297,6 +304,7 @@ void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparus
 void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo)
 {
 	QString labelText = "SPARUS BatteryLevel: " + QString::number(sparusBatteryInfo->charge);
+	ui.sparusBatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
 	ui.sparusBatteryLabel->setText(labelText);
 }
 

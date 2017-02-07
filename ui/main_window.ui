@@ -34,7 +34,7 @@
        <locale language="English" country="Australia"/>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="mainTabs_vehicle">
        <attribute name="title">
@@ -550,11 +550,8 @@
                  <height>91</height>
                 </rect>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <property name="spacing">
-                 <number>5</number>
-                </property>
-                <item>
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
                  <widget class="QTableWidget" name="g500OdometryTable">
                   <attribute name="horizontalHeaderDefaultSectionSize">
                    <number>65</number>
@@ -601,7 +598,7 @@
                   </column>
                  </widget>
                 </item>
-                <item>
+                <item row="0" column="1">
                  <spacer name="horizontalSpacer_5">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
@@ -617,7 +614,7 @@
                   </property>
                  </spacer>
                 </item>
-                <item>
+                <item row="0" column="2">
                  <widget class="QTableWidget" name="sparusOdometryTable">
                   <attribute name="horizontalHeaderDefaultSectionSize">
                    <number>65</number>
@@ -688,13 +685,212 @@
        <attribute name="title">
         <string>ToI selection</string>
        </attribute>
+       <layout class="QFormLayout" name="formLayout_4">
+        <item row="0" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox_13">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Target of Interest Selection</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QWebView" name="webView_2">
+               <property name="url">
+                <url>
+                 <string>about:blank</string>
+                </url>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWebView" name="webView">
+               <property name="url">
+                <url>
+                 <string>about:blank</string>
+                </url>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>4</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QGroupBox" name="groupBox_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="title">
+                <string>Visual Servoing options</string>
+               </property>
+               <widget class="QPushButton" name="pushButton">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>50</y>
+                  <width>99</width>
+                  <height>27</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>VS cancel</string>
+                </property>
+               </widget>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>240</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QWebView" name="webView_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>240</width>
+                 <height>240</height>
+                </size>
+               </property>
+               <property name="url">
+                <url>
+                 <string>about:blank</string>
+                </url>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="serviceStatusGroup_2">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Services status</string>
+             </property>
+             <widget class="QLabel" name="sparusBatteryLabel_2">
+              <property name="geometry">
+               <rect>
+                <x>280</x>
+                <y>0</y>
+                <width>121</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>SPARUS battery</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="g500BatteryLabel_2">
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>0</y>
+                <width>101</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>G500 battery</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="g500TimeLabel_2">
+              <property name="geometry">
+               <rect>
+                <x>470</x>
+                <y>0</y>
+                <width>181</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>G500 RunningTime</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="sparusTimeLabel_2">
+              <property name="geometry">
+               <rect>
+                <x>700</x>
+                <y>0</y>
+                <width>191</width>
+                <height>39</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>SPARUS RunningTime</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="mainTabs_manipulation">
        <attribute name="title">
         <string>Manipulation</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="mainTabs_settings">
        <attribute name="title">
         <string>Settings</string>
        </attribute>
@@ -704,12 +900,12 @@
           <x>10</x>
           <y>10</y>
           <width>1241</width>
-          <height>491</height>
+          <height>691</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <property name="bottomMargin">
-          <number>50</number>
+          <number>0</number>
          </property>
          <item>
           <widget class="QGroupBox" name="groupBox_2">
@@ -800,13 +996,19 @@
              </item>
             </layout>
            </widget>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="g500TopicsButton">
-           <property name="text">
-            <string>Reconnect G500 topics</string>
-           </property>
+           <widget class="QPushButton" name="g500TopicsButton">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>190</y>
+              <width>1221</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Reconnect G500 topics</string>
+            </property>
+           </widget>
           </widget>
          </item>
          <item>
@@ -820,7 +1022,7 @@
               <x>9</x>
               <y>29</y>
               <width>1221</width>
-              <height>164</height>
+              <height>161</height>
              </rect>
             </property>
             <layout class="QFormLayout" name="formLayout">
@@ -895,13 +1097,96 @@
              </item>
             </layout>
            </widget>
+           <widget class="QPushButton" name="sparusTopicsButton">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>190</y>
+              <width>1221</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Reconnect SPARUS topics</string>
+            </property>
+           </widget>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="sparusTopicsButton">
-           <property name="text">
-            <string>Reconnect SPARUS topics</string>
+          <widget class="QGroupBox" name="groupBox_5">
+           <property name="title">
+            <string>Target selection</string>
            </property>
+           <widget class="QWidget" name="formLayoutWidget_3">
+            <property name="geometry">
+             <rect>
+              <x>9</x>
+              <y>30</y>
+              <width>1221</width>
+              <height>101</height>
+             </rect>
+            </property>
+            <layout class="QFormLayout" name="formLayout_3">
+             <property name="verticalSpacing">
+              <number>2</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_13">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEdit">
+               <property name="text">
+                <string>/ibvs/topic_por_determinar</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_14">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_15">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEdit_2">
+               <property name="text">
+                <string>/stereo_forward/left/image_rect_color/compressed</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEdit_3">
+               <property name="text">
+                <string>/det_and_track/target</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QPushButton" name="visualservoingTopicsButton">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>130</y>
+              <width>1221</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Reconnect VisualServoing topics</string>
+            </property>
+           </widget>
           </widget>
          </item>
         </layout>

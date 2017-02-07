@@ -25,6 +25,8 @@
 
 #include <QtGui/QMainWindow>
 #include <QtWebKit/QWebView>
+#include <QtOpenGL>
+#include <QWidget>
 
 #include <std_msgs/Bool.h>
 #include <auv_msgs/NavSts.h>
@@ -32,6 +34,16 @@
 #include <cola2_msgs/TotalTime.h>
 #include <cola2_msgs/Goto.h>
 #include <diagnostic_msgs/DiagnosticArray.h>
+
+#include <sensor_msgs/Joy.h>
+
+#ifndef Q_MOC_RUN
+#include <image_transport/image_transport.h>
+#endif
+#include <cv_bridge/cv_bridge.h>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <sensor_msgs/image_encodings.h>
 
 /*****************************************************************************
 ** Namespace
@@ -52,6 +64,9 @@ public:
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
 	ros::ServiceClient 	srv_g500GoTo;
+
+//	ros::Subscriber		sub_joystick;
+//	ros::Time lastPressUserControl;
 
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();

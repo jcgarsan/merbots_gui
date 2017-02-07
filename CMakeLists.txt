@@ -21,7 +21,12 @@ find_package(
 		sensor_msgs
 		cola2_msgs
 		auv_msgs
+		cv_bridge
+		image_transport
 )
+
+find_package(OpenCV REQUIRED)
+find_package(OpenGL REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include
@@ -33,9 +38,11 @@ catkin_package(
 	sensor_msgs
 	cola2_msgs
 	auv_msgs
+	cv_bridge
+	image_transport
 )
 
-include_directories(${catkin_INCLUDE_DIRS})
+include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})# ${OpenGL_INCLUDE_DIR})
 
 ##############################################################################
 # Qt Environment
@@ -43,7 +50,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 
 # this comes from qt_build's qt-ros.cmake which is automatically 
 # included via the dependency call in package.xml
-rosbuild_prepare_qt4(QtCore QtGui QtWebKit QtNetwork) # Add the appropriate components to the component list here
+rosbuild_prepare_qt4(QtCore QtGui QtWebKit QtNetwork QtOpengl) # Add the appropriate components to the component list here
 
 ##############################################################################
 # Sections
@@ -69,6 +76,6 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 ##############################################################################
 
 add_executable(merbots_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-target_link_libraries(merbots_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(merbots_gui ${QT_LIBRARIES} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${OpenGL_LIBRARIES})
 install(TARGETS merbots_gui RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
