@@ -10,6 +10,18 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>800</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MERBOTS GUI</string>
   </property>
@@ -273,8 +285,6 @@
                        </item>
                       </layout>
                      </widget>
-                     <zorder>verticalLayoutWidget_5</zorder>
-                     <zorder>g500AutonomousCheckBox</zorder>
                     </widget>
                    </item>
                    <item>
@@ -423,19 +433,6 @@
                           <string>Go to surface</string>
                          </property>
                         </widget>
-                       </item>
-                       <item>
-                        <spacer name="verticalSpacer_5">
-                         <property name="orientation">
-                          <enum>Qt::Vertical</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>20</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                        </spacer>
                        </item>
                       </layout>
                      </widget>
