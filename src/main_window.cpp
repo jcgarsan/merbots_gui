@@ -68,8 +68,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	for (int i=0; i<2; i++)
 		for (int j=0; j<6; j++)
 		{
-			ui.g500OdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
-			ui.sparusOdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
+			//ui.g500OdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
+			//ui.sparusOdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
 		}
 
 
@@ -205,7 +205,7 @@ void MainWindow::sparusTopicsButtonClicked()
 
 void MainWindow::g500LoadStream()
 {
-    QString text = "http://" + ui.g500StreamIP->text() + ":8080/stream?topic=" \
+    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
     qDebug() << "New G500 stream: " <<  text.toUtf8().constData();
     ui.g500StreamView->load(QUrl("http://www.google.com"));
@@ -216,7 +216,7 @@ void MainWindow::g500LoadStream()
 
 void MainWindow::sparusLoadStream()
 {
-    QString text = "http://" + ui.sparusStreamIP->text() + ":8080/stream?topic=" \
+    QString text = ui.sparusStreamIP->text() + ":8080/stream?topic=" \
      				+ ui.sparusStreamTopic->text() + "&type=" + ui.sparusStreamType->currentText();
     qDebug() << "New SPARUS stream: " <<  text.toUtf8().constData();
     ui.sparusStreamView->load(QUrl("http://www.google.com"));
@@ -277,15 +277,15 @@ void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500Odom
 void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo)
 {
 	QString labelText = "G500 BatteryLevel: " + QString::number(g500BatteryInfo->charge);
-	ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
-	ui.g500BatteryLabel->setText(labelText);
+	//ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
+	//ui.g500BatteryLabel->setText(labelText);
 }
 
 
 void MainWindow::g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo)
 {
 	QString labelText = "G500 RunningTime: " + QString::number(g500RunningTimeInfo->total_time);
-	ui.g500TimeLabel->setText(labelText);
+	//ui.g500TimeLabel->setText(labelText);
 }
 
 
@@ -304,15 +304,15 @@ void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparus
 void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo)
 {
 	QString labelText = "SPARUS BatteryLevel: " + QString::number(sparusBatteryInfo->charge);
-	ui.sparusBatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
-	ui.sparusBatteryLabel->setText(labelText);
+	//ui.sparusBatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
+	//ui.sparusBatteryLabel->setText(labelText);
 }
 
 
 void MainWindow::sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo)
 {
 	QString labelText = "SPARUS RunningTime: " + QString::number(sparusRunningTimeInfo->total_time);
-	ui.sparusTimeLabel->setText(labelText);
+	//ui.sparusTimeLabel->setText(labelText);
 }
 
 

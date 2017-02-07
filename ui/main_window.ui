@@ -21,56 +21,62 @@
    <locale language="English" country="Australia"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_14">
     <item>
-     <widget class="QTabWidget" name="mainTabs">
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>0</height>
-       </size>
+     <layout class="QVBoxLayout" name="verticalLayout_11">
+      <property name="spacing">
+       <number>4</number>
       </property>
-      <property name="locale">
-       <locale language="English" country="Australia"/>
+      <property name="leftMargin">
+       <number>0</number>
       </property>
-      <property name="currentIndex">
-       <number>2</number>
+      <property name="topMargin">
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="mainTabs_vehicle">
-       <attribute name="title">
-        <string>Vehicle control</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QGroupBox" name="groupBox_12">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>G500 and SPARUS control</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <layout class="QVBoxLayout" name="verticalLayout">
-             <property name="spacing">
-              <number>3</number>
-             </property>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QTabWidget" name="mainTabs">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="locale">
+         <locale language="English" country="Australia"/>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="mainTabs_vehicle">
+         <attribute name="title">
+          <string>Vehicle control</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QGroupBox" name="groupBox_12">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>G500 and SPARUS control</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="0">
+              <layout class="QVBoxLayout" name="verticalLayout">
+               <property name="spacing">
+                <number>3</number>
                </property>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_3">
-                 <property name="spacing">
-                  <number>2</number>
-                 </property>
+                <layout class="QHBoxLayout" name="horizontalLayout">
                  <property name="rightMargin">
                   <number>0</number>
                  </property>
@@ -78,47 +84,90 @@
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QGroupBox" name="groupBox">
-                   <property name="font">
-                    <font>
-                     <underline>false</underline>
-                    </font>
+                  <layout class="QVBoxLayout" name="verticalLayout_3">
+                   <property name="spacing">
+                    <number>3</number>
                    </property>
-                   <property name="title">
-                    <string>G500 control</string>
+                   <property name="rightMargin">
+                    <number>0</number>
                    </property>
-                   <widget class="QWidget" name="verticalLayoutWidget_5">
-                    <property name="geometry">
-                     <rect>
-                      <x>0</x>
-                      <y>20</y>
-                      <width>121</width>
-                      <height>211</height>
-                     </rect>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_5">
-                     <property name="spacing">
-                      <number>5</number>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QGroupBox" name="groupBox">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <item>
-                      <widget class="QCheckBox" name="g500AutonomousCheckBox">
-                       <property name="text">
-                        <string>Autonomous</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0">
+                     <property name="minimumSize">
+                      <size>
+                       <width>125</width>
+                       <height>216</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <underline>false</underline>
+                      </font>
+                     </property>
+                     <property name="title">
+                      <string>G500 control</string>
+                     </property>
+                     <widget class="QWidget" name="verticalLayoutWidget_5">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>20</y>
+                        <width>121</width>
+                        <height>211</height>
+                       </rect>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_5">
                        <property name="spacing">
-                        <number>1</number>
+                        <number>7</number>
                        </property>
+                       <property name="sizeConstraint">
+                        <enum>QLayout::SetMinimumSize</enum>
+                       </property>
+                       <item>
+                        <widget class="QCheckBox" name="g500AutonomousCheckBox">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Autonomous</string>
+                         </property>
+                        </widget>
+                       </item>
                        <item>
                         <widget class="QLabel" name="label">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                            <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
+                           <verstretch>30</verstretch>
                           </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
                          </property>
                          <property name="text">
                           <string>Robot depth</string>
@@ -133,75 +182,167 @@
                            <verstretch>0</verstretch>
                           </sizepolicy>
                          </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                          <property name="specialValueText">
                           <string/>
                          </property>
                         </widget>
                        </item>
+                       <item>
+                        <widget class="QPushButton" name="g500MoveRobotButton">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Move robot</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="g500GoToPositionButton">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Go to position</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="g500GoToSurfaceButton">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Go to surface</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_4">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
                       </layout>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="g500MoveRobotButton">
-                       <property name="text">
-                        <string>Move robot</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="g500GoToPositionButton">
-                       <property name="text">
-                        <string>Go to position</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="g500GoToSurfaceButton">
-                       <property name="text">
-                        <string>Go to surface</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_3">
-                   <property name="title">
-                    <string>SPARUS control</string>
-                   </property>
-                   <widget class="QWidget" name="verticalLayoutWidget_7">
-                    <property name="geometry">
-                     <rect>
-                      <x>0</x>
-                      <y>20</y>
-                      <width>121</width>
-                      <height>201</height>
-                     </rect>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_7">
-                     <property name="spacing">
-                      <number>5</number>
+                     </widget>
+                     <zorder>verticalLayoutWidget_5</zorder>
+                     <zorder>g500AutonomousCheckBox</zorder>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QGroupBox" name="groupBox_3">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <item>
-                      <widget class="QCheckBox" name="sparusAutonomousCheckBox">
-                       <property name="text">
-                        <string>Autonomous</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,0">
+                     <property name="minimumSize">
+                      <size>
+                       <width>125</width>
+                       <height>225</height>
+                      </size>
+                     </property>
+                     <property name="title">
+                      <string>SPARUS control</string>
+                     </property>
+                     <widget class="QWidget" name="verticalLayoutWidget_7">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>20</y>
+                        <width>121</width>
+                        <height>201</height>
+                       </rect>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_7">
                        <property name="spacing">
-                        <number>1</number>
+                        <number>7</number>
                        </property>
+                       <item>
+                        <widget class="QCheckBox" name="sparusAutonomousCheckBox">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>21</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Autonomous</string>
+                         </property>
+                        </widget>
+                       </item>
                        <item>
                         <widget class="QLabel" name="label_2">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                            <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
+                           <verstretch>30</verstretch>
                           </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>21</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
                          </property>
                          <property name="text">
                           <string>Robot depth</string>
@@ -209,204 +350,208 @@
                         </widget>
                        </item>
                        <item>
-                        <widget class="QDoubleSpinBox" name="sparusDepthSpinBox"/>
+                        <widget class="QDoubleSpinBox" name="sparusDepthSpinBox">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>21</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="sparusMoveRobotButton">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>21</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Move robot</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="sparusGoToPoseButton">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>21</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Go to position</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="sparusGoToSurfaceButton">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>21</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Go to surface</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_5">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
                        </item>
                       </layout>
-                     </item>
+                     </widget>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="g500StreamLayout">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QWebView" name="g500StreamView">
+                     <property name="url">
+                      <url>
+                       <string>about:blank</string>
+                      </url>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="g500URrlLayout">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
                      <item>
-                      <widget class="QPushButton" name="sparusMoveRobotButton">
+                      <widget class="QLineEdit" name="g500StreamIP">
                        <property name="text">
-                        <string>Move robot</string>
+                        <string>http://192.168.100.100</string>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="sparusGoToPoseButton">
+                      <widget class="QLineEdit" name="g500StreamTopic">
                        <property name="text">
-                        <string>Go to position</string>
+                        <string>/image_topic/raw</string>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="sparusGoToSurfaceButton">
-                       <property name="text">
-                        <string>Go to surface</string>
-                       </property>
+                      <widget class="QComboBox" name="g500StreamType">
+                       <item>
+                        <property name="text">
+                         <string>mjpeg</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>ros_compression</string>
+                        </property>
+                       </item>
                       </widget>
                      </item>
                     </layout>
-                   </widget>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QVBoxLayout" name="g500StreamLayout">
-                 <property name="spacing">
-                  <number>3</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QWebView" name="g500StreamView">
-                   <property name="url">
-                    <url>
-                     <string>about:blank</string>
-                    </url>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="g500URrlLayout">
-                   <property name="spacing">
-                    <number>3</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QLineEdit" name="g500StreamIP">
-                     <property name="text">
-                      <string>http://192.168.100.100</string>
-                     </property>
-                    </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="g500StreamTopic">
-                     <property name="text">
-                      <string>/image_topic/raw</string>
+                    <layout class="QHBoxLayout" name="g500StreamButtonLayout">
+                     <property name="spacing">
+                      <number>3</number>
                      </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="g500StreamType">
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
                      <item>
-                      <property name="text">
-                       <string>mjpeg</string>
-                      </property>
+                      <spacer name="horizontalSpacer_2">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
                      </item>
                      <item>
-                      <property name="text">
-                       <string>ros_compression</string>
-                      </property>
+                      <widget class="QPushButton" name="g500LoadStreamButton">
+                       <property name="text">
+                        <string>Load G500 stream</string>
+                       </property>
+                      </widget>
                      </item>
-                    </widget>
+                     <item>
+                      <widget class="QPushButton" name="g500StopStreamButton">
+                       <property name="text">
+                        <string>Stop streaming</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
                    </item>
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="g500StreamButtonLayout">
-                   <property name="spacing">
-                    <number>3</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <spacer name="horizontalSpacer_2">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="g500LoadStreamButton">
-                     <property name="text">
-                      <string>Load G500 stream</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="g500StopStreamButton">
-                     <property name="text">
-                      <string>Stop streaming</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="horizontalSpacer">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QVBoxLayout" name="sparusStreamLayout">
-                 <property name="spacing">
-                  <number>3</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QWebView" name="sparusStreamView">
-                   <property name="url">
-                    <url>
-                     <string>about:blank</string>
-                    </url>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="sparusURrlLayout">
-                   <property name="spacing">
-                    <number>3</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QLineEdit" name="sparusStreamIP">
-                     <property name="text">
-                      <string>http://192.168.100.200</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="sparusStreamTopic">
-                     <property name="text">
-                      <string>/image_topic/raw</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="sparusStreamType">
-                     <item>
-                      <property name="text">
-                       <string>ros</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>ros_compression</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="sparusStreamButtonLayout">
+                  <layout class="QVBoxLayout" name="sparusStreamLayout">
                    <property name="spacing">
                     <number>3</number>
                    </property>
@@ -417,44 +562,104 @@
                     <number>0</number>
                    </property>
                    <item>
-                    <spacer name="horizontalSpacer_4">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="sparusLoadStreamButton">
-                     <property name="text">
-                      <string>Load SPARUS stream</string>
+                    <widget class="QWebView" name="sparusStreamView">
+                     <property name="url">
+                      <url>
+                       <string>about:blank</string>
+                      </url>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="sparusStopStreamButton">
-                     <property name="text">
-                      <string>Stop streaming</string>
+                    <layout class="QHBoxLayout" name="sparusURrlLayout">
+                     <property name="spacing">
+                      <number>3</number>
                      </property>
-                    </widget>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLineEdit" name="sparusStreamIP">
+                       <property name="text">
+                        <string>http://192.168.100.200</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="sparusStreamTopic">
+                       <property name="text">
+                        <string>/image_topic/raw</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="sparusStreamType">
+                       <item>
+                        <property name="text">
+                         <string>ros</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>ros_compression</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer_3">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <layout class="QHBoxLayout" name="sparusStreamButtonLayout">
+                     <property name="spacing">
+                      <number>3</number>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
+                     <property name="rightMargin">
+                      <number>0</number>
                      </property>
-                    </spacer>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <spacer name="horizontalSpacer_4">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="sparusLoadStreamButton">
+                       <property name="text">
+                        <string>Load SPARUS stream</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="sparusStopStreamButton">
+                       <property name="text">
+                        <string>Stop streaming</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_3">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
                    </item>
                   </layout>
                  </item>
@@ -463,736 +668,1370 @@
               </layout>
              </item>
             </layout>
-           </item>
-           <item row="2" column="0">
-            <widget class="QGroupBox" name="serviceStatusGroup">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>40</height>
-              </size>
-             </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="mainTabs_roi">
+         <attribute name="title">
+          <string>RoI selection</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="mainTabs_toi">
+         <attribute name="title">
+          <string>ToI selection</string>
+         </attribute>
+         <layout class="QFormLayout" name="formLayout_4">
+          <item row="0" column="0" colspan="2">
+           <widget class="QGroupBox" name="groupBox_13">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Target of Interest Selection</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <property name="spacing">
+                <number>4</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_13">
+                 <property name="spacing">
+                  <number>4</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_19">
+                   <property name="text">
+                    <string>Current Target</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWebView" name="webView_3">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>240</width>
+                     <height>240</height>
+                    </size>
+                   </property>
+                   <property name="url">
+                    <url>
+                     <string>about:blank</string>
+                    </url>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton">
+                   <property name="text">
+                    <string>Cancel current Visual Servoing</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_3">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QWebView" name="webView_2">
+                 <property name="url">
+                  <url>
+                   <string>about:blank</string>
+                  </url>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWebView" name="webView">
+                 <property name="url">
+                  <url>
+                   <string>about:blank</string>
+                  </url>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="mainTabs_manipulation">
+         <attribute name="title">
+          <string>Manipulation</string>
+         </attribute>
+         <layout class="QFormLayout" name="formLayout_40">
+          <item row="0" column="0" colspan="2">
+           <widget class="QGroupBox" name="groupBox_130">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Manipulation settings</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_90">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_20">
+               <property name="spacing">
+                <number>4</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_130">
+                 <property name="spacing">
+                  <number>6</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QCheckBox" name="checkBox">
+                   <property name="text">
+                    <string>Teleoperation control mode</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_2">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>225</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>225</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Arm dredging position</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_3">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>225</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>225</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Get grasping position</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QTabWidget" name="tabWidget">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>225</width>
+                     <height>205</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>225</width>
+                     <height>205</height>
+                    </size>
+                   </property>
+                   <property name="currentIndex">
+                    <number>0</number>
+                   </property>
+                   <widget class="QWidget" name="arm_manual">
+                    <attribute name="title">
+                     <string>Manual</string>
+                    </attribute>
+                    <widget class="QWidget" name="formLayoutWidget_5">
+                     <property name="geometry">
+                      <rect>
+                       <x>5</x>
+                       <y>8</y>
+                       <width>191</width>
+                       <height>161</height>
+                      </rect>
+                     </property>
+                     <layout class="QFormLayout" name="formLayout_6">
+                      <property name="horizontalSpacing">
+                       <number>2</number>
+                      </property>
+                      <property name="verticalSpacing">
+                       <number>2</number>
+                      </property>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_28">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QSlider" name="horizontalSlider_10">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="label_29">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QSlider" name="horizontalSlider_11">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="0">
+                       <widget class="QLabel" name="label_30">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="5" column="0">
+                       <widget class="QSlider" name="horizontalSlider_12">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </widget>
+                   <widget class="QWidget" name="arm_interactive">
+                    <attribute name="title">
+                     <string>InteractiveMarkers</string>
+                    </attribute>
+                    <widget class="QWidget" name="formLayoutWidget_4">
+                     <property name="geometry">
+                      <rect>
+                       <x>5</x>
+                       <y>8</y>
+                       <width>191</width>
+                       <height>161</height>
+                      </rect>
+                     </property>
+                     <layout class="QFormLayout" name="formLayout_5">
+                      <property name="horizontalSpacing">
+                       <number>2</number>
+                      </property>
+                      <property name="verticalSpacing">
+                       <number>2</number>
+                      </property>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_22">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QSlider" name="horizontalSlider_4">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="label_23">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QSlider" name="horizontalSlider_5">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="0">
+                       <widget class="QLabel" name="label_24">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="5" column="0">
+                       <widget class="QSlider" name="horizontalSlider_6">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLabel" name="label_25">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QSlider" name="horizontalSlider_7">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLabel" name="label_26">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QSlider" name="horizontalSlider_8">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="1">
+                       <widget class="QLabel" name="label_27">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="5" column="1">
+                       <widget class="QSlider" name="horizontalSlider_9">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </widget>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_18">
+                   <property name="text">
+                    <string>Gripper aperture (close-open)</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSlider" name="horizontalSlider">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>225</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>225</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_4">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>225</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>225</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Execute grasping</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_300">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_200">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_10">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QTableWidget" name="tableWidget">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>278</width>
+                     <height>210</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>278</width>
+                     <height>210</height>
+                    </size>
+                   </property>
+                   <row>
+                    <property name="text">
+                     <string>Elbow</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>New Row</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>New Row</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>New Row</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>New Row</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>New Row</string>
+                    </property>
+                   </row>
+                   <column>
+                    <property name="text">
+                     <string>Current value</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Range limit</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_4">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>278</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>278</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QWebView" name="webView_000">
+                 <property name="url">
+                  <url>
+                   <string>about:blank</string>
+                  </url>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="mainTabs_settings">
+         <attribute name="title">
+          <string>Settings</string>
+         </attribute>
+         <widget class="QWidget" name="verticalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>1241</width>
+            <height>691</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox_2">
              <property name="title">
-              <string>Services status</string>
+              <string>G500</string>
              </property>
-             <widget class="QLabel" name="sparusBatteryLabel">
+             <widget class="QWidget" name="formLayoutWidget_2">
               <property name="geometry">
                <rect>
-                <x>280</x>
-                <y>0</y>
-                <width>121</width>
-                <height>39</height>
+                <x>9</x>
+                <y>29</y>
+                <width>1221</width>
+                <height>161</height>
                </rect>
               </property>
-              <property name="text">
-               <string>SPARUS battery</string>
-              </property>
+              <layout class="QFormLayout" name="formLayout_2">
+               <property name="verticalSpacing">
+                <number>2</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string>Odometry</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>Battery level</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="g500TopicOdometry">
+                 <property name="text">
+                  <string>/g500/cola2_navigation/nav_sts_hz</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="g500TopicBatteryLevel">
+                 <property name="text">
+                  <string>/g500/cola2_safety/ocean_server_batteries</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Running time</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Diagnostics</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Other topic</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="g500TopicRunningTime">
+                 <property name="text">
+                  <string>/g500/cola2_safety/total_time</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="g500TopicDiagnostics">
+                 <property name="text">
+                  <string>/g500/diagnostics_agg</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QLineEdit" name="lineEdit_5"/>
+               </item>
+              </layout>
              </widget>
-             <widget class="QLabel" name="g500BatteryLabel">
+             <widget class="QPushButton" name="g500TopicsButton">
               <property name="geometry">
                <rect>
-                <x>120</x>
-                <y>0</y>
-                <width>101</width>
-                <height>39</height>
+                <x>10</x>
+                <y>190</y>
+                <width>1221</width>
+                <height>27</height>
                </rect>
               </property>
               <property name="text">
-               <string>G500 battery</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="g500TimeLabel">
-              <property name="geometry">
-               <rect>
-                <x>470</x>
-                <y>0</y>
-                <width>181</width>
-                <height>39</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>G500 RunningTime</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="sparusTimeLabel">
-              <property name="geometry">
-               <rect>
-                <x>700</x>
-                <y>0</y>
-                <width>191</width>
-                <height>39</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>SPARUS RunningTime</string>
+               <string>Reconnect G500 topics</string>
               </property>
              </widget>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QTabWidget" name="tabLogs">
-             <property name="tabPosition">
-              <enum>QTabWidget::West</enum>
+           <item>
+            <widget class="QGroupBox" name="groupBox_4">
+             <property name="title">
+              <string>SPARUS</string>
              </property>
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <widget class="QWidget" name="tab">
-              <attribute name="title">
-               <string>Odometry</string>
-              </attribute>
-              <widget class="QWidget" name="horizontalLayoutWidget">
-               <property name="geometry">
-                <rect>
-                 <x>110</x>
-                 <y>3</y>
-                 <width>1071</width>
-                 <height>91</height>
-                </rect>
+             <widget class="QWidget" name="formLayoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>9</x>
+                <y>29</y>
+                <width>1221</width>
+                <height>161</height>
+               </rect>
+              </property>
+              <layout class="QFormLayout" name="formLayout">
+               <property name="verticalSpacing">
+                <number>2</number>
                </property>
-               <layout class="QGridLayout" name="gridLayout">
-                <item row="0" column="0">
-                 <widget class="QTableWidget" name="g500OdometryTable">
-                  <attribute name="horizontalHeaderDefaultSectionSize">
-                   <number>65</number>
-                  </attribute>
-                  <row>
-                   <property name="text">
-                    <string>Current pose</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Current twist</string>
-                   </property>
-                  </row>
-                  <column>
-                   <property name="text">
-                    <string>X</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Y</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Z</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>ROLL</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>PITCH</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>YAW</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <spacer name="horizontalSpacer_5">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Preferred</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>65</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QTableWidget" name="sparusOdometryTable">
-                  <attribute name="horizontalHeaderDefaultSectionSize">
-                   <number>65</number>
-                  </attribute>
-                  <row>
-                   <property name="text">
-                    <string>Current pose</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Current twist</string>
-                   </property>
-                  </row>
-                  <column>
-                   <property name="text">
-                    <string>X</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Y</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Z</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>ROLL</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>PITCH</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>YAW</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Odometry</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="sparusTopicOdometry">
+                 <property name="text">
+                  <string>/sparus/cola2_navigation/nav_sts_hz</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Battery level</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="sparusTopicBatteryLevel">
+                 <property name="text">
+                  <string>/sparus/cola2_safety/ocean_server_batteries</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Running time</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="sparusTopicRunningTime">
+                 <property name="text">
+                  <string>/sparus/cola2_safety/total_time</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Diagnostics</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="sparusTopicDiagnostics">
+                 <property name="text">
+                  <string>/sparus/diagnostics_agg</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>Other topic</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QLineEdit" name="lineEdit_10"/>
+               </item>
+              </layout>
              </widget>
-             <widget class="QWidget" name="tab_2">
-              <attribute name="title">
-               <string>Arm</string>
-              </attribute>
+             <widget class="QPushButton" name="sparusTopicsButton">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>190</y>
+                <width>1221</width>
+                <height>27</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Reconnect SPARUS topics</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_5">
+             <property name="title">
+              <string>Target selection</string>
+             </property>
+             <widget class="QWidget" name="formLayoutWidget_3">
+              <property name="geometry">
+               <rect>
+                <x>9</x>
+                <y>30</y>
+                <width>1221</width>
+                <height>101</height>
+               </rect>
+              </property>
+              <layout class="QFormLayout" name="formLayout_3">
+               <property name="verticalSpacing">
+                <number>2</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_13">
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit">
+                 <property name="text">
+                  <string>/ibvs/topic_por_determinar</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_14">
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_15">
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lineEdit_2">
+                 <property name="text">
+                  <string>/stereo_forward/left/image_rect_color/compressed</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="lineEdit_3">
+                 <property name="text">
+                  <string>/det_and_track/target</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QPushButton" name="visualservoingTopicsButton">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>130</y>
+                <width>1221</width>
+                <height>27</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Reconnect VisualServoing topics</string>
+              </property>
              </widget>
             </widget>
            </item>
           </layout>
          </widget>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_16">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Robots odometry</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>15</width>
+              <height>88</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="g500OdometryTable">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>498</width>
+              <height>87</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>498</width>
+              <height>87</height>
+             </size>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>65</number>
+            </attribute>
+            <row>
+             <property name="text">
+              <string>Current pose</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Current twist</string>
+             </property>
+            </row>
+            <column>
+             <property name="text">
+              <string>X</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>ROLL</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>PITCH</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>YAW</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="sparusOdometryTable">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>498</width>
+              <height>87</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>498</width>
+              <height>87</height>
+             </size>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>65</number>
+            </attribute>
+            <row>
+             <property name="text">
+              <string>Current pose</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Current twist</string>
+             </property>
+            </row>
+            <column>
+             <property name="text">
+              <string>X</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>ROLL</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>PITCH</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>YAW</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="mainTabs_roi">
-       <attribute name="title">
-        <string>RoI selection</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="mainTabs_toi">
-       <attribute name="title">
-        <string>ToI selection</string>
-       </attribute>
-       <layout class="QFormLayout" name="formLayout_4">
-        <item row="0" column="0" colspan="2">
-         <widget class="QGroupBox" name="groupBox_13">
+      </item>
+      <item>
+       <widget class="QLabel" name="label_17">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Services Status</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <property name="spacing">
+         <number>7</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer_12">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="g500ServiceStatus">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="title">
-           <string>Target of Interest Selection</string>
+          <property name="minimumSize">
+           <size>
+            <width>348</width>
+            <height>56</height>
+           </size>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_9">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <property name="spacing">
-              <number>2</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QWebView" name="webView_2">
-               <property name="url">
-                <url>
-                 <string>about:blank</string>
-                </url>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWebView" name="webView">
-               <property name="url">
-                <url>
-                 <string>about:blank</string>
-                </url>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <property name="spacing">
-              <number>4</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QGroupBox" name="groupBox_6">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="title">
-                <string>Visual Servoing options</string>
-               </property>
-               <widget class="QPushButton" name="pushButton">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>50</y>
-                  <width>99</width>
-                  <height>27</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>VS cancel</string>
-                </property>
-               </widget>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>240</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QWebView" name="webView_3">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>240</width>
-                 <height>240</height>
-                </size>
-               </property>
-               <property name="url">
-                <url>
-                 <string>about:blank</string>
-                </url>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_7">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="serviceStatusGroup_2">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="title">
-              <string>Services status</string>
-             </property>
-             <widget class="QLabel" name="sparusBatteryLabel_2">
-              <property name="geometry">
-               <rect>
-                <x>280</x>
-                <y>0</y>
-                <width>121</width>
-                <height>39</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>SPARUS battery</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="g500BatteryLabel_2">
-              <property name="geometry">
-               <rect>
-                <x>120</x>
-                <y>0</y>
-                <width>101</width>
-                <height>39</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>G500 battery</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="g500TimeLabel_2">
-              <property name="geometry">
-               <rect>
-                <x>470</x>
-                <y>0</y>
-                <width>181</width>
-                <height>39</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>G500 RunningTime</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="sparusTimeLabel_2">
-              <property name="geometry">
-               <rect>
-                <x>700</x>
-                <y>0</y>
-                <width>191</width>
-                <height>39</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>SPARUS RunningTime</string>
-              </property>
-             </widget>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="mainTabs_manipulation">
-       <attribute name="title">
-        <string>Manipulation</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="mainTabs_settings">
-       <attribute name="title">
-        <string>Settings</string>
-       </attribute>
-       <widget class="QWidget" name="verticalLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>1241</width>
-          <height>691</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QGroupBox" name="groupBox_2">
-           <property name="title">
+          <property name="maximumSize">
+           <size>
+            <width>348</width>
+            <height>56</height>
+           </size>
+          </property>
+          <row>
+           <property name="text">
             <string>G500</string>
            </property>
-           <widget class="QWidget" name="formLayoutWidget_2">
-            <property name="geometry">
-             <rect>
-              <x>9</x>
-              <y>29</y>
-              <width>1221</width>
-              <height>161</height>
-             </rect>
-            </property>
-            <layout class="QFormLayout" name="formLayout_2">
-             <property name="verticalSpacing">
-              <number>2</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Odometry</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Battery level</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="g500TopicOdometry">
-               <property name="text">
-                <string>/g500/cola2_navigation/nav_sts_hz</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="g500TopicBatteryLevel">
-               <property name="text">
-                <string>/g500/cola2_safety/ocean_server_batteries</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>Running time</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Diagnostics</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Other topic</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="g500TopicRunningTime">
-               <property name="text">
-                <string>/g500/cola2_safety/total_time</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="g500TopicDiagnostics">
-               <property name="text">
-                <string>/g500/diagnostics_agg</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="lineEdit_5"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QPushButton" name="g500TopicsButton">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>190</y>
-              <width>1221</width>
-              <height>27</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Reconnect G500 topics</string>
-            </property>
-           </widget>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_4">
-           <property name="title">
+          </row>
+          <column>
+           <property name="text">
+            <string>Battery</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Running time</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Diagnostics</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_10">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="sparusServiceStatus">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>369</width>
+            <height>56</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>369</width>
+            <height>56</height>
+           </size>
+          </property>
+          <row>
+           <property name="text">
             <string>SPARUS</string>
            </property>
-           <widget class="QWidget" name="formLayoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>9</x>
-              <y>29</y>
-              <width>1221</width>
-              <height>161</height>
-             </rect>
-            </property>
-            <layout class="QFormLayout" name="formLayout">
-             <property name="verticalSpacing">
-              <number>2</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Odometry</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="sparusTopicOdometry">
-               <property name="text">
-                <string>/sparus/cola2_navigation/nav_sts_hz</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>Battery level</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="sparusTopicBatteryLevel">
-               <property name="text">
-                <string>/sparus/cola2_safety/ocean_server_batteries</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>Running time</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="sparusTopicRunningTime">
-               <property name="text">
-                <string>/sparus/cola2_safety/total_time</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>Diagnostics</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="sparusTopicDiagnostics">
-               <property name="text">
-                <string>/sparus/diagnostics_agg</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>Other topic</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="lineEdit_10"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QPushButton" name="sparusTopicsButton">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>190</y>
-              <width>1221</width>
-              <height>27</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Reconnect SPARUS topics</string>
-            </property>
-           </widget>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_5">
-           <property name="title">
-            <string>Target selection</string>
+          </row>
+          <column>
+           <property name="text">
+            <string>Battery</string>
            </property>
-           <widget class="QWidget" name="formLayoutWidget_3">
-            <property name="geometry">
-             <rect>
-              <x>9</x>
-              <y>30</y>
-              <width>1221</width>
-              <height>101</height>
-             </rect>
-            </property>
-            <layout class="QFormLayout" name="formLayout_3">
-             <property name="verticalSpacing">
-              <number>2</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_13">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="lineEdit">
-               <property name="text">
-                <string>/ibvs/topic_por_determinar</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_14">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_15">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="lineEdit_2">
-               <property name="text">
-                <string>/stereo_forward/left/image_rect_color/compressed</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="lineEdit_3">
-               <property name="text">
-                <string>/det_and_track/target</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QPushButton" name="visualservoingTopicsButton">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>130</y>
-              <width>1221</width>
-              <height>27</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Reconnect VisualServoing topics</string>
-            </property>
-           </widget>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </widget>
+          </column>
+          <column>
+           <property name="text">
+            <string>Running time</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Diagnostics</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="armCurrentLimitLabel">
+          <property name="text">
+           <string>Arm current limit: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_13">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
