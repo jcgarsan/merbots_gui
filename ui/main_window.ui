@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>800</height>
+    <height>837</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -133,8 +133,8 @@
                        <rect>
                         <x>0</x>
                         <y>20</y>
-                        <width>121</width>
-                        <height>211</height>
+                        <width>127</width>
+                        <height>396</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -724,12 +724,18 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QWebView" name="webView_3">
+                  <widget class="QLabel" name="label_21">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>240</width>
+                     <height>240</height>
+                    </size>
                    </property>
                    <property name="maximumSize">
                     <size>
@@ -737,15 +743,22 @@
                      <height>240</height>
                     </size>
                    </property>
-                   <property name="url">
-                    <url>
-                     <string>about:blank</string>
-                    </url>
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QPushButton" name="pushButton">
+                   <property name="maximumSize">
+                    <size>
+                     <width>240</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>Cancel current Visual Servoing</string>
                    </property>
@@ -780,20 +793,34 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QWebView" name="webView_2">
-                 <property name="url">
-                  <url>
-                   <string>about:blank</string>
-                  </url>
+                <widget class="QLabel" name="label_20">
+                 <property name="minimumSize">
+                  <size>
+                   <width>468</width>
+                   <height>406</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QWebView" name="webView">
-                 <property name="url">
-                  <url>
-                   <string>about:blank</string>
-                  </url>
+                <widget class="QLabel" name="label_31">
+                 <property name="minimumSize">
+                  <size>
+                   <width>468</width>
+                   <height>406</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
                  </property>
                 </widget>
                </item>
@@ -1697,18 +1724,32 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>498</width>
-              <height>87</height>
+              <width>458</width>
+              <height>76</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>498</width>
-              <height>87</height>
+              <width>458</width>
+              <height>76</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
             <attribute name="horizontalHeaderDefaultSectionSize">
-             <number>65</number>
+             <number>60</number>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>60</number>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>24</number>
+            </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>24</number>
             </attribute>
             <row>
              <property name="text">
@@ -1778,18 +1819,32 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>498</width>
-              <height>87</height>
+              <width>458</width>
+              <height>76</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>498</width>
-              <height>87</height>
+              <width>458</width>
+              <height>76</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
             <attribute name="horizontalHeaderDefaultSectionSize">
-             <number>65</number>
+             <number>60</number>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>60</number>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>24</number>
+            </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>24</number>
             </attribute>
             <row>
              <property name="text">
@@ -1906,16 +1961,33 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>348</width>
-            <height>56</height>
+            <width>344</width>
+            <height>50</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>348</width>
-            <height>56</height>
+            <width>344</width>
+            <height>50</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>100</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>60</number>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>24</number>
+          </attribute>
+          <attribute name="verticalHeaderMinimumSectionSize">
+           <number>24</number>
+          </attribute>
           <row>
            <property name="text">
             <string>G500</string>
@@ -1961,16 +2033,33 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>369</width>
-            <height>56</height>
+            <width>362</width>
+            <height>50</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>369</width>
-            <height>56</height>
+            <width>362</width>
+            <height>50</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>100</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>60</number>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>24</number>
+          </attribute>
+          <attribute name="verticalHeaderMinimumSectionSize">
+           <number>24</number>
+          </attribute>
           <row>
            <property name="text">
             <string>SPARUS</string>

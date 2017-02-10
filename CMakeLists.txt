@@ -23,6 +23,7 @@ find_package(
 		auv_msgs
 		cv_bridge
 		image_transport
+		compressed_image_transport
 )
 
 find_package(OpenCV REQUIRED)
@@ -40,6 +41,7 @@ catkin_package(
 	auv_msgs
 	cv_bridge
 	image_transport
+	compressed_image_transport
 )
 
 include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})# ${OpenGL_INCLUDE_DIR})

@@ -33,9 +33,15 @@
 #include <ros/package.h>
 
 
+#define DebugTOI	false
+
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
+
+namespace enc = sensor_msgs::image_encodings;
+
 namespace merbots_gui {
 
 using namespace std;
@@ -68,9 +74,14 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	for (int i=0; i<2; i++)
 		for (int j=0; j<6; j++)
 		{
-			//ui.g500OdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
-			//ui.sparusOdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
+			ui.g500OdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
+			ui.sparusOdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
 		}
+	for (int i=0; i<2; i++)
+	{
+		ui.g500ServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
+		ui.sparusServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
+	}
 
 
     //Main App connections
@@ -111,18 +122,190 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 	srv_g500GoTo 			= nh->serviceClient<cola2_msgs::Goto>("/cola2_control/enable_goto");
 
+	sub_imageTopic			= nh->subscribe<sensor_msgs::Image>("/uwsim/camera1", 1, &MainWindow::imageCallback, this); 
+
     //Timer to ensure the ROS communications
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
     timer->start();
 
 	//sub_joystick		= nh->subscribe<sensor_msgs::Joy>("/joystick_out", 1, &MainWindow::joystickCallback, this); 
-	
+
+    //VisualServoing user interaction init
+    ui.label_20->setPixmap(pixmapTopic);
+    ui.label_20->installEventFilter(this);
+    roiStarted = false;
+    x0 = 0; y0 = 0;
+    x1 = 1; y1 = 1;
+
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::mouseReleaseEvent(QMouseEvent * _event)
+{
+    endROI(x1, y1);
+    if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	    qDebug() << "Mouse release";
+    QMainWindow::mouseReleaseEvent(_event);
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if(obj == ui.label_20)
+    {
+        QEvent::Type etype = event->type();
+        QPoint position;
+        QString sposition;
+        QMouseEvent * _event;
+        if(etype == QEvent::MouseMove)
+        {
+            _event = static_cast<QMouseEvent*>(event);
+            position = _event->pos();
+            sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
+            notifyPoint1(position.x(), position.y());
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        	    qDebug() << sposition << ": Mouse MOVE event";
+        }
+        else if (etype == QEvent::MouseButtonPress)
+        {
+            _event = static_cast<QMouseEvent*>(event);
+            position = _event->pos();
+
+            sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
+			startROI(position.x(), position.y());
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+            	qDebug() << sposition << ": Mouse button PRESSED";
+        }
+        else if (etype == QEvent::MouseButtonRelease)
+        {
+            _event = static_cast<QMouseEvent*>(event);
+            position = _event->pos();
+
+            sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
+			endROI(position.x(), position.y());
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        	    qDebug() << sposition << ": Mouse button RELEASED";
+        }
+        else if(etype == QEvent::HoverMove)
+        {
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+    	        qDebug() << sposition << "Mouse hover move event";
+        }
+        else if(etype == QEvent::MouseTrackingChange)
+        {
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	            qDebug() << sposition << "Mouse tracking change";
+        }
+    }
+
+    return QMainWindow::eventFilter(obj, event);
+}
+
+
+bool MainWindow::validPoint0(int x, int y)
+{
+    return pointIn(x, y);
+}
+
+bool MainWindow::validPoint1(int x, int y)
+{
+    return pointIn(x,y) && x0 < x &&  y0 < y;
+}
+
+bool MainWindow::pointIn(int x, int y)
+{
+    return x >= 0 && y >= 0 && x < width && y < height;
+}
+
+void MainWindow::startROI(int _x0, int _y0)
+{
+    if(validPoint0(_x0, _y0))
+    {
+        x0 = _x0;
+        y0 = _y0;
+        roiStarted = true;
+        QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x0), QString::number(y0));
+        if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	        qDebug() << sposition << ": START ROI";
+    }
+}
+
+void MainWindow::endROI(int _x1, int _y1)
+{
+    if(validPoint1(_x1, _y1))
+    {
+        updatePoint1(_x1, _y1);
+        roiStarted = false;
+        QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x1), QString::number(y1));
+        if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	        qDebug() << sposition << ": END ROI";
+    }
+}
+
+void MainWindow::notifyPoint1(int x, int y)
+{
+    if(validPoint1(x, y))
+    {
+        x1 = x;
+    	y1 = y;
+        QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x1), QString::number(y1));
+		if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        	qDebug() << sposition << ": updating ROI";
+    }
+}
+
+void MainWindow::updatePoint1(int x, int y)
+{
+    x1 = x;
+    y1 = y;
+    drawCurrentROI();
+}
+
+void MainWindow::drawCurrentROI()
+{
+    QString sposition = QString("(x0: %0 ; y0: %1 ; x1: %2 ; y1: %3)").arg(
+                QString::number(x0), QString::number(y0),QString::number(x1), QString::number(y1) );
+    if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	    qDebug() << sposition << ": Drawing Rectangle";
+
+    painter.begin(&pixmapTopic);
+    painter.setBrush(Qt::NoBrush);
+    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+    painter.setPen(pen);
+    painter.drawRect(x0, y0, x1-x0, y1-y0);
+    ui.label_20->setPixmap(pixmapTopic);
+    painter.end();
 }
 
 
 
+/*void MainWindow::showCropROI(const QPixmap & _image)
+{
+	QRect rect(x0, y0, x1, y1);
+	//QPixmap original("/home/usuario/Escritorio/Fallo_catkin_make.png");
+	QPixmap original = _image.copy();
+	QPixmap cropped = original.copy(rect);
+	ui.label_21->setPixmap(cropped);
+}
+*/
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
+{
+	QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+	dest = dest.rgbSwapped();
+	imageTopic = dest.copy();
+	pixmapTopic = QPixmap::fromImage(imageTopic);
+	width = pixmapTopic.width();
+	height = pixmapTopic.height();
+	ui.label_20->setPixmap(pixmapTopic);
+	drawCurrentROI();
+}
 
 /*void MainWindow::joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick)
 {
@@ -178,28 +361,28 @@ void MainWindow::g500TopicsButtonClicked()
 	sub_g500Battery.shutdown();
 	sub_g500Runningtime.shutdown();
 	sub_g500Diagnostics.shutdown();
-	qDebug()<<"g500Topics has been shutdown";
+	qDebug()<<"g500Topics have been shutdown";
 	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
 	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
 	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
 	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
-	qDebug()<<"g500Topics has been reconnected";
+	qDebug()<<"g500Topics have been reconnected";
 }
 
 
 void MainWindow::sparusTopicsButtonClicked()
 {
-	qDebug()<<"g500TopicsButton clicked: reconnecting all the G500 topics";
+	qDebug()<<"sparusTopicsButton clicked: reconnecting all the G500 topics";
 	sub_sparusOdometry.shutdown();
 	sub_sparusBattery.shutdown();
 	sub_sparusRunningtime.shutdown();
 	sub_sparusDiagnostics.shutdown();
-	qDebug()<<"g500Topics has been shutdown";
+	qDebug()<<"sparusTopics have been shutdown";
 	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
 	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
-	qDebug()<<"g500Topics has been reconnected";
+	qDebug()<<"sparusTopics have been reconnected";
 }
 
 
@@ -245,7 +428,7 @@ void MainWindow::g500GoToSurface()
     srv.request.position.x		= 0;
     srv.request.position.y		= 0;
     srv.request.position.z		= 0;
-    srv.request.blocking 		= true;
+    srv.request.blocking 		= false;
     srv.request.keep_position	= false;
     srv.request.position_tolerance.x = 0.4;
     srv.request.position_tolerance.y = 0.4;
@@ -270,13 +453,14 @@ void MainWindow::g500GoToSurface()
 
 void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo)
 {
-//	ui.g500OdometryTable->item(0, i)->setText(QString::number(g500OdometryInfo->));
+	ui.g500OdometryTable->item(0, 0)->setText(QString::number(g500OdometryInfo->position.north));
 }
 
 
 void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo)
 {
 	QString labelText = "G500 BatteryLevel: " + QString::number(g500BatteryInfo->charge);
+	qDebug() << g500BatteryInfo->charge;
 	//ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
 	//ui.g500BatteryLabel->setText(labelText);
 }
@@ -284,7 +468,9 @@ void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g
 
 void MainWindow::g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo)
 {
-	QString labelText = "G500 RunningTime: " + QString::number(g500RunningTimeInfo->total_time);
+	//QString labelText = "G500 RunningTime: " + QString::number(g500RunningTimeInfo->total_time);
+	//qDebug() << g500RunningTimeInfo->total_time;
+	ui.g500ServiceStatus->item(0, 0)->setText(QString::number(g500RunningTimeInfo->total_time));
 	//ui.g500TimeLabel->setText(labelText);
 }
 

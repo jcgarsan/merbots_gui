@@ -27,6 +27,9 @@
 #include <QtWebKit/QWebView>
 #include <QtOpenGL>
 #include <QWidget>
+#include <QImage>
+#include <QMouseEvent>
+#include <QPainter>
 
 #include <std_msgs/Bool.h>
 #include <auv_msgs/NavSts.h>
@@ -34,8 +37,10 @@
 #include <cola2_msgs/TotalTime.h>
 #include <cola2_msgs/Goto.h>
 #include <diagnostic_msgs/DiagnosticArray.h>
-
+#include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/Joy.h>
+#include <compressed_image_transport/compression_common.h>
+
 
 #ifndef Q_MOC_RUN
 #include <image_transport/image_transport.h>
@@ -43,7 +48,6 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-#include <sensor_msgs/image_encodings.h>
 
 /*****************************************************************************
 ** Namespace
@@ -63,6 +67,7 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
+	ros::Subscriber		sub_imageTopic;
 	ros::ServiceClient 	srv_g500GoTo;
 
 //	ros::Subscriber		sub_joystick;
@@ -74,6 +79,8 @@ public:
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
 
+
+Q_SIGNALS:
 
 public Q_SLOTS:
 	void on_actionAbout_triggered();
@@ -101,17 +108,39 @@ public Q_SLOTS:
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
 
+	void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
 //	void joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick);
-
+    //void showCropROI(const QPixmap & _image);
 
 private Q_SLOTS:
 
+protected:
+    bool eventFilter(QObject *, QEvent *);
+    void updateROI(int x0, int y0, int x1, int y1);
+
+    //For when the mouse is released outside the QPixamp:
+    void mouseReleaseEvent(QMouseEvent *);
 
 private:
 	Ui::MainWindowDesign	ui;
 	QNode 					qnode;
 
+	QImage		imageTopic;
+    QPainter	painter;
+    QPixmap		pixmapTopic;
 
+    int width, height;
+    int x0,y0,x1,y1;
+    bool roiStarted;
+
+    void startROI(int x0, int y0);
+    void endROI(int x1, int y1);
+    void drawCurrentROI();
+    void updatePoint1(int x, int y);
+    bool validPoint0(int x, int y);
+    bool validPoint1(int x, int y);
+    void notifyPoint1(int x, int y);
+    bool pointIn(int x, int y);
 
 };
 
