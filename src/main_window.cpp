@@ -108,8 +108,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.sparusStreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusTopicsButton, SIGNAL(clicked()), this, SLOT(sparusTopicsButtonClicked()));
 
-    QObject::connect(ui.publishTargetButton, SIGNAL(clicked()),this, SLOT(publishTargetButtonClicked()));
-	QObject::connect(ui.cancelVisualServoing, SIGNAL(clicked()),this, SLOT(cancelVisualServoingClicked()));
+    QObject::connect(ui.vsPublishButton, SIGNAL(clicked()),this, SLOT(vsPublishButtonClicked()));
+	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
+    QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
 
 
     
@@ -187,12 +188,12 @@ void MainWindow::g500TopicsButtonClicked()
 	sub_g500Battery.shutdown();
 	sub_g500Runningtime.shutdown();
 	sub_g500Diagnostics.shutdown();
-	qDebug()<<"g500Topics have been shutdown";
+	qDebug()<<"g500 topics have been shutdown";
 	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
 	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
 	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
 	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
-	qDebug()<<"g500Topics have been reconnected";
+	qDebug()<<"g500 topics have been reconnected";
 }
 
 
@@ -203,12 +204,12 @@ void MainWindow::sparusTopicsButtonClicked()
 	sub_sparusBattery.shutdown();
 	sub_sparusRunningtime.shutdown();
 	sub_sparusDiagnostics.shutdown();
-	qDebug()<<"sparusTopics have been shutdown";
+	qDebug()<<"sparus topics have been shutdown";
 	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
 	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
-	qDebug()<<"sparusTopics have been reconnected";
+	qDebug()<<"sparus topics have been reconnected";
 }
 
 
@@ -273,7 +274,7 @@ void MainWindow::g500GoToSurface()
 }
 
 
-void MainWindow::publishTargetButtonClicked()
+void MainWindow::vsPublishButtonClicked()
 {
 	QPixmap tmpPixmap = croppedPixmapTopic.copy();
 	QImage imageToSend = tmpPixmap.toImage().convertToFormat(QImage::Format_RGB888);
@@ -292,10 +293,23 @@ void MainWindow::publishTargetButtonClicked()
 }
 
 
-void MainWindow::cancelVisualServoingClicked()
+void MainWindow::vsCancelButtonClicked()
 {
 	//Flag to disable publishing the cropped image
 	activeCurrentVS = false;
+}
+
+
+void MainWindow::vsTopicsButtonClicked()
+{
+	qDebug()<<"vsTopicsButton clicked: reconnecting all the VisualServoing topics";
+	sub_imageTopic.shutdown();
+	pub_target.shutdown();
+	qDebug()<<"VisualServoing topics have been shutdown";
+	image_transport::ImageTransport it(*nh);
+	sub_imageTopic  = nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
+	qDebug()<<"VisualServoing topics have been reconnected";	
 }
 
 

@@ -99,8 +99,9 @@ public Q_SLOTS:
     void sparusLoadStream();
     void sparusStopStream();
 
-    void publishTargetButtonClicked();
-    void cancelVisualServoingClicked();
+    void vsPublishButtonClicked();
+    void vsCancelButtonClicked();
+    void vsTopicsButtonClicked();
     void publishCroppedImage();
 
 	/******************************************

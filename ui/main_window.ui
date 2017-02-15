@@ -752,7 +752,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="publishTargetButton">
+                  <widget class="QPushButton" name="vsPublishButton">
                    <property name="maximumSize">
                     <size>
                      <width>240</width>
@@ -765,7 +765,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="cancelVisualServoing">
+                  <widget class="QPushButton" name="vsCancelButton">
                    <property name="maximumSize">
                     <size>
                      <width>240</width>
@@ -1741,7 +1741,7 @@
                </item>
               </layout>
              </widget>
-             <widget class="QPushButton" name="visualservoingTopicsButton_2">
+             <widget class="QPushButton" name="vsTopicsButton">
               <property name="geometry">
                <rect>
                 <x>10</x>
