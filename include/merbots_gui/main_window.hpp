@@ -49,6 +49,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
+
 /*****************************************************************************
 ** Namespace
 *****************************************************************************/
@@ -70,8 +71,11 @@ public:
 	ros::Subscriber		sub_imageTopic;
 	ros::ServiceClient 	srv_g500GoTo;
 
-//	ros::Subscriber		sub_joystick;
-//	ros::Time lastPressUserControl;
+	image_transport::Publisher 	pub_target;
+	sensor_msgs::ImagePtr 		cropeedImageMsg;
+
+	bool activeCurrentVS;
+
 
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();
@@ -95,6 +99,10 @@ public Q_SLOTS:
     void sparusLoadStream();
     void sparusStopStream();
 
+    void publishTargetButtonClicked();
+    void cancelVisualServoingClicked();
+    void publishCroppedImage();
+
 	/******************************************
 	** Implemenation [Callbacks]
 	*******************************************/
@@ -109,16 +117,13 @@ public Q_SLOTS:
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
 
 	void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
-//	void joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick);
-    //void showCropROI(const QPixmap & _image);
+
 
 private Q_SLOTS:
 
 protected:
     bool eventFilter(QObject *, QEvent *);
     void updateROI(int x0, int y0, int x1, int y1);
-
-    //For when the mouse is released outside the QPixamp:
     void mouseReleaseEvent(QMouseEvent *);
 
 private:
@@ -127,7 +132,7 @@ private:
 
 	QImage		imageTopic;
     QPainter	painter;
-    QPixmap		pixmapTopic;
+    QPixmap		pixmapTopic, croppedPixmapTopic;
 
     int width, height;
     int x0,y0,x1,y1;
@@ -141,6 +146,7 @@ private:
     bool validPoint1(int x, int y);
     void notifyPoint1(int x, int y);
     bool pointIn(int x, int y);
+    void showCropROI();
 
 };
 

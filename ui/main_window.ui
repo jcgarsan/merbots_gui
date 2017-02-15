@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>4</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -724,7 +724,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_21">
+                  <widget class="QLabel" name="vsTarget">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -752,7 +752,20 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton">
+                  <widget class="QPushButton" name="publishTargetButton">
+                   <property name="maximumSize">
+                    <size>
+                     <width>240</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Publish target</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="cancelVisualServoing">
                    <property name="maximumSize">
                     <size>
                      <width>240</width>
@@ -793,36 +806,88 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLabel" name="label_20">
-                 <property name="minimumSize">
-                  <size>
-                   <width>468</width>
-                   <height>406</height>
-                  </size>
+                <layout class="QVBoxLayout" name="verticalLayout_8">
+                 <property name="spacing">
+                  <number>2</number>
                  </property>
-                 <property name="text">
-                  <string>TextLabel</string>
+                 <property name="leftMargin">
+                  <number>0</number>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 <property name="topMargin">
+                  <number>0</number>
                  </property>
-                </widget>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_13">
+                   <property name="text">
+                    <string>Camera input</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="vsCameraInputViewer">
+                   <property name="minimumSize">
+                    <size>
+                     <width>468</width>
+                     <height>406</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_31">
-                 <property name="minimumSize">
-                  <size>
-                   <width>468</width>
-                   <height>406</height>
-                  </size>
+                <layout class="QVBoxLayout" name="verticalLayout_15">
+                 <property name="spacing">
+                  <number>2</number>
                  </property>
-                 <property name="text">
-                  <string>TextLabel</string>
+                 <property name="leftMargin">
+                  <number>0</number>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 <property name="topMargin">
+                  <number>0</number>
                  </property>
-                </widget>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_14">
+                   <property name="text">
+                    <string>Current VisualServoing data</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_31">
+                   <property name="minimumSize">
+                    <size>
+                     <width>468</width>
+                     <height>406</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
               </layout>
              </item>
@@ -1336,7 +1401,7 @@
         </widget>
         <widget class="QWidget" name="mainTabs_settings">
          <attribute name="title">
-          <string>Settings</string>
+          <string>VehicleControl Settings</string>
          </attribute>
          <widget class="QWidget" name="verticalLayoutWidget">
           <property name="geometry">
@@ -1348,11 +1413,20 @@
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>2</number>
+           </property>
            <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
             <widget class="QGroupBox" name="groupBox_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string>G500</string>
              </property>
@@ -1417,7 +1491,7 @@
                <item row="4" column="0">
                 <widget class="QLabel" name="label_5">
                  <property name="text">
-                  <string>Other topic</string>
+                  <string>GoTo service</string>
                  </property>
                 </widget>
                </item>
@@ -1436,7 +1510,11 @@
                 </widget>
                </item>
                <item row="4" column="1">
-                <widget class="QLineEdit" name="lineEdit_5"/>
+                <widget class="QLineEdit" name="g500TopicGoToService">
+                 <property name="text">
+                  <string>/g500/cola2_control/enable_goto</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -1457,6 +1535,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="groupBox_4">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string>SPARUS</string>
              </property>
@@ -1557,11 +1641,50 @@
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox_5">
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>VisualServoing Settings</string>
+         </attribute>
+         <widget class="QWidget" name="verticalLayoutWidget_2">
+          <property name="geometry">
+           <rect>
+            <x>5</x>
+            <y>6</y>
+            <width>1241</width>
+            <height>491</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox_6">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string>Target selection</string>
              </property>
-             <widget class="QWidget" name="formLayoutWidget_3">
+             <widget class="QWidget" name="formLayoutWidget_6">
               <property name="geometry">
                <rect>
                 <x>9</x>
@@ -1570,55 +1693,55 @@
                 <height>101</height>
                </rect>
               </property>
-              <layout class="QFormLayout" name="formLayout_3">
+              <layout class="QFormLayout" name="formLayout_7">
                <property name="verticalSpacing">
                 <number>2</number>
                </property>
                <item row="0" column="0">
-                <widget class="QLabel" name="label_13">
+                <widget class="QLabel" name="label_32">
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string>Camera input</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit">
+                <widget class="QLineEdit" name="vsCameraInput">
                  <property name="text">
-                  <string>/ibvs/topic_por_determinar</string>
+                  <string>/uwsim/camera1</string>
                  </property>
                 </widget>
                </item>
                <item row="1" column="0">
-                <widget class="QLabel" name="label_14">
+                <widget class="QLabel" name="label_33">
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string>Cropped image</string>
                  </property>
                 </widget>
                </item>
                <item row="2" column="0">
-                <widget class="QLabel" name="label_15">
+                <widget class="QLabel" name="label_34">
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string>Visual Servoing</string>
                  </property>
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEdit_2">
-                 <property name="text">
-                  <string>/stereo_forward/left/image_rect_color/compressed</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLineEdit" name="lineEdit_3">
+                <widget class="QLineEdit" name="vsCroppedImage">
                  <property name="text">
                   <string>/det_and_track/target</string>
                  </property>
                 </widget>
                </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="vsResult">
+                 <property name="text">
+                  <string>/ibvs/topic_por_determinar</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
-             <widget class="QPushButton" name="visualservoingTopicsButton">
+             <widget class="QPushButton" name="visualservoingTopicsButton_2">
               <property name="geometry">
                <rect>
                 <x>10</x>
@@ -1632,6 +1755,19 @@
               </property>
              </widget>
             </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
