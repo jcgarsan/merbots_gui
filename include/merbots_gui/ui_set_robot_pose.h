@@ -30,12 +30,12 @@ public:
     QPushButton *pushButton_2;
     QPushButton *pushButton_3;
 
-    void setupUi(QDialog *set_robot_pose)
+    void setupUi(QDialog *SetRobotPoseDlg)
     {
-        if (set_robot_pose->objectName().isEmpty())
-            set_robot_pose->setObjectName(QString::fromUtf8("set_robot_pose"));
-        set_robot_pose->resize(792, 406);
-        widget = new QWidget(set_robot_pose);
+        if (SetRobotPoseDlg->objectName().isEmpty())
+            SetRobotPoseDlg->setObjectName(QString::fromUtf8("SetRobotPoseDlg"));
+        SetRobotPoseDlg->resize(792, 406);
+        widget = new QWidget(SetRobotPoseDlg);
         widget->setObjectName(QString::fromUtf8("widget"));
         widget->setGeometry(QRect(110, 220, 511, 61));
         horizontalLayout = new QHBoxLayout(widget);
@@ -59,23 +59,23 @@ public:
         horizontalLayout->addWidget(pushButton_3);
 
 
-        retranslateUi(set_robot_pose);
+        retranslateUi(SetRobotPoseDlg);
 
-        QMetaObject::connectSlotsByName(set_robot_pose);
+        QMetaObject::connectSlotsByName(SetRobotPoseDlg);
     } // setupUi
 
-    void retranslateUi(QDialog *set_robot_pose)
+    void retranslateUi(QDialog *SetRobotPoseDlg)
     {
-        set_robot_pose->setWindowTitle(QApplication::translate("set_robot_pose", "set_robot_pose", 0, QApplication::UnicodeUTF8));
-        pushButton->setText(QApplication::translate("set_robot_pose", "PushButton", 0, QApplication::UnicodeUTF8));
-        pushButton_2->setText(QApplication::translate("set_robot_pose", "PushButton", 0, QApplication::UnicodeUTF8));
-        pushButton_3->setText(QApplication::translate("set_robot_pose", "PushButton", 0, QApplication::UnicodeUTF8));
+        SetRobotPoseDlg->setWindowTitle(QApplication::translate("SetRobotPoseDlg", "SetRobotPoseDlg", 0, QApplication::UnicodeUTF8));
+        pushButton->setText(QApplication::translate("SetRobotPoseDlg", "PushButton", 0, QApplication::UnicodeUTF8));
+        pushButton_2->setText(QApplication::translate("SetRobotPoseDlg", "PushButton", 0, QApplication::UnicodeUTF8));
+        pushButton_3->setText(QApplication::translate("SetRobotPoseDlg", "PushButton", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class set_robot_pose: public Ui_set_robot_pose {};
+    class SetRobotPoseDlg: public Ui_set_robot_pose {};
 } // namespace Ui
 
 QT_END_NAMESPACE

@@ -13,18 +13,26 @@
 
 
 #include "../include/merbots_gui/set_robot_pose.h"
-#include "../include/merbots_gui/ui_set_robot_pose.h"
+//#include "../include/merbots_gui/ui_set_robot_pose.h"
+#include "ui_set_robot_pose.h"
 
 
-set_robot_pose::set_robot_pose(QWidget *parent) :
+SetRobotPoseDlg::SetRobotPoseDlg(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::set_robot_pose)
+    ui(new Ui::SetRobotPoseDlg)
 {
     ui->setupUi(this);
     ui->pushButton->setText("Done");
+   	QObject::connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(testButtonClicked()));
+
 }
 
-set_robot_pose::~set_robot_pose()
+SetRobotPoseDlg::~SetRobotPoseDlg()
 {
     delete ui;
+}
+
+void SetRobotPoseDlg::testButtonClicked()
+{
+	qDebug() << "Done button";
 }

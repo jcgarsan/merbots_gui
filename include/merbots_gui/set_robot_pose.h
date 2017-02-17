@@ -12,27 +12,38 @@
  **/
 
 
-#ifndef SET_ROBOT_POSE_H
-#define SET_ROBOT_POSE_H
+#ifndef SETROBOTPOSEDLG_H
+#define SETROBOTPOSEDLG_H
 
 #include <QDialog>
-//#include "ui_set_robot_pose.h"
+#include <QtGui/QMainWindow>
+#include <QWidget>
+#include <QtGui>
+#include <QString>
+#include <QtCore>
+
 
 
 namespace Ui {
-class set_robot_pose;
+class SetRobotPoseDlg;
 }
 
-class set_robot_pose : public QDialog
+class SetRobotPoseDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit set_robot_pose(QWidget *parent = 0);
-    ~set_robot_pose();
+    explicit SetRobotPoseDlg(QWidget *parent = 0);
+    ~SetRobotPoseDlg();
+
+Q_SIGNALS:
+
+public Q_SLOTS:
+	void testButtonClicked();
+
 
 private:
-    Ui::set_robot_pose *ui;
+    Ui::SetRobotPoseDlg *ui;
 };
 
-#endif // SET_ROBOT_POSE_H
+#endif // SETROBOTPOSEDLG_H

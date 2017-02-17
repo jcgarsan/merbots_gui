@@ -159,7 +159,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 void MainWindow::testButton()
 {
 	qDebug() << "testButton";
-	set_robot_pose *dlg = new set_robot_pose(this);
+	SetRobotPoseDlg *dlg = new SetRobotPoseDlg(this);
 	dlg->show();
 }
 
