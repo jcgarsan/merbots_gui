@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include "../include/merbots_gui/main_window.hpp"
+#include "../include/merbots_gui/set_robot_pose.h"
 
 #include <QtGui>
 #include <QMessageBox>
@@ -112,7 +113,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
     QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
 
-
+	QObject::connect(ui.g500MoveRobotButton, SIGNAL(clicked()), this, SLOT(testButton()));
     
 
 
@@ -155,7 +156,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 }
 
-
+void MainWindow::testButton()
+{
+	qDebug() << "testButton";
+	set_robot_pose *dlg = new set_robot_pose(this);
+	dlg->show();
+}
 
 MainWindow::~MainWindow() { }
 

@@ -77,6 +77,7 @@ public:
 	bool activeCurrentVS;
 
 
+
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();
 
@@ -94,6 +95,7 @@ public Q_SLOTS:
     void g500LoadStream();
     void g500StopStream();
     void g500GoToSurface();
+//    void g500MoveRobotButtonClicked();
 
 	void sparusTopicsButtonClicked();
     void sparusLoadStream();
@@ -103,6 +105,8 @@ public Q_SLOTS:
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
     void publishCroppedImage();
+
+    void testButton();
 
 	/******************************************
 	** Implemenation [Callbacks]

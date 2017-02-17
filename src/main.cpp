@@ -21,6 +21,7 @@
 #include <QtGui>
 #include <QApplication>
 #include "../include/merbots_gui/main_window.hpp"
+#include "../include/merbots_gui/set_robot_pose.h"
 
 
 /*****************************************************************************
@@ -35,6 +36,8 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv);
     merbots_gui::MainWindow w(argc,argv);
     w.show();
+
+
     app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
     
     int result = app.exec();
