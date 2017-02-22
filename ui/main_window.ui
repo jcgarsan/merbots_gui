@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>837</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -128,162 +128,204 @@
                      <property name="title">
                       <string>G500 control</string>
                      </property>
-                     <widget class="QWidget" name="verticalLayoutWidget_5">
+                     <widget class="QCheckBox" name="g500AutonomousCheckBox">
                       <property name="geometry">
                        <rect>
-                        <x>0</x>
-                        <y>20</y>
-                        <width>127</width>
-                        <height>396</height>
+                        <x>1</x>
+                        <y>21</y>
+                        <width>112</width>
+                        <height>21</height>
                        </rect>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_5">
-                       <property name="spacing">
-                        <number>7</number>
-                       </property>
-                       <property name="sizeConstraint">
-                        <enum>QLayout::SetMinimumSize</enum>
-                       </property>
-                       <item>
-                        <widget class="QCheckBox" name="g500AutonomousCheckBox">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Autonomous</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>30</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Robot depth</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QDoubleSpinBox" name="g500DepthSpinBox">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="specialValueText">
-                          <string/>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="g500MoveRobotButton">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Move robot</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="g500GoToPositionButton">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Go to position</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="g500GoToSurfaceButton">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Go to surface</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="verticalSpacer_4">
-                         <property name="orientation">
-                          <enum>Qt::Vertical</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>20</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Autonomous</string>
+                      </property>
+                     </widget>
+                     <widget class="QLabel" name="label">
+                      <property name="geometry">
+                       <rect>
+                        <x>1</x>
+                        <y>49</y>
+                        <width>71</width>
+                        <height>31</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>30</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Robot
+depth</string>
+                      </property>
+                     </widget>
+                     <widget class="QDoubleSpinBox" name="g500DepthSpinBox">
+                      <property name="geometry">
+                       <rect>
+                        <x>45</x>
+                        <y>50</y>
+                        <width>70</width>
+                        <height>26</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>70</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>70</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="specialValueText">
+                       <string/>
+                      </property>
+                     </widget>
+                     <widget class="QPushButton" name="g500MoveRobotButton">
+                      <property name="geometry">
+                       <rect>
+                        <x>1</x>
+                        <y>90</y>
+                        <width>105</width>
+                        <height>27</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>105</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>105</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Move robot</string>
+                      </property>
+                     </widget>
+                     <widget class="QPushButton" name="g500GoToPositionButton">
+                      <property name="geometry">
+                       <rect>
+                        <x>1</x>
+                        <y>120</y>
+                        <width>105</width>
+                        <height>27</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>105</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>105</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Go to position</string>
+                      </property>
+                     </widget>
+                     <widget class="QPushButton" name="g500GoToSurfaceButton">
+                      <property name="geometry">
+                       <rect>
+                        <x>1</x>
+                        <y>150</y>
+                        <width>106</width>
+                        <height>27</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>105</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>105</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Go to surface</string>
+                      </property>
                      </widget>
                     </widget>
                    </item>
@@ -304,137 +346,201 @@
                      <property name="title">
                       <string>SPARUS control</string>
                      </property>
-                     <widget class="QWidget" name="verticalLayoutWidget_7">
+                     <widget class="QPushButton" name="sparusMoveRobotButton">
                       <property name="geometry">
                        <rect>
                         <x>0</x>
-                        <y>20</y>
-                        <width>121</width>
-                        <height>201</height>
+                        <y>80</y>
+                        <width>105</width>
+                        <height>27</height>
                        </rect>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_7">
-                       <property name="spacing">
-                        <number>7</number>
-                       </property>
-                       <item>
-                        <widget class="QCheckBox" name="sparusAutonomousCheckBox">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>21</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Autonomous</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_2">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>30</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>21</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Robot depth</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QDoubleSpinBox" name="sparusDepthSpinBox">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>21</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="sparusMoveRobotButton">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>21</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Move robot</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="sparusGoToPoseButton">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>21</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Go to position</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="sparusGoToSurfaceButton">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>21</height>
-                          </size>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Go to surface</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>105</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>105</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Move robot</string>
+                      </property>
+                     </widget>
+                     <widget class="QCheckBox" name="sparusAutonomousCheckBox">
+                      <property name="geometry">
+                       <rect>
+                        <x>1</x>
+                        <y>20</y>
+                        <width>112</width>
+                        <height>21</height>
+                       </rect>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>21</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Autonomous</string>
+                      </property>
+                     </widget>
+                     <widget class="QPushButton" name="sparusGoToPoseButton">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>110</y>
+                        <width>105</width>
+                        <height>27</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>105</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>105</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Go to position</string>
+                      </property>
+                     </widget>
+                     <widget class="QLabel" name="label_2">
+                      <property name="geometry">
+                       <rect>
+                        <x>1</x>
+                        <y>40</y>
+                        <width>41</width>
+                        <height>41</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>30</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>21</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Robot
+depth</string>
+                      </property>
+                     </widget>
+                     <widget class="QDoubleSpinBox" name="sparusDepthSpinBox">
+                      <property name="geometry">
+                       <rect>
+                        <x>47</x>
+                        <y>49</y>
+                        <width>70</width>
+                        <height>26</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>70</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>70</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
+                     <widget class="QPushButton" name="sparusGoToSurfaceButton">
+                      <property name="geometry">
+                       <rect>
+                        <x>1</x>
+                        <y>142</y>
+                        <width>105</width>
+                        <height>27</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>105</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>105</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Go to surface</string>
+                      </property>
                      </widget>
                     </widget>
                    </item>
@@ -1403,18 +1509,24 @@
          <attribute name="title">
           <string>VehicleControl Settings</string>
          </attribute>
-         <widget class="QWidget" name="verticalLayoutWidget">
+         <widget class="QWidget" name="">
           <property name="geometry">
            <rect>
-            <x>10</x>
-            <y>10</y>
+            <x>11</x>
+            <y>11</y>
             <width>1241</width>
-            <height>691</height>
+            <height>421</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <property name="spacing">
-            <number>2</number>
+            <number>3</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
            </property>
            <property name="bottomMargin">
             <number>0</number>
@@ -1422,10 +1534,22 @@
            <item>
             <widget class="QGroupBox" name="groupBox_2">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>175</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>175</height>
+              </size>
              </property>
              <property name="title">
               <string>G500</string>
@@ -1435,7 +1559,7 @@
                <rect>
                 <x>9</x>
                 <y>29</y>
-                <width>1221</width>
+                <width>1231</width>
                 <height>161</height>
                </rect>
               </property>
@@ -1518,28 +1642,27 @@
                </item>
               </layout>
              </widget>
-             <widget class="QPushButton" name="g500TopicsButton">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>190</y>
-                <width>1221</width>
-                <height>27</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Reconnect G500 topics</string>
-              </property>
-             </widget>
             </widget>
            </item>
            <item>
             <widget class="QGroupBox" name="groupBox_4">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>175</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>175</height>
+              </size>
              </property>
              <property name="title">
               <string>SPARUS</string>
@@ -1549,7 +1672,7 @@
                <rect>
                 <x>9</x>
                 <y>29</y>
-                <width>1221</width>
+                <width>1231</width>
                 <height>161</height>
                </rect>
               </property>
@@ -1625,33 +1748,28 @@
                </item>
               </layout>
              </widget>
-             <widget class="QPushButton" name="sparusTopicsButton">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>190</y>
-                <width>1221</width>
-                <height>27</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Reconnect SPARUS topics</string>
-              </property>
-             </widget>
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>2</number>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
+             <item>
+              <widget class="QPushButton" name="g500TopicsButton">
+               <property name="text">
+                <string>Reconnect G500 topics</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="sparusTopicsButton">
+               <property name="text">
+                <string>Reconnect SPARUS topics</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
