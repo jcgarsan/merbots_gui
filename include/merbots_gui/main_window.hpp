@@ -98,7 +98,9 @@ public Q_SLOTS:
 
 	void g500TopicsButtonClicked();
     void g500LoadStream();
+    void g500LoadStream2();
     void g500StopStream();
+    void g500StopStream2();
     void g500GoToSurface();
 //    void g500MoveRobotButtonClicked();
 

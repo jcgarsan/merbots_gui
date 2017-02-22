@@ -82,22 +82,28 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 				ui.sparusOdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
 			}
 	}
+
+	//Service tables init
 	for (int i=0; i<3; i++)
 	{
 		ui.g500ServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
 		ui.sparusServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
 	}
 
+	//Arm limit table init
 	for (int i=0; i<5; i++)
 		ui.armJointValues->setItem(i, 0, new QTableWidgetItem("0.0"));
 	
 	ui.armJointValues->setItem(0, 1, new QTableWidgetItem("-1.571"));
-	ui.armJointValues->setItem(1, 1, new QTableWidgetItem("0.0-10.0"));
-	ui.armJointValues->setItem(2, 1, new QTableWidgetItem("0.0-10.0"));
-	ui.armJointValues->setItem(3, 1, new QTableWidgetItem("0.0-10.0"));
-	ui.armJointValues->setItem(4, 1, new QTableWidgetItem("0.0-10.0"));
-
+	ui.armJointValues->setItem(1, 1, new QTableWidgetItem("0.000"));
+	ui.armJointValues->setItem(2, 1, new QTableWidgetItem("0.000"));
+	ui.armJointValues->setItem(3, 1, new QTableWidgetItem("0.000"));
+	ui.armJointValues->setItem(4, 1, new QTableWidgetItem("-0.058"));
 	ui.armJointValues->setItem(0, 2, new QTableWidgetItem("0.549"));
+	ui.armJointValues->setItem(1, 2, new QTableWidgetItem("1.587"));
+	ui.armJointValues->setItem(2, 2, new QTableWidgetItem("2.153"));
+	ui.armJointValues->setItem(3, 2, new QTableWidgetItem("0.000"));
+	ui.armJointValues->setItem(4, 2, new QTableWidgetItem("1.338"));
 
 
 
@@ -110,7 +116,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
     //TAB1: Image stream connections
     QObject::connect(ui.g500LoadStreamButton, SIGNAL(clicked()), this, SLOT(g500LoadStream()));
+    QObject::connect(ui.g500LoadStreamButton2, SIGNAL(clicked()), this, SLOT(g500LoadStream2()));
     QObject::connect(ui.g500StopStreamButton, SIGNAL(clicked()), this, SLOT(g500StopStream()));
+    QObject::connect(ui.g500StopStreamButton2, SIGNAL(clicked()), this, SLOT(g500StopStream2()));
     QObject::connect(ui.g500StreamIP, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
     QObject::connect(ui.g500StreamTopic, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
     QObject::connect(ui.g500StreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(g500LoadStream()));
@@ -288,6 +296,15 @@ void MainWindow::g500LoadStream()
 }
 
 
+void MainWindow::g500LoadStream2()
+{
+    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
+     				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
+    qDebug() << "New G500 stream2: " <<  text.toUtf8().constData();
+    ui.g500StreamView2->load(QUrl("http://www.google.com"));
+    //ui.g500StreamView->load(text);
+}
+
 
 void MainWindow::sparusLoadStream()
 {
@@ -303,6 +320,13 @@ void MainWindow::g500StopStream()
 {
 	qDebug() << "G500 stream stopped";
 	ui.g500StreamView->stop();
+}
+
+
+void MainWindow::g500StopStream2()
+{
+	qDebug() << "G500 stream stopped";
+	ui.g500StreamView2->stop();
 }
 
 

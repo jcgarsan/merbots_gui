@@ -1609,7 +1609,7 @@ depth</string>
                   <number>3</number>
                  </property>
                  <item>
-                  <widget class="QWebView" name="webView">
+                  <widget class="QWebView" name="g500StreamView2">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                      <horstretch>0</horstretch>
@@ -1636,7 +1636,7 @@ depth</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton">
+                  <widget class="QPushButton" name="g500LoadStreamButton2">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -1656,12 +1656,12 @@ depth</string>
                     </size>
                    </property>
                    <property name="text">
-                    <string>PushButton</string>
+                    <string>Load G500 stream</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_2">
+                  <widget class="QPushButton" name="g500StopStreamButton2">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -1681,7 +1681,7 @@ depth</string>
                     </size>
                    </property>
                    <property name="text">
-                    <string>PushButton</string>
+                    <string>Stop streaming</string>
                    </property>
                   </widget>
                  </item>
