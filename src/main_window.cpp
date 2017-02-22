@@ -30,6 +30,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QTableWidget>
+#include <QSlider>
 
 #include <ros/package.h>
 
@@ -116,6 +117,27 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	QObject::connect(ui.g500MoveRobotButton, SIGNAL(clicked()), this, SLOT(testButton()));
     
 
+    ui.interactiveSpecSlider1->setMaximum(100);
+    ui.interactiveSpecSlider2->setMaximum(100);
+    ui.interactiveSpecSlider3->setMaximum(100);
+    ui.interactiveSpecSlider4->setMaximum(180);
+    ui.interactiveSpecSlider5->setMaximum(180);
+    ui.interactiveSpecSlider6->setMaximum(180);
+    ui.guidedSpecSlider1->setMaximum(100);
+    ui.guidedSpecSlider2->setMaximum(180);
+    ui.guidedSpecSlider3->setMaximum(100);
+
+    ui.interactiveSpecSlider1->setMinimum(-100);
+    ui.interactiveSpecSlider2->setMinimum(-100);
+    ui.interactiveSpecSlider3->setMinimum(-100);
+    ui.interactiveSpecSlider4->setMinimum(-180);
+    ui.interactiveSpecSlider5->setMinimum(-180);
+    ui.interactiveSpecSlider6->setMinimum(-180);
+    ui.guidedSpecSlider1->setMinimum(-100);
+    ui.guidedSpecSlider2->setMinimum(-180);
+    ui.guidedSpecSlider3->setMinimum(-100);
+
+    //@TODO Teleoperation mode switch; goto dredge position and execute grasp buttons...
 
 	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
@@ -135,6 +157,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_imageTopic			= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
 	pub_target				= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
+  sub_spec_params = nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
+  pub_spec_params = nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
+  pub_spec_action = nh->advertise<std_msgs::String>("/specification_status", 1);
 
 
     //Timer to ensure the ROS communications
@@ -143,6 +168,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(publishCroppedImage()));
     timer->start();
 
+	//sub_joystick		= nh->subscribe<sensor_msgs::Joy>("/joystick_out", 1, &MainWindow::joystickCallback, this); 
+	
+}
 
     //VisualServoing user interaction init
     ui.vsCameraInputViewer->setPixmap(pixmapTopic);
@@ -154,7 +182,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     activeCurrentVS = false;
 
 
-}
 
 void MainWindow::testButton()
 {
@@ -229,6 +256,7 @@ void MainWindow::g500LoadStream()
 }
 
 
+
 void MainWindow::sparusLoadStream()
 {
     QString text = ui.sparusStreamIP->text() + ":8080/stream?topic=" \
@@ -279,6 +307,39 @@ void MainWindow::g500GoToSurface()
     }
 }
 
+void MainWindow::getInitGraspPose(){
+  std_msgs::String msg;
+  msg.data = "init";
+  pub_spec_action.publish(msg);
+  ros::spinOnce();
+}
+
+void MainWindow::setSpecificationMode( int tab ){
+
+  std_msgs::String msg;
+  if( tab == 0 ){
+    msg.data = "guided";
+  }else{
+    msg.data = "interactive";
+  }
+  pub_spec_action.publish(msg);
+  ros::spinOnce();
+}
+
+
+void MainWindow::updateInteractiveSpecParams(){
+  std_msgs::Float32MultiArray msg;
+  //Scale params. From int (deg fractions) to rad.
+  msg.data.push_back(ui.interactiveSpecSlider1->value()/300.0);
+  msg.data.push_back(ui.interactiveSpecSlider2->value()/300.0);
+  msg.data.push_back(ui.interactiveSpecSlider3->value()/300.0);
+  msg.data.push_back(ui.interactiveSpecSlider4->value()*3.14/180/4);
+  msg.data.push_back(ui.interactiveSpecSlider5->value()*3.14/180/4);
+  msg.data.push_back(ui.interactiveSpecSlider6->value()*3.14/180/4);
+  msg.data.push_back(ui.gripperOpeningSlider->value());
+  pub_spec_params.publish(msg);
+  ros::spinOnce();
+}
 
 void MainWindow::vsPublishButtonClicked()
 {
@@ -305,7 +366,6 @@ void MainWindow::vsCancelButtonClicked()
 	activeCurrentVS = false;
 }
 
-
 void MainWindow::vsTopicsButtonClicked()
 {
 	qDebug()<<"vsTopicsButton clicked: reconnecting all the VisualServoing topics";
@@ -326,6 +386,44 @@ void MainWindow::publishCroppedImage()
 		pub_target.publish(cropeedImageMsg);
 	}
 }
+
+void MainWindow::updateAndResetInteractiveSpecParams(){
+  std_msgs::Float32MultiArray msg;
+  //Scale params. From int (deg fractions) to rad.
+  msg.data.push_back(ui.interactiveSpecSlider1->value()/300.0);
+  msg.data.push_back(ui.interactiveSpecSlider2->value()/300.0);
+  msg.data.push_back(ui.interactiveSpecSlider3->value()/300.0);
+  msg.data.push_back(ui.interactiveSpecSlider4->value()*3.14/180/4);
+  msg.data.push_back(ui.interactiveSpecSlider5->value()*3.14/180/4);
+  msg.data.push_back(ui.interactiveSpecSlider6->value()*3.14/180/4);
+  pub_spec_params.publish(msg);
+
+  std_msgs::String str_msg;
+  str_msg.data = "markerReset";
+  pub_spec_action.publish(str_msg);
+
+  ros::spinOnce();
+
+  ui.interactiveSpecSlider1->setValue(0);
+  ui.interactiveSpecSlider2->setValue(0);
+  ui.interactiveSpecSlider3->setValue(0);
+  ui.interactiveSpecSlider4->setValue(0);
+  ui.interactiveSpecSlider5->setValue(0);
+  ui.interactiveSpecSlider6->setValue(0);
+
+
+}
+
+void MainWindow::updateGuidedSpecParams(){
+  std_msgs::Float32MultiArray msg;
+  msg.data.push_back(ui.guidedSpecSlider1->value());
+  msg.data.push_back(ui.guidedSpecSlider2->value());
+  msg.data.push_back(ui.guidedSpecSlider3->value());
+  msg.data.push_back(ui.gripperOpeningSlider->value());
+  pub_spec_params.publish(msg);
+  ros::spinOnce();
+}
+
 
 /*****************************************************************************
 ** Implemenation [Callbacks]
@@ -399,6 +497,15 @@ void MainWindow::sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArra
 	//stuff
 }
 
+void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams){
+  //Used to receive defaults.
+  if(specificationParams->data.size()==4){
+    ui.guidedSpecSlider1->setValue( specificationParams->data[0] );
+    ui.guidedSpecSlider2->setValue( specificationParams->data[1] );
+    ui.guidedSpecSlider3->setValue( specificationParams->data[2] );
+    ui.gripperOpeningSlider->setValue( specificationParams->data[3] );
+  }
+}
 
 void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
@@ -591,7 +698,6 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-
 	QMainWindow::closeEvent(event);
 }
 

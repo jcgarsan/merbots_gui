@@ -32,6 +32,8 @@
 #include <QPainter>
 
 #include <std_msgs/Bool.h>
+#include <std_msgs/String.h>
+#include <std_msgs/Float32MultiArray.h>
 #include <auv_msgs/NavSts.h>
 #include <cola2_msgs/BatteryLevel.h>
 #include <cola2_msgs/TotalTime.h>
@@ -48,7 +50,7 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-
+#include <sensor_msgs/image_encodings.h>
 
 /*****************************************************************************
 ** Namespace
@@ -71,8 +73,11 @@ public:
 	ros::Subscriber		sub_imageTopic;
 	ros::ServiceClient 	srv_g500GoTo;
 
-	image_transport::Publisher 	pub_target;
-	sensor_msgs::ImagePtr 		cropeedImageMsg;
+  ros::Publisher pub_spec_action, pub_spec_params;
+  ros::Subscriber	sub_spec_params;
+  image_transport::Publisher 	pub_target;
+  sensor_msgs::ImagePtr 		cropeedImageMsg;
+
 
 	bool activeCurrentVS;
 
@@ -101,6 +106,12 @@ public Q_SLOTS:
     void sparusLoadStream();
     void sparusStopStream();
 
+    void getInitGraspPose();
+    void setSpecificationMode(int);
+    void updateInteractiveSpecParams();
+    void updateAndResetInteractiveSpecParams();
+    void updateGuidedSpecParams();
+
     void vsPublishButtonClicked();
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
@@ -121,7 +132,8 @@ public Q_SLOTS:
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
 
-	void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
+        void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
+        void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
 
 
 private Q_SLOTS:
