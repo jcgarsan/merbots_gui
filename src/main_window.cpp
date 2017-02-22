@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include "../include/merbots_gui/main_window.hpp"
+#include "../include/merbots_gui/set_robot_pose.h"
 
 #include <QtGui>
 #include <QMessageBox>
@@ -34,9 +35,15 @@
 #include <ros/package.h>
 
 
+#define DebugTOI	false
+
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
+
+namespace enc = sensor_msgs::image_encodings;
+
 namespace merbots_gui {
 
 using namespace std;
@@ -67,11 +74,18 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 	//Odometry tables init
 	for (int i=0; i<2; i++)
+	{
 		for (int j=0; j<6; j++)
-		{
-			//ui.g500OdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
-			//ui.sparusOdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
-		}
+			{
+				ui.g500OdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
+				ui.sparusOdometryTable->setItem(i, j, new QTableWidgetItem("0.0"));
+			}
+	}
+	for (int i=0; i<3; i++)
+	{
+		ui.g500ServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
+		ui.sparusServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
+	}
 
 
     //Main App connections
@@ -94,26 +108,14 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.sparusStreamIP, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusStreamTopic, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusStreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(sparusLoadStream()));
-    QObject::connect(ui.sparusTopicsButton, SIGNAL(clicked()), this, SLOT(sparusTopicsButtonClicked()));    
+    QObject::connect(ui.sparusTopicsButton, SIGNAL(clicked()), this, SLOT(sparusTopicsButtonClicked()));
 
-    QObject::connect(ui.getGraspingPoseButton, SIGNAL(clicked()), this, SLOT(getInitGraspPose()));
-    QObject::connect(ui.graspSpecTab, SIGNAL(currentChanged(int)), this, SLOT(setSpecificationMode(int)));
-    QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider2, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider3, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider4, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider5, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider6, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));    
-    QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider2, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider3, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider4, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider5, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider6, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
-    QObject::connect(ui.guidedSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
-    QObject::connect(ui.guidedSpecSlider2, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
-    QObject::connect(ui.guidedSpecSlider3, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
+    QObject::connect(ui.vsPublishButton, SIGNAL(clicked()),this, SLOT(vsPublishButtonClicked()));
+	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
+    QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
 
+	QObject::connect(ui.g500MoveRobotButton, SIGNAL(clicked()), this, SLOT(testButton()));
+    
 
     ui.interactiveSpecSlider1->setMaximum(100);
     ui.interactiveSpecSlider2->setMaximum(100);
@@ -139,6 +141,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
+	image_transport::ImageTransport it(*nh);
 	sub_g500Odometry		= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
 	sub_g500Battery			= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
 	sub_g500Runningtime		= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
@@ -149,48 +152,43 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
-	srv_g500GoTo 			= nh->serviceClient<cola2_msgs::Goto>("/cola2_control/enable_goto");
+	srv_g500GoTo 			= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
+
+	sub_imageTopic			= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+	pub_target				= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
   sub_spec_params = nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
   pub_spec_params = nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
   pub_spec_action = nh->advertise<std_msgs::String>("/specification_status", 1);
 
+
     //Timer to ensure the ROS communications
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(publishCroppedImage()));
     timer->start();
 
 	//sub_joystick		= nh->subscribe<sensor_msgs::Joy>("/joystick_out", 1, &MainWindow::joystickCallback, this); 
 	
 }
 
+    //VisualServoing user interaction init
+    ui.vsCameraInputViewer->setPixmap(pixmapTopic);
+    ui.vsCameraInputViewer->installEventFilter(this);
+    roiStarted = false;
+    x0 = 0; y0 = 0;
+    x1 = 1; y1 = 1;
+
+    activeCurrentVS = false;
 
 
 
-
-/*void MainWindow::joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick)
+void MainWindow::testButton()
 {
-	ros::Time currentPressUserControl = ros::Time::now();
-	ros::Duration difTimeUserControl = currentPressUserControl - lastPressUserControl;
-	if ((difTimeUserControl.toSec() > 0.5) and (joystick->buttons[0] == 1))
-	{
-		qDebug()<<"Inside if. ijoy= ";
-		lastPressUserControl = currentPressUserControl;
-	
-		QString labelText = "G500 BatteryLevel: " + QString::number(joystick->axes[1]);
-		ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : blue; }");
-		ui.g500BatteryLabel->setText(labelText);
-	}
-	if (ijoy>3)
-		sub_g500Odometry.shutdown();
-
-	for (int i=0; i<4; i++)
-		ui.g500OdometryTable->item(0, i)->setText(QString::number(joystick->axes[i]));
-	for (int i=0; i<4; i++)
-		ui.g500OdometryTable->item(1, i)->setText(QString::number(joystick->buttons[i])); 
-}*/
-
-
+	qDebug() << "testButton";
+	SetRobotPoseDlg *dlg = new SetRobotPoseDlg(this);
+	dlg->show();
+}
 
 MainWindow::~MainWindow() { }
 
@@ -211,6 +209,7 @@ void MainWindow::showNoMasterMessage()
 
 void MainWindow::processSpinOnce()
 {
+	//We need to exectue the SpinOnce with the timer
 	ros::spinOnce();
 }
 
@@ -222,28 +221,28 @@ void MainWindow::g500TopicsButtonClicked()
 	sub_g500Battery.shutdown();
 	sub_g500Runningtime.shutdown();
 	sub_g500Diagnostics.shutdown();
-	qDebug()<<"g500Topics has been shutdown";
+	qDebug()<<"g500 topics have been shutdown";
 	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
 	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
 	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
 	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
-	qDebug()<<"g500Topics has been reconnected";
+	qDebug()<<"g500 topics have been reconnected";
 }
 
 
 void MainWindow::sparusTopicsButtonClicked()
 {
-	qDebug()<<"g500TopicsButton clicked: reconnecting all the G500 topics";
+	qDebug()<<"sparusTopicsButton clicked: reconnecting all the G500 topics";
 	sub_sparusOdometry.shutdown();
 	sub_sparusBattery.shutdown();
 	sub_sparusRunningtime.shutdown();
 	sub_sparusDiagnostics.shutdown();
-	qDebug()<<"g500Topics has been shutdown";
+	qDebug()<<"sparus topics have been shutdown";
 	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
 	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
-	qDebug()<<"g500Topics has been reconnected";
+	qDebug()<<"sparus topics have been reconnected";
 }
 
 
@@ -289,7 +288,7 @@ void MainWindow::g500GoToSurface()
     srv.request.position.x		= 0;
     srv.request.position.y		= 0;
     srv.request.position.z		= 0;
-    srv.request.blocking 		= true;
+    srv.request.blocking 		= false;
     srv.request.keep_position	= false;
     srv.request.position_tolerance.x = 0.4;
     srv.request.position_tolerance.y = 0.4;
@@ -342,6 +341,52 @@ void MainWindow::updateInteractiveSpecParams(){
   ros::spinOnce();
 }
 
+void MainWindow::vsPublishButtonClicked()
+{
+	QPixmap tmpPixmap = croppedPixmapTopic.copy();
+	QImage imageToSend = tmpPixmap.toImage().convertToFormat(QImage::Format_RGB888);
+
+	//Converting the QImage to cv:Mat format
+	cv::Mat cvImage;
+	cvImage = cv::Mat(imageToSend.height(),
+	                    imageToSend.width(),
+	                    CV_8UC3,
+	                    imageToSend.bits(),
+	                    imageToSend.bytesPerLine());
+
+	// Converting the image to sensor_msgs::ImagePtr bgr8
+	cropeedImageMsg = cv_bridge::CvImage(std_msgs::Header(), "rgb8", cvImage).toImageMsg();
+	activeCurrentVS = true;
+}
+
+
+void MainWindow::vsCancelButtonClicked()
+{
+	//Flag to disable publishing the cropped image
+	activeCurrentVS = false;
+}
+
+void MainWindow::vsTopicsButtonClicked()
+{
+	qDebug()<<"vsTopicsButton clicked: reconnecting all the VisualServoing topics";
+	sub_imageTopic.shutdown();
+	pub_target.shutdown();
+	qDebug()<<"VisualServoing topics have been shutdown";
+	image_transport::ImageTransport it(*nh);
+	sub_imageTopic  = nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
+	qDebug()<<"VisualServoing topics have been reconnected";	
+}
+
+
+void MainWindow::publishCroppedImage()
+{
+	if (activeCurrentVS)
+	{	// Publishing the new target
+		pub_target.publish(cropeedImageMsg);
+	}
+}
+
 void MainWindow::updateAndResetInteractiveSpecParams(){
   std_msgs::Float32MultiArray msg;
   //Scale params. From int (deg fractions) to rad.
@@ -386,13 +431,20 @@ void MainWindow::updateGuidedSpecParams(){
 
 void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo)
 {
-//	ui.g500OdometryTable->item(0, i)->setText(QString::number(g500OdometryInfo->));
+	ui.g500OdometryTable->item(0, 0)->setText(QString::number(g500OdometryInfo->position.north));
+	ui.g500OdometryTable->item(0, 1)->setText(QString::number(g500OdometryInfo->position.east));
+	ui.g500OdometryTable->item(0, 2)->setText(QString::number(g500OdometryInfo->position.depth));
+	ui.g500OdometryTable->item(0, 3)->setText(QString::number(g500OdometryInfo->orientation.roll));
+	ui.g500OdometryTable->item(0, 4)->setText(QString::number(g500OdometryInfo->orientation.pitch));
+	ui.g500OdometryTable->item(0, 5)->setText(QString::number(g500OdometryInfo->orientation.yaw));
 }
 
 
 void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo)
 {
-	QString labelText = "G500 BatteryLevel: " + QString::number(g500BatteryInfo->charge);
+	//QString labelText = "G500 BatteryLevel: " + QString::number(g500BatteryInfo->charge);
+	//qDebug() << g500BatteryInfo->charge;
+	ui.g500ServiceStatus->item(0, 0)->setText(QString::number(g500BatteryInfo->charge));
 	//ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
 	//ui.g500BatteryLabel->setText(labelText);
 }
@@ -400,8 +452,9 @@ void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g
 
 void MainWindow::g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo)
 {
-	QString labelText = "G500 RunningTime: " + QString::number(g500RunningTimeInfo->total_time);
-	//ui.g500TimeLabel->setText(labelText);
+	//QString labelText = "G500 RunningTime: " + QString::number(g500RunningTimeInfo->total_time);
+	//qDebug() << g500RunningTimeInfo->total_time;
+	ui.g500ServiceStatus->item(0, 1)->setText(QString::number(g500RunningTimeInfo->total_time));
 }
 
 
@@ -413,13 +466,19 @@ void MainWindow::g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray:
 
 void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo)
 {
-//	ui.sparusOdometryTable->item(row, col)->setText(data);
+	ui.sparusOdometryTable->item(0, 0)->setText(QString::number(sparusOdometryInfo->position.north));
+	ui.sparusOdometryTable->item(0, 1)->setText(QString::number(sparusOdometryInfo->position.east));
+	ui.sparusOdometryTable->item(0, 2)->setText(QString::number(sparusOdometryInfo->position.depth));
+	ui.sparusOdometryTable->item(0, 3)->setText(QString::number(sparusOdometryInfo->orientation.roll));
+	ui.sparusOdometryTable->item(0, 4)->setText(QString::number(sparusOdometryInfo->orientation.pitch));
+	ui.sparusOdometryTable->item(0, 5)->setText(QString::number(sparusOdometryInfo->orientation.yaw));
 }
 
 
 void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo)
 {
-	QString labelText = "SPARUS BatteryLevel: " + QString::number(sparusBatteryInfo->charge);
+	//QString labelText = "SPARUS BatteryLevel: " + QString::number(sparusBatteryInfo->charge);
+	ui.sparusServiceStatus->item(0, 0)->setText(QString::number(sparusBatteryInfo->charge));
 	//ui.sparusBatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
 	//ui.sparusBatteryLabel->setText(labelText);
 }
@@ -427,7 +486,8 @@ void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr&
 
 void MainWindow::sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo)
 {
-	QString labelText = "SPARUS RunningTime: " + QString::number(sparusRunningTimeInfo->total_time);
+	//QString labelText = "SPARUS RunningTime: " + QString::number(sparusRunningTimeInfo->total_time);
+	ui.sparusServiceStatus->item(0, 1)->setText(QString::number(sparusRunningTimeInfo->total_time));
 	//ui.sparusTimeLabel->setText(labelText);
 }
 
@@ -445,6 +505,177 @@ void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& s
     ui.guidedSpecSlider3->setValue( specificationParams->data[2] );
     ui.gripperOpeningSlider->setValue( specificationParams->data[3] );
   }
+}
+
+void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
+{
+	QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+	imageTopic = dest.copy();
+	pixmapTopic = QPixmap::fromImage(imageTopic);
+	width = pixmapTopic.width();
+	height = pixmapTopic.height();
+	ui.vsCameraInputViewer->setPixmap(pixmapTopic);
+	drawCurrentROI();
+}
+
+
+/*****************************************************************************
+** ToI selection
+*****************************************************************************/
+void MainWindow::mouseReleaseEvent(QMouseEvent * _event)
+{
+    endROI(x1, y1);
+    if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	    qDebug() << "Mouse release";
+    QMainWindow::mouseReleaseEvent(_event);
+}
+
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if(obj == ui.vsCameraInputViewer)
+    {
+        QEvent::Type etype = event->type();
+        QPoint position;
+        QString sposition;
+        QMouseEvent * _event;
+        if(etype == QEvent::MouseMove)
+        {
+            _event = static_cast<QMouseEvent*>(event);
+            position = _event->pos();
+            sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
+            notifyPoint1(position.x(), position.y());
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        	    qDebug() << sposition << ": Mouse MOVE event";
+        }
+        else if (etype == QEvent::MouseButtonPress)
+        {
+            _event = static_cast<QMouseEvent*>(event);
+            position = _event->pos();
+
+            sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
+			startROI(position.x(), position.y());
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+            	qDebug() << sposition << ": Mouse button PRESSED";
+        }
+        else if (etype == QEvent::MouseButtonRelease)
+        {
+            _event = static_cast<QMouseEvent*>(event);
+            position = _event->pos();
+
+            sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
+			endROI(position.x(), position.y());
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        	    qDebug() << sposition << ": Mouse button RELEASED";
+        }
+        else if(etype == QEvent::HoverMove)
+        {
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+    	        qDebug() << sposition << "Mouse hover move event";
+        }
+        else if(etype == QEvent::MouseTrackingChange)
+        {
+			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	            qDebug() << sposition << "Mouse tracking change";
+        }
+    }
+
+    return QMainWindow::eventFilter(obj, event);
+}
+
+
+bool MainWindow::validPoint0(int x, int y)
+{
+
+    return pointIn(x, y);
+}
+
+
+bool MainWindow::validPoint1(int x, int y)
+{
+
+    return pointIn(x,y) && x0 < x &&  y0 < y;
+}
+
+
+bool MainWindow::pointIn(int x, int y)
+{
+
+    return x >= 0 && y >= 0 && x < width && y < height;
+}
+
+
+void MainWindow::startROI(int _x0, int _y0)
+{
+    if(validPoint0(_x0, _y0))
+    {
+        x0 = _x0;
+        y0 = _y0;
+        roiStarted = true;
+        QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x0), QString::number(y0));
+        if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	        qDebug() << sposition << ": START ROI";
+    }
+}
+
+
+void MainWindow::endROI(int _x1, int _y1)
+{
+    if(validPoint1(_x1, _y1))
+    {
+        updatePoint1(_x1, _y1);
+        roiStarted = false;
+        QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x1), QString::number(y1));
+        if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	        qDebug() << sposition << ": END ROI";
+    }
+}
+
+
+void MainWindow::notifyPoint1(int x, int y)
+{
+    if(validPoint1(x, y))
+    {
+        x1 = x;
+    	y1 = y;
+        QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x1), QString::number(y1));
+		if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        	qDebug() << sposition << ": updating ROI";
+    }
+}
+
+
+void MainWindow::updatePoint1(int x, int y)
+{
+    x1 = x;
+    y1 = y;
+    drawCurrentROI();
+}
+
+
+void MainWindow::drawCurrentROI()
+{
+    QString sposition = QString("(x0: %0 ; y0: %1 ; x1: %2 ; y1: %3)").arg(
+                QString::number(x0), QString::number(y0),QString::number(x1), QString::number(y1) );
+    if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+	    qDebug() << sposition << ": Drawing Rectangle";
+
+    painter.begin(&pixmapTopic);
+    painter.setBrush(Qt::NoBrush);
+    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+    painter.setPen(pen);
+    painter.drawRect(x0, y0, x1-x0, y1-y0);
+    ui.vsCameraInputViewer->setPixmap(pixmapTopic);
+    painter.end();
+    showCropROI();
+}
+
+
+void MainWindow::showCropROI() 
+{
+	QRect rect(x0+3, y0+3, x1-x0-6, y1-y0-6);
+	croppedPixmapTopic = pixmapTopic.copy(rect);
+	ui.vsTarget->setPixmap(croppedPixmapTopic);
 }
 
 

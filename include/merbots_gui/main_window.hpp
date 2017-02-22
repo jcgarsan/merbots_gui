@@ -27,6 +27,9 @@
 #include <QtWebKit/QWebView>
 #include <QtOpenGL>
 #include <QWidget>
+#include <QImage>
+#include <QMouseEvent>
+#include <QPainter>
 
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
@@ -36,8 +39,10 @@
 #include <cola2_msgs/TotalTime.h>
 #include <cola2_msgs/Goto.h>
 #include <diagnostic_msgs/DiagnosticArray.h>
-
+#include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/Joy.h>
+#include <compressed_image_transport/compression_common.h>
+
 
 #ifndef Q_MOC_RUN
 #include <image_transport/image_transport.h>
@@ -65,13 +70,18 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
+	ros::Subscriber		sub_imageTopic;
 	ros::ServiceClient 	srv_g500GoTo;
 
   ros::Publisher pub_spec_action, pub_spec_params;
   ros::Subscriber	sub_spec_params;
+  image_transport::Publisher 	pub_target;
+  sensor_msgs::ImagePtr 		cropeedImageMsg;
 
-//	ros::Subscriber		sub_joystick;
-//	ros::Time lastPressUserControl;
+
+	bool activeCurrentVS;
+
+
 
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();
@@ -79,6 +89,8 @@ public:
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
 
+
+Q_SIGNALS:
 
 public Q_SLOTS:
 	void on_actionAbout_triggered();
@@ -88,6 +100,7 @@ public Q_SLOTS:
     void g500LoadStream();
     void g500StopStream();
     void g500GoToSurface();
+//    void g500MoveRobotButtonClicked();
 
 	void sparusTopicsButtonClicked();
     void sparusLoadStream();
@@ -98,6 +111,13 @@ public Q_SLOTS:
     void updateInteractiveSpecParams();
     void updateAndResetInteractiveSpecParams();
     void updateGuidedSpecParams();
+
+    void vsPublishButtonClicked();
+    void vsCancelButtonClicked();
+    void vsTopicsButtonClicked();
+    void publishCroppedImage();
+
+    void testButton();
 
 	/******************************************
 	** Implemenation [Callbacks]
@@ -112,19 +132,38 @@ public Q_SLOTS:
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
 
-  void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
-
-//	void joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick);
+        void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
+        void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
 
 
 private Q_SLOTS:
 
+protected:
+    bool eventFilter(QObject *, QEvent *);
+    void updateROI(int x0, int y0, int x1, int y1);
+    void mouseReleaseEvent(QMouseEvent *);
 
 private:
 	Ui::MainWindowDesign	ui;
 	QNode 					qnode;
 
+	QImage		imageTopic;
+    QPainter	painter;
+    QPixmap		pixmapTopic, croppedPixmapTopic;
 
+    int width, height;
+    int x0,y0,x1,y1;
+    bool roiStarted;
+
+    void startROI(int x0, int y0);
+    void endROI(int x1, int y1);
+    void drawCurrentROI();
+    void updatePoint1(int x, int y);
+    bool validPoint0(int x, int y);
+    bool validPoint1(int x, int y);
+    void notifyPoint1(int x, int y);
+    bool pointIn(int x, int y);
+    void showCropROI();
 
 };
 

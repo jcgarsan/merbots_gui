@@ -23,6 +23,7 @@ find_package(
 		auv_msgs
 		cv_bridge
 		image_transport
+		compressed_image_transport
 )
 
 find_package(OpenCV REQUIRED)
@@ -40,6 +41,7 @@ catkin_package(
 	auv_msgs
 	cv_bridge
 	image_transport
+	compressed_image_transport
 )
 
 include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})# ${OpenGL_INCLUDE_DIR})
@@ -55,7 +57,6 @@ rosbuild_prepare_qt4(QtCore QtGui QtWebKit QtNetwork QtOpengl) # Add the appropr
 ##############################################################################
 # Sections
 ##############################################################################
-
 file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ui/*.ui)
 file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} resources/*.qrc)
 file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS include/merbots_gui/*.h*)
@@ -69,7 +70,7 @@ QT4_WRAP_CPP(QT_MOC_HPP ${QT_MOC})
 # Sources
 ##############################################################################
 
-file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS src/*.cpp)
+file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS src/*)
 
 ##############################################################################
 # Binaries
@@ -79,3 +80,4 @@ add_executable(merbots_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${Q
 target_link_libraries(merbots_gui ${QT_LIBRARIES} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${OpenGL_LIBRARIES})
 install(TARGETS merbots_gui RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
+#message (STATUS "QT_SOURCES >>>>>>>>>>>>>>>>>>>>>>>>>>" ${QT_SOURCES})
