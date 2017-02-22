@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -1077,7 +1077,7 @@ depth</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_3">
+                  <widget class="QPushButton" name="getGraspingPoseButton">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -1102,7 +1102,7 @@ depth</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QTabWidget" name="tabWidget">
+                  <widget class="QTabWidget" name="graspSpecTab">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -1122,7 +1122,7 @@ depth</string>
                     </size>
                    </property>
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>1</number>
                    </property>
                    <widget class="QWidget" name="arm_manual">
                     <attribute name="title">
@@ -1152,7 +1152,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="1" column="0">
-                       <widget class="QSlider" name="horizontalSlider_10">
+                       <widget class="QSlider" name="guidedSpecSlider1">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1166,7 +1166,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="3" column="0">
-                       <widget class="QSlider" name="horizontalSlider_11">
+                       <widget class="QSlider" name="guidedSpecSlider2">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1180,7 +1180,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="5" column="0">
-                       <widget class="QSlider" name="horizontalSlider_12">
+                       <widget class="QSlider" name="guidedSpecSlider3">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1217,7 +1217,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="1" column="0">
-                       <widget class="QSlider" name="horizontalSlider_4">
+                       <widget class="QSlider" name="interactiveSpecSlider1">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1231,7 +1231,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="3" column="0">
-                       <widget class="QSlider" name="horizontalSlider_5">
+                       <widget class="QSlider" name="interactiveSpecSlider2">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1245,7 +1245,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="5" column="0">
-                       <widget class="QSlider" name="horizontalSlider_6">
+                       <widget class="QSlider" name="interactiveSpecSlider3">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1259,7 +1259,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="1" column="1">
-                       <widget class="QSlider" name="horizontalSlider_7">
+                       <widget class="QSlider" name="interactiveSpecSlider4">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1273,7 +1273,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="3" column="1">
-                       <widget class="QSlider" name="horizontalSlider_8">
+                       <widget class="QSlider" name="interactiveSpecSlider5">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1287,7 +1287,7 @@ depth</string>
                        </widget>
                       </item>
                       <item row="5" column="1">
-                       <widget class="QSlider" name="horizontalSlider_9">
+                       <widget class="QSlider" name="interactiveSpecSlider6">
                         <property name="orientation">
                          <enum>Qt::Horizontal</enum>
                         </property>
@@ -1309,7 +1309,7 @@ depth</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QSlider" name="horizontalSlider">
+                  <widget class="QSlider" name="gripperOpeningSlider">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>

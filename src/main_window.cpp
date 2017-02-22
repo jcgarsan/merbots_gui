@@ -116,6 +116,24 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 	QObject::connect(ui.g500MoveRobotButton, SIGNAL(clicked()), this, SLOT(testButton()));
     
+    QObject::connect(ui.getGraspingPoseButton, SIGNAL(clicked()), this, SLOT(getInitGraspPose()));
+    QObject::connect(ui.graspSpecTab, SIGNAL(currentChanged(int)), this, SLOT(setSpecificationMode(int)));
+    QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider2, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider3, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider4, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider5, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider6, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));    
+    QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider2, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider3, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider4, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider5, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
+    QObject::connect(ui.interactiveSpecSlider6, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
+    QObject::connect(ui.guidedSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
+    QObject::connect(ui.guidedSpecSlider2, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
+    QObject::connect(ui.guidedSpecSlider3, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
+
 
     ui.interactiveSpecSlider1->setMaximum(100);
     ui.interactiveSpecSlider2->setMaximum(100);
@@ -170,7 +188,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 	//sub_joystick		= nh->subscribe<sensor_msgs::Joy>("/joystick_out", 1, &MainWindow::joystickCallback, this); 
 	
-}
 
     //VisualServoing user interaction init
     ui.vsCameraInputViewer->setPixmap(pixmapTopic);
@@ -181,12 +198,13 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
     activeCurrentVS = false;
 
+}
 
 
 void MainWindow::testButton()
 {
 	qDebug() << "testButton";
-	SetRobotPoseDlg *dlg = new SetRobotPoseDlg(this);
+	SetRobotPoseDlg *dlg = new SetRobotPoseDlg(nh, this);
 	dlg->show();
 }
 
