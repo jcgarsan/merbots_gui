@@ -61,6 +61,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	setWindowIcon(QIcon(":/images/icon.png"));
 	ui.setupUi(this); // Calling this incidentally connects all ui's triggers to on_...() callbacks in this class.
 	ui.mainTabs->setCurrentIndex(0);
+	ui.graspSpecTab->setCurrentIndex(0);
 
 
 	//Init section
@@ -86,6 +87,19 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 		ui.g500ServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
 		ui.sparusServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
 	}
+
+	for (int i=0; i<5; i++)
+		ui.armJointValues->setItem(i, 0, new QTableWidgetItem("0.0"));
+	
+	ui.armJointValues->setItem(0, 1, new QTableWidgetItem("-1.571"));
+	ui.armJointValues->setItem(1, 1, new QTableWidgetItem("0.0-10.0"));
+	ui.armJointValues->setItem(2, 1, new QTableWidgetItem("0.0-10.0"));
+	ui.armJointValues->setItem(3, 1, new QTableWidgetItem("0.0-10.0"));
+	ui.armJointValues->setItem(4, 1, new QTableWidgetItem("0.0-10.0"));
+
+	ui.armJointValues->setItem(0, 2, new QTableWidgetItem("0.549"));
+
+
 
 
     //Main App connections
@@ -170,14 +184,14 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
-	srv_g500GoTo 			= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
+	srv_g500GoTo 	= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
 
-	sub_imageTopic			= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
-	pub_target				= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
+	sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
-  sub_spec_params = nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
-  pub_spec_params = nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
-  pub_spec_action = nh->advertise<std_msgs::String>("/specification_status", 1);
+	sub_spec_params	= nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
+	pub_spec_params	= nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
+	pub_spec_action	= nh->advertise<std_msgs::String>("/specification_status", 1);
 
 
     //Timer to ensure the ROS communications
