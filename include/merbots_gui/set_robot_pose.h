@@ -22,7 +22,12 @@
 #include <QString>
 #include <QtCore>
 
-
+#ifndef Q_MOC_RUN
+#include <ros/ros.h>
+#endif
+#include <ros/package.h>
+#include <auv_msgs/NavSts.h>
+#include <diagnostic_msgs/DiagnosticArray.h>
 
 namespace Ui {
 class SetRobotPoseDlg;
@@ -33,8 +38,16 @@ class SetRobotPoseDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit SetRobotPoseDlg(QWidget *parent = 0);
+	ros::NodeHandle		*_nh;
+	ros::Subscriber		sub_tf;
+
+    explicit SetRobotPoseDlg(ros::NodeHandle *nodeHdl, QWidget *parent = 0);
     ~SetRobotPoseDlg();
+
+	/******************************************
+	** Implemenation [Callbacks]
+	*******************************************/
+    void get500MarkerPose(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo);
 
 Q_SIGNALS:
 
