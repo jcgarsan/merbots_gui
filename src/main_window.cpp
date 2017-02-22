@@ -288,10 +288,13 @@ void MainWindow::sparusTopicsButtonClicked()
 
 void MainWindow::g500LoadStream()
 {
-    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
+//    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
+    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
+     				+ ui.g500StreamTopic->text();
     qDebug() << "New G500 stream: " <<  text.toUtf8().constData();
-    ui.g500StreamView->load(QUrl("http://www.google.com"));
+    //ui.g500StreamView->load(QUrl("http://www.google.com"));
+    ui.g500StreamView->load(QUrl("http://localhost:8080/stream?topic=/uwsim/camera1"));
     //ui.g500StreamView->load(text);
 }
 
