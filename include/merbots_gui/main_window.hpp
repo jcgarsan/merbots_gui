@@ -73,7 +73,7 @@ public:
 	ros::Subscriber		sub_imageTopic;
 	ros::ServiceClient 	srv_g500GoTo;
 
-  ros::Publisher pub_spec_action, pub_spec_params;
+  ros::Publisher pub_dredg_action, pub_spec_action, pub_spec_params;
   ros::Subscriber	sub_spec_params;
   image_transport::Publisher 	pub_target;
   sensor_msgs::ImagePtr 		cropeedImageMsg;
@@ -113,6 +113,12 @@ public Q_SLOTS:
     void updateInteractiveSpecParams();
     void updateAndResetInteractiveSpecParams();
     void updateGuidedSpecParams();
+
+    void executeGrasping();
+    void executeDredging();
+    void addWaypoint();
+    void clearWaypoints();
+    void removeLastWaypoint();
 
     void vsPublishButtonClicked();
     void vsCancelButtonClicked();
