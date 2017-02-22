@@ -29,6 +29,8 @@
 #include <QWidget>
 
 #include <std_msgs/Bool.h>
+#include <std_msgs/String.h>
+#include <std_msgs/Float32MultiArray.h>
 #include <auv_msgs/NavSts.h>
 #include <cola2_msgs/BatteryLevel.h>
 #include <cola2_msgs/TotalTime.h>
@@ -65,6 +67,9 @@ public:
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
 	ros::ServiceClient 	srv_g500GoTo;
 
+  ros::Publisher pub_spec_action, pub_spec_params;
+  ros::Subscriber	sub_spec_params;
+
 //	ros::Subscriber		sub_joystick;
 //	ros::Time lastPressUserControl;
 
@@ -88,6 +93,12 @@ public Q_SLOTS:
     void sparusLoadStream();
     void sparusStopStream();
 
+    void getInitGraspPose();
+    void setSpecificationMode(int);
+    void updateInteractiveSpecParams();
+    void updateAndResetInteractiveSpecParams();
+    void updateGuidedSpecParams();
+
 	/******************************************
 	** Implemenation [Callbacks]
 	*******************************************/
@@ -100,6 +111,8 @@ public Q_SLOTS:
 	void sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo);
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
+
+  void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
 
 //	void joystickCallback(const sensor_msgs::Joy::ConstPtr& joystick);
 
