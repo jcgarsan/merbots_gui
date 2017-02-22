@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>4</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -296,7 +296,7 @@ depth</string>
                        <rect>
                         <x>1</x>
                         <y>150</y>
-                        <width>106</width>
+                        <width>105</width>
                         <height>27</height>
                        </rect>
                       </property>
@@ -1509,7 +1509,7 @@ depth</string>
          <attribute name="title">
           <string>VehicleControl Settings</string>
          </attribute>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
             <x>11</x>
