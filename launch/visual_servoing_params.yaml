@@ -1,0 +1,30 @@
+det_and_track/detector: "SIFT"
+det_and_track/descriptor: "SIFT"
+det_and_track/rep_error: 3.0
+det_and_track/inliers: 25
+det_and_track/resize: 0.5
+det_and_track/det_timer: 15.0
+det_and_track/use_camera: false
+det_and_track/detect_only: false
+det_and_track/tracker: kcf
+det_and_track/track_thresh: 0.8
+det_and_track/enable_vely: true
+det_and_track/debug: false
+det_and_track/target_from_file: ""
+
+
+ibvs/control_freq: 10.0
+ibvs/kp_x: 0.05
+ibvs/ki_x: 0.01
+ibvs/kd_x: 0.001
+ibvs/kp_y: 0.05
+ibvs/ki_y: 0.01
+ibvs/kd_y: 0.001
+ibvs/kp_z: 0.02
+ibvs/ki_z: 0.005
+ibvs/kd_z: 0.0005
+ibvs/max_vx: 0.15
+ibvs/max_vy: 0.15
+ibvs/max_wz: 0.05
+ibvs/resize_debug_img: 1.0
+ibvs/debug: false

@@ -978,7 +978,7 @@ depth</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_31">
+                  <widget class="QLabel" name="vsResultViewer">
                    <property name="minimumSize">
                     <size>
                      <width>468</width>
@@ -2014,7 +2014,7 @@ depth</string>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="vsCameraInput">
                  <property name="text">
-                  <string>/uwsim/camera1</string>
+                  <string>/stereo_forward/left/image_repub</string>
                  </property>
                 </widget>
                </item>

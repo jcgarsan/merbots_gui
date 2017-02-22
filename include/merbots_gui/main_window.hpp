@@ -70,7 +70,8 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
-	ros::Subscriber		sub_imageTopic;
+    image_transport::Subscriber     sub_imageTopic;
+	image_transport::Subscriber		sub_resultTopic;
 	ros::ServiceClient 	srv_g500GoTo;
 
   ros::Publisher pub_dredg_action, pub_spec_action, pub_spec_params;
@@ -142,6 +143,7 @@ public Q_SLOTS:
 
         void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
         void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
+        void resultCallback(const sensor_msgs::Image::ConstPtr& msg);
 
 
 private Q_SLOTS:
@@ -157,7 +159,7 @@ private:
 
 	QImage		imageTopic;
     QPainter	painter;
-    QPixmap		pixmapTopic, croppedPixmapTopic;
+    QPixmap		pixmapTopic, resultPixmapTopic, croppedPixmapTopic;
 
     int width, height;
     int x0,y0,x1,y1;
