@@ -23,11 +23,14 @@ SetRobotPoseDlg::SetRobotPoseDlg(ros::NodeHandle *nodeHdl, QWidget *parent) :
     _nh(nodeHdl)
 {
     ui->setupUi(this);
-   	QObject::connect(ui->getMarkerPoseButton, SIGNAL(clicked()), this, SLOT(testButtonClicked()));
+   	QObject::connect(ui->getMarkerPoseButton, SIGNAL(clicked()), this, SLOT(getMarkerPoseButtonClicked()));
+   	QObject::connect(ui->acceptButton, SIGNAL(clicked()), this, SLOT(acceptButtonClicked()));
    	QObject::connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
+   	//ToDo: this subscriber must be modified using the real topic name and type
 	sub_tf	= _nh->subscribe<auv_msgs::NavSts>("/tf", 1, &SetRobotPoseDlg::get500MarkerPose, this); 
-	//sub_ry	=  nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
+
+	getMarkerData = false;
 
 }
 
@@ -36,17 +39,40 @@ SetRobotPoseDlg::~SetRobotPoseDlg()
     delete ui;
 }
 
-void SetRobotPoseDlg::testButtonClicked()
+
+void SetRobotPoseDlg::getMarkerPoseButtonClicked()
 {
 	qDebug() << "Getting the Marker Pose...";
+	getMarkerData = true;
 }
 
+
+//ToDo: change topic type
 void SetRobotPoseDlg::get500MarkerPose(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo)
 {
-	ui->xValue->setText(QString::number(g500OdometryInfo->position.north));
-	ui->yValue->setText(QString::number(g500OdometryInfo->position.north));
-	ui->zValue->setText(QString::number(g500OdometryInfo->position.north));
-	ui->rollValue->setText(QString::number(g500OdometryInfo->position.north));
-	ui->pitchValue->setText(QString::number(g500OdometryInfo->position.north));
-	ui->yawValue->setText(QString::number(g500OdometryInfo->position.north));
+	if (getMarkerData)
+	{
+		ui->xValue->setText(QString::number(g500OdometryInfo->position.north));
+		ui->yValue->setText(QString::number(g500OdometryInfo->position.north));
+		ui->zValue->setText(QString::number(g500OdometryInfo->position.north));
+		ui->rollValue->setText(QString::number(g500OdometryInfo->position.north));
+		ui->pitchValue->setText(QString::number(g500OdometryInfo->position.north));
+		ui->yawValue->setText(QString::number(g500OdometryInfo->position.north));
+		getMarkerData = false;
+	}
 }
+
+
+void SetRobotPoseDlg::acceptButtonClicked()
+{
+	xValueDlg = ui->xValue->text().toDouble();
+	yValueDlg = ui->yValue->text().toDouble();
+	zValueDlg = ui->zValue->text().toDouble();
+	rollValueDlg  = ui->rollValue->text().toDouble();
+	pitchValueDlg = ui->pitchValue->text().toDouble();
+	yawValueDlg	  = ui->yawValue->text().toDouble();
+
+	Q_EMIT newRobotPose(xValueDlg, yValueDlg, zValueDlg, rollValueDlg, pitchValueDlg, yawValueDlg);
+}
+
+

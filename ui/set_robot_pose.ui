@@ -44,7 +44,7 @@
      </spacer>
     </item>
     <item>
-     <widget class="QPushButton" name="AcceptButton">
+     <widget class="QPushButton" name="acceptButton">
       <property name="text">
        <string>Accept</string>
       </property>
@@ -103,7 +103,10 @@
        </size>
       </property>
       <property name="text">
-       <string>data</string>
+       <string>0.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -128,7 +131,10 @@
        </size>
       </property>
       <property name="text">
-       <string>data</string>
+       <string>0.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -153,7 +159,10 @@
        </size>
       </property>
       <property name="text">
-       <string>data</string>
+       <string>0.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -178,7 +187,10 @@
        </size>
       </property>
       <property name="text">
-       <string>data</string>
+       <string>0.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -203,7 +215,10 @@
        </size>
       </property>
       <property name="text">
-       <string>data</string>
+       <string>0.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -228,7 +243,10 @@
        </size>
       </property>
       <property name="text">
-       <string>data</string>
+       <string>0.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>

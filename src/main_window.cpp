@@ -63,6 +63,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.mainTabs->setCurrentIndex(0);
 	ui.graspSpecTab->setCurrentIndex(0);
 
+    activeCurrentVS = false;
+    activateVS 		= true;
 
 	//Init section
 	ros::init(argc,argv,"merbots_gui");
@@ -123,6 +125,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.g500StreamTopic, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
     QObject::connect(ui.g500StreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(g500LoadStream()));
     QObject::connect(ui.g500TopicsButton, SIGNAL(clicked()), this, SLOT(g500TopicsButtonClicked()));
+    QObject::connect(ui.g500GoToPositionButton, SIGNAL(clicked()), this, SLOT(g500GoToPositionButtonClicked()));
     QObject::connect(ui.g500GoToSurfaceButton, SIGNAL(clicked()), this, SLOT(g500GoToSurface()));
 
     QObject::connect(ui.sparusLoadStreamButton, SIGNAL(clicked()), this, SLOT(sparusLoadStream()));
@@ -136,8 +139,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
     QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
 
-	QObject::connect(ui.g500MoveRobotButton, SIGNAL(clicked()), this, SLOT(testButton()));
-    
     QObject::connect(ui.getGraspingPoseButton, SIGNAL(clicked()), this, SLOT(getInitGraspPose()));
     QObject::connect(ui.graspSpecTab, SIGNAL(currentChanged(int)), this, SLOT(setSpecificationMode(int)));
     QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
@@ -210,14 +211,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	pub_dredg_action= nh->advertise<std_msgs::String>("/dredging_status", 1);
 
 
-
     //Timer to ensure the ROS communications
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
-    //Timer to publish croppedImageMsg until boolean condition
+    //Timer used to publish croppedImageMsg until boolean condition
     //connect(timer, SIGNAL(timeout()), this, SLOT(publishCroppedImage()));
     timer->start();
-
 
 
     //VisualServoing user interaction init
@@ -227,12 +226,15 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     x0 = 0; y0 = 0;
     x1 = 1; y1 = 1;
 
-    activeCurrentVS = false;
-    activateVS 		= true;
+
+	dlg = new SetRobotPoseDlg(nh, this);
+    QObject::connect(&dlg, SIGNAL(newRobotPose(double, double, double, double, double, double)),
+    				 this, SLOT(setRobotPosition(double, double, double, double, double, double)));
+
 
 	tcpSocket = new QTcpSocket(this);
 	tcpSocket->connectToHost("localhost",8080);
-	connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(tcpDataReceive()));    
+	QObject::connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(tcpDataReceive()));    
 
 }
 
@@ -242,11 +244,31 @@ void MainWindow::tcpDataReceive()
     qDebug() << data;
 }
 
-void MainWindow::testButton()
+
+void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zValueSrv, double rollValueSrv, double pitchValueSrv, double yawValueSrv)
 {
-	qDebug() << "testButton";
-	SetRobotPoseDlg *dlg = new SetRobotPoseDlg(nh, this);
-	dlg->show();
+	qDebug() << "Sending the G500 to the surface...";
+	cola2_msgs::Goto srv;
+    srv.request.position.x		= 0;
+    srv.request.position.y		= 0;
+    srv.request.position.z		= 0;
+    srv.request.blocking 		= false;
+    srv.request.keep_position	= false;
+    srv.request.position_tolerance.x = 0.4;
+    srv.request.position_tolerance.y = 0.4;
+    srv.request.position_tolerance.z = 0.4;
+    srv.request.altitude_mode	= false;
+    srv.request.priority		= 10;
+    srv.request.reference 		= srv.request.REFERENCE_NED;
+
+    if(srv_g500GoTo.call(srv))
+    {
+        qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
+    }
+    else
+    {
+        qDebug() << "Service call failed";
+    }
 }
 
 MainWindow::~MainWindow() { }
@@ -316,7 +338,7 @@ void MainWindow::armTopicButtonClicked()
 
 void MainWindow::g500LoadStream()
 {
-//    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
+	//QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
     QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text();
@@ -368,6 +390,11 @@ void MainWindow::sparusStopStream()
 	ui.sparusStreamView->stop();
 }
 
+
+void MainWindow::g500GoToPositionButtonClicked()
+{
+	dlg->show();
+}
 
 void MainWindow::g500GoToSurface()
 {

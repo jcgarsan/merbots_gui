@@ -41,6 +41,10 @@ public:
 	ros::NodeHandle		*_nh;
 	ros::Subscriber		sub_tf;
 
+	double xValueDlg, yValueDlg, zValueDlg, rollValueDlg, pitchValueDlg, yawValueDlg;
+
+	bool getMarkerData;
+
     explicit SetRobotPoseDlg(ros::NodeHandle *nodeHdl, QWidget *parent = 0);
     ~SetRobotPoseDlg();
 
@@ -50,9 +54,11 @@ public:
     void get500MarkerPose(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo);
 
 Q_SIGNALS:
+	void newRobotPose(double x, double y, double z, double roll, double pitch, double yaw);
 
 public Q_SLOTS:
-	void testButtonClicked();
+	void getMarkerPoseButtonClicked();
+	void acceptButtonClicked();
 
 
 private:

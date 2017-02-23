@@ -22,6 +22,7 @@
 
 #include "ui_main_window.h"
 #include "qnode.hpp"
+#include "set_robot_pose.h"
 
 #include <QtGui/QMainWindow>
 #include <QtWebKit/QWebView>
@@ -85,7 +86,7 @@ public:
 
 	bool activeCurrentVS, activateVS;
 
-
+	SetRobotPoseDlg *dlg;
 
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();
@@ -106,7 +107,8 @@ public Q_SLOTS:
     void g500StopStream();
     void g500StopStream2();
     void g500GoToSurface();
-//    void g500MoveRobotButtonClicked();
+    void g500GoToPositionButtonClicked();
+    void setRobotPosition(double xValueSrv, double yValueSrv, double zValueSrv, double rollValueSrv, double pitchValueSrv, double yawValueSrv);
 
 	void sparusTopicsButtonClicked();
     void sparusLoadStream();
@@ -130,7 +132,6 @@ public Q_SLOTS:
     void publishCroppedImage();
     void armTopicButtonClicked();
 
-    void testButton();
 	void tcpDataReceive();
 
 	/******************************************
