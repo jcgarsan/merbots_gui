@@ -205,7 +205,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_spec_params	= nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
 	pub_spec_params	= nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
 	pub_spec_action	= nh->advertise<std_msgs::String>("/specification_status", 1);
-  pub_dredg_action	= nh->advertise<std_msgs::String>("/dredging_status", 1);
+	pub_dredg_action= nh->advertise<std_msgs::String>("/dredging_status", 1);
 
 
     //Timer to ensure the ROS communications

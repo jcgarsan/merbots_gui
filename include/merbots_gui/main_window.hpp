@@ -74,6 +74,7 @@ public:
 	ros::Subscriber		sub_imageTopic;
 	ros::Subscriber		sub_spec_params;
 	ros::Publisher		pub_spec_action, pub_spec_params;
+	ros::Publisher 		pub_dredg_action;
 	ros::ServiceClient 	srv_g500GoTo;
 
 	

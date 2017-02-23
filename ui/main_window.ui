@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -1485,17 +1485,36 @@ depth</string>
                   </widget>
                  </item>
                  <item>
+                  <widget class="QPushButton" name="armTopicButton">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>330</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Reconnect</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QGroupBox" name="groupBox_5">
                    <property name="title">
                     <string>Dredging options</string>
                    </property>
-                   <widget class="QWidget" name="">
+                   <widget class="QWidget" name="layoutWidget">
                     <property name="geometry">
                      <rect>
                       <x>0</x>
                       <y>30</y>
                       <width>331</width>
-                      <height>81</height>
+                      <height>61</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout">
