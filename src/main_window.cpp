@@ -228,7 +228,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 
 	dlg = new SetRobotPoseDlg(nh, this);
-    QObject::connect(&dlg, SIGNAL(newRobotPose(double, double, double, double, double, double)),
+    QObject::connect(dlg, SIGNAL(newRobotPose(double, double, double, double, double, double)),
     				 this, SLOT(setRobotPosition(double, double, double, double, double, double)));
 
 
@@ -247,11 +247,14 @@ void MainWindow::tcpDataReceive()
 
 void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zValueSrv, double rollValueSrv, double pitchValueSrv, double yawValueSrv)
 {
-	qDebug() << "Sending the G500 to the surface...";
+	qDebug() << "Sending the G500 to the new position...";
+	qDebug() << xValueSrv << " " << yValueSrv << " " << zValueSrv << " " << rollValueSrv << " " << pitchValueSrv << " " << yawValueSrv;
+
 	cola2_msgs::Goto srv;
-    srv.request.position.x		= 0;
-    srv.request.position.y		= 0;
-    srv.request.position.z		= 0;
+    srv.request.position.x		= xValueSrv;
+    srv.request.position.y		= yValueSrv;
+    srv.request.position.z		= zValueSrv;
+    srv.request.yaw	  			= yawValueSrv;
     srv.request.blocking 		= false;
     srv.request.keep_position	= false;
     srv.request.position_tolerance.x = 0.4;

@@ -73,6 +73,7 @@ void SetRobotPoseDlg::acceptButtonClicked()
 	yawValueDlg	  = ui->yawValue->text().toDouble();
 
 	Q_EMIT newRobotPose(xValueDlg, yValueDlg, zValueDlg, rollValueDlg, pitchValueDlg, yawValueDlg);
+	close();
 }
 
 
