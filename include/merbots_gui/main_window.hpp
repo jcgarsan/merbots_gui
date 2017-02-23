@@ -30,6 +30,7 @@
 #include <QImage>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QTcpSocket>
 
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
@@ -71,7 +72,10 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
-  ros::Subscriber		sub_imageTopic, sub_arm_state;
+	ros::Subscriber		sub_imageTopic, sub_arm_state;
+	ros::Subscriber		sub_spec_params;
+	ros::Publisher		pub_spec_action, pub_spec_params;
+	ros::Publisher 		pub_dredg_action;
 	ros::ServiceClient 	srv_g500GoTo;
 
   ros::Publisher pub_dredg_action, pub_spec_action, pub_spec_params;
@@ -79,6 +83,7 @@ public:
   image_transport::Publisher 	pub_target;
   sensor_msgs::ImagePtr 		cropeedImageMsg;
 
+	QTcpSocket *tcpSocket;
 
 	bool activeCurrentVS;
 
@@ -128,6 +133,7 @@ public Q_SLOTS:
     void armTopicButtonClicked();
 
     void testButton();
+	void tcpDataReceive();
 
 	/******************************************
 	** Implemenation [Callbacks]
