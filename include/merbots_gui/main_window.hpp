@@ -41,6 +41,7 @@
 #include <diagnostic_msgs/DiagnosticArray.h>
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/Joy.h>
+#include <sensor_msgs/JointState.h>
 #include <compressed_image_transport/compression_common.h>
 
 
@@ -70,7 +71,7 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
-	ros::Subscriber		sub_imageTopic;
+  ros::Subscriber		sub_imageTopic, sub_arm_state;
 	ros::ServiceClient 	srv_g500GoTo;
 
   ros::Publisher pub_dredg_action, pub_spec_action, pub_spec_params;
@@ -124,6 +125,7 @@ public Q_SLOTS:
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
     void publishCroppedImage();
+    void armTopicButtonClicked();
 
     void testButton();
 
@@ -142,6 +144,8 @@ public Q_SLOTS:
 
         void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
         void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
+
+        void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
 
 
 private Q_SLOTS:

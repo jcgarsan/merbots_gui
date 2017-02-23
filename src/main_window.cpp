@@ -183,6 +183,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.addWaypointButton, SIGNAL(clicked()), this, SLOT(addWaypoint()));
     QObject::connect(ui.clearWaypointsButton, SIGNAL(clicked()), this, SLOT(clearWaypoints()));
     QObject::connect(ui.removeLastWaypointButton, SIGNAL(clicked()), this, SLOT(removeLastWaypoint()));
+    QObject::connect(ui.armTopicButton, SIGNAL(clicked()), this, SLOT(armTopicButtonClicked()));
 
 	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
@@ -202,10 +203,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
+  sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
 	sub_spec_params	= nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
 	pub_spec_params	= nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
 	pub_spec_action	= nh->advertise<std_msgs::String>("/specification_status", 1);
   pub_dredg_action	= nh->advertise<std_msgs::String>("/dredging_status", 1);
+
 
 
     //Timer to ensure the ROS communications
@@ -289,6 +292,15 @@ void MainWindow::sparusTopicsButtonClicked()
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 	qDebug()<<"sparus topics have been reconnected";
+}
+
+void MainWindow::armTopicButtonClicked()
+{
+  qDebug()<<"armTopicsButton clicked: reconnecting all the G500 topics";
+  sub_arm_state.shutdown();
+  qDebug()<<"arm topic has been shutdown";
+  sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
+  qDebug()<<"arm topic has been reconnected";
 }
 
 
@@ -616,6 +628,15 @@ void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 	height = pixmapTopic.height();
 	ui.vsCameraInputViewer->setPixmap(pixmapTopic);
 	drawCurrentROI();
+}
+
+void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg)
+{
+  ui.armJointValues->item(0, 0)->setText(QString::number(armStateMsg->position[0]));
+  ui.armJointValues->item(1, 0)->setText(QString::number(armStateMsg->position[1]));
+  ui.armJointValues->item(2, 0)->setText(QString::number(armStateMsg->position[2]));
+  ui.armJointValues->item(3, 0)->setText(QString::number(armStateMsg->position[3]));
+  ui.armJointValues->item(4, 0)->setText(QString::number(armStateMsg->position[4]));
 }
 
 
