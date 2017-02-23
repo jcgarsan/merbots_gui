@@ -177,7 +177,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.guidedSpecSlider2->setMinimum(-180);
     ui.guidedSpecSlider3->setMinimum(-100);
 
-    //@TODO Teleoperation mode switch; goto dredge position and execute grasp buttons...
+    //@TODO Teleoperation mode switch; goto dredge position and execute grasp buttons...    
+    QObject::connect(ui.executeGraspingButton, SIGNAL(clicked()), this, SLOT(executeGrasping()));
+    QObject::connect(ui.executeDredgingButton, SIGNAL(clicked()), this, SLOT(executeDredging()));
+    QObject::connect(ui.addWaypointButton, SIGNAL(clicked()), this, SLOT(addWaypoint()));
+    QObject::connect(ui.clearWaypointsButton, SIGNAL(clicked()), this, SLOT(clearWaypoints()));
+    QObject::connect(ui.removeLastWaypointButton, SIGNAL(clicked()), this, SLOT(removeLastWaypoint()));
 
 	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
@@ -200,6 +205,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_spec_params	= nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
 	pub_spec_params	= nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
 	pub_spec_action	= nh->advertise<std_msgs::String>("/specification_status", 1);
+  pub_dredg_action	= nh->advertise<std_msgs::String>("/dredging_status", 1);
 
 
     //Timer to ensure the ROS communications
@@ -406,6 +412,41 @@ void MainWindow::updateInteractiveSpecParams(){
   msg.data.push_back(ui.interactiveSpecSlider6->value()*3.14/180/4);
   msg.data.push_back(ui.gripperOpeningSlider->value());
   pub_spec_params.publish(msg);
+  ros::spinOnce();
+}
+
+void MainWindow::executeGrasping(){
+  std_msgs::String msg;
+  msg.data = "execute";
+  pub_spec_action.publish(msg);
+  ros::spinOnce();
+}
+
+void MainWindow::executeDredging(){
+  std_msgs::String msg;
+  msg.data = "execute";
+  pub_spec_action.publish(msg);
+  ros::spinOnce();
+}
+
+void MainWindow::addWaypoint(){
+  std_msgs::String msg;
+  msg.data = "add";
+  pub_dredg_action.publish(msg);
+  ros::spinOnce();
+}
+
+void MainWindow::clearWaypoints(){
+  std_msgs::String msg;
+  msg.data = "clear";
+  pub_dredg_action.publish(msg);
+  ros::spinOnce();
+}
+
+void MainWindow::removeLastWaypoint(){
+  std_msgs::String msg;
+  msg.data = "delete";
+  pub_dredg_action.publish(msg);
   ros::spinOnce();
 }
 

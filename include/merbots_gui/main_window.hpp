@@ -117,6 +117,12 @@ public Q_SLOTS:
     void updateAndResetInteractiveSpecParams();
     void updateGuidedSpecParams();
 
+    void executeGrasping();
+    void executeDredging();
+    void addWaypoint();
+    void clearWaypoints();
+    void removeLastWaypoint();
+
     void vsPublishButtonClicked();
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
