@@ -28,7 +28,7 @@ SetRobotPoseDlg::SetRobotPoseDlg(ros::NodeHandle *nodeHdl, QWidget *parent) :
    	QObject::connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
    	//ToDo: this subscriber must be modified using the real topic name and type
-	sub_tf	= _nh->subscribe<auv_msgs::NavSts>("/tf", 1, &SetRobotPoseDlg::get500MarkerPose, this); 
+	//sub_tf	= _nh->subscribe<auv_msgs::NavSts>("/tf", 1, &SetRobotPoseDlg::get500MarkerPose, this); 
 
 	getMarkerData = false;
 

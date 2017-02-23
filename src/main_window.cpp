@@ -200,6 +200,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
 	srv_g500GoTo 	= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
+	//srv_g500GoTo 	= nh->serviceClient<cola2_msgs::Goto>("/cola2_control/enable_goto");
 
 	sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
@@ -305,11 +306,13 @@ void MainWindow::g500TopicsButtonClicked()
 	sub_g500Battery.shutdown();
 	sub_g500Runningtime.shutdown();
 	sub_g500Diagnostics.shutdown();
+	srv_g500GoTo.shutdown();
 	qDebug()<<"g500 topics have been shutdown";
 	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
 	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
 	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
 	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
+	srv_g500GoTo 		= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
 	qDebug()<<"g500 topics have been reconnected";
 }
 
