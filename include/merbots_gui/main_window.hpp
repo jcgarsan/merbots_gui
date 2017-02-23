@@ -78,8 +78,6 @@ public:
 	ros::Publisher 		pub_dredg_action;
 	ros::ServiceClient 	srv_g500GoTo;
 
-  ros::Publisher pub_dredg_action, pub_spec_action, pub_spec_params;
-  ros::Subscriber	sub_spec_params;
   image_transport::Publisher 	pub_target;
   sensor_msgs::ImagePtr 		cropeedImageMsg;
 
