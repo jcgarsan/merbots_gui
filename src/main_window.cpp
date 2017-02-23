@@ -208,8 +208,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(publishCroppedImage()));
     timer->start();
 
-	//sub_joystick		= nh->subscribe<sensor_msgs::Joy>("/joystick_out", 1, &MainWindow::joystickCallback, this); 
-	
+
 
     //VisualServoing user interaction init
     ui.vsCameraInputViewer->setPixmap(pixmapTopic);
@@ -220,8 +219,17 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
     activeCurrentVS = false;
 
+	tcpSocket = new QTcpSocket(this);
+	tcpSocket->connectToHost("localhost",8080);
+	connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(tcpDataReceive()));    
+
 }
 
+void MainWindow::tcpDataReceive()
+{
+    QByteArray data = QByteArray::fromHex(tcpSocket->readAll());
+    qDebug() << data;
+}
 
 void MainWindow::testButton()
 {
@@ -292,10 +300,11 @@ void MainWindow::g500LoadStream()
      				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
     QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text();
+    //ui.g500StreamView->load(text);
     qDebug() << "New G500 stream: " <<  text.toUtf8().constData();
     //ui.g500StreamView->load(QUrl("http://www.google.com"));
-    ui.g500StreamView->load(QUrl("http://localhost:8080/stream?topic=/uwsim/camera1"));
-    //ui.g500StreamView->load(text);
+	//tcpSocket->write("GET /stream?topic=/uwsim/camera1\r\n\r\n");
+    ui.g500StreamView->load(QUrl("http://localhost:8080/snapshot?topic=/uwsim/camera1"));
 }
 
 

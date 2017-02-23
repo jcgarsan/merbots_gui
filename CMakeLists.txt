@@ -44,7 +44,8 @@ catkin_package(
 	compressed_image_transport
 )
 
-include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})# ${OpenGL_INCLUDE_DIR})
+include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS}) # ${OpenGL_INCLUDE_DIR})
+message (STATUS "LIBVLC_INCLUDE_DIR >>>>>>>>>>>>>>>>>>>>>>>>>>" ${LIBVLC_INCLUDE_DIR})
 
 ##############################################################################
 # Qt Environment
@@ -78,7 +79,7 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 ##############################################################################
 
 add_executable(merbots_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-target_link_libraries(merbots_gui ${QT_LIBRARIES} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${OpenGL_LIBRARIES})
+target_link_libraries(merbots_gui ${QT_LIBRARIES} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${OpenGL_LIBRARIES} )
 install(TARGETS merbots_gui RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #message (STATUS "QT_SOURCES >>>>>>>>>>>>>>>>>>>>>>>>>>" ${QT_SOURCES})
