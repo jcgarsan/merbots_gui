@@ -78,12 +78,12 @@ public:
 	ros::Publisher 		pub_dredg_action;
 	ros::ServiceClient 	srv_g500GoTo;
 
-  image_transport::Publisher 	pub_target;
-  sensor_msgs::ImagePtr 		cropeedImageMsg;
+	image_transport::Publisher 	pub_target;
+	sensor_msgs::ImagePtr 		croppedImageMsg;
 
 	QTcpSocket *tcpSocket;
 
-	bool activeCurrentVS;
+	bool activeCurrentVS, activateVS;
 
 
 
@@ -146,10 +146,10 @@ public Q_SLOTS:
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
 
-        void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
-        void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
+	void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
+	void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
 
-        void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
+	void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
 
 
 private Q_SLOTS:

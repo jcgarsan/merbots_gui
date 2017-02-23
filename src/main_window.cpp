@@ -203,7 +203,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
-  sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
+	sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
 	sub_spec_params	= nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
 	pub_spec_params	= nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
 	pub_spec_action	= nh->advertise<std_msgs::String>("/specification_status", 1);
@@ -214,7 +214,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     //Timer to ensure the ROS communications
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(publishCroppedImage()));
+    //Timer to publish croppedImageMsg until boolean condition
+    //connect(timer, SIGNAL(timeout()), this, SLOT(publishCroppedImage()));
     timer->start();
 
 
@@ -227,6 +228,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     x1 = 1; y1 = 1;
 
     activeCurrentVS = false;
+    activateVS 		= true;
 
 	tcpSocket = new QTcpSocket(this);
 	tcpSocket->connectToHost("localhost",8080);
@@ -393,6 +395,7 @@ void MainWindow::g500GoToSurface()
     }
 }
 
+
 void MainWindow::getInitGraspPose(){
   std_msgs::String msg;
   msg.data = "init";
@@ -476,8 +479,9 @@ void MainWindow::vsPublishButtonClicked()
 	                    imageToSend.bytesPerLine());
 
 	// Converting the image to sensor_msgs::ImagePtr bgr8
-	cropeedImageMsg = cv_bridge::CvImage(std_msgs::Header(), "rgb8", cvImage).toImageMsg();
-	activeCurrentVS = true;
+	croppedImageMsg = cv_bridge::CvImage(std_msgs::Header(), "rgb8", cvImage).toImageMsg();
+	activeCurrentVS = true; //Boolean used to stop publishing the cropped
+	pub_target.publish(croppedImageMsg);
 }
 
 
@@ -485,6 +489,9 @@ void MainWindow::vsCancelButtonClicked()
 {
 	//Flag to disable publishing the cropped image
 	activeCurrentVS = false;
+
+	//Re-activate VS
+	activateVS = true;
 }
 
 void MainWindow::vsTopicsButtonClicked()
@@ -504,7 +511,7 @@ void MainWindow::publishCroppedImage()
 {
 	if (activeCurrentVS)
 	{	// Publishing the new target
-		pub_target.publish(cropeedImageMsg);
+		pub_target.publish(croppedImageMsg);
 	}
 }
 
@@ -631,12 +638,14 @@ void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& s
 void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
 	QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
-	imageTopic = dest.copy();
-	pixmapTopic = QPixmap::fromImage(imageTopic);
-	width = pixmapTopic.width();
-	height = pixmapTopic.height();
-	ui.vsCameraInputViewer->setPixmap(pixmapTopic);
-	drawCurrentROI();
+	if (activateVS)
+	{	imageTopic = dest.copy();
+		pixmapTopic = QPixmap::fromImage(imageTopic);
+		width = pixmapTopic.width();
+		height = pixmapTopic.height();
+		ui.vsCameraInputViewer->setPixmap(pixmapTopic);
+		drawCurrentROI();
+	}
 }
 
 void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg)
@@ -685,6 +694,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
             sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
 			startROI(position.x(), position.y());
+			activateVS = false;
 			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
             	qDebug() << sposition << ": Mouse button PRESSED";
         }
@@ -789,17 +799,18 @@ void MainWindow::drawCurrentROI()
                 QString::number(x0), QString::number(y0),QString::number(x1), QString::number(y1) );
     if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
 	    qDebug() << sposition << ": Drawing Rectangle";
-
-    painter.begin(&pixmapTopic);
-    painter.setBrush(Qt::NoBrush);
-    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
-    painter.setPen(pen);
-    painter.drawRect(x0, y0, x1-x0, y1-y0);
-    ui.vsCameraInputViewer->setPixmap(pixmapTopic);
-    painter.end();
-    showCropROI();
+	if (!activateVS)
+	{
+	    painter.begin(&pixmapTopic);
+	    painter.setBrush(Qt::NoBrush);
+	    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+	    painter.setPen(pen);
+	    painter.drawRect(x0, y0, x1-x0, y1-y0);
+	    ui.vsCameraInputViewer->setPixmap(pixmapTopic);
+	    painter.end();
+	    showCropROI();
+	}
 }
-
 
 void MainWindow::showCropROI() 
 {
