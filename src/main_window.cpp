@@ -138,7 +138,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.vsPublishButton, SIGNAL(clicked()),this, SLOT(vsPublishButtonClicked()));
 	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
     QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
-
+    
     QObject::connect(ui.getGraspingPoseButton, SIGNAL(clicked()), this, SLOT(getInitGraspPose()));
     QObject::connect(ui.graspSpecTab, SIGNAL(currentChanged(int)), this, SLOT(setSpecificationMode(int)));
     QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
@@ -200,16 +200,17 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
 	srv_g500GoTo 	= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
-	//srv_g500GoTo 	= nh->serviceClient<cola2_msgs::Goto>("/cola2_control/enable_goto");
 
-	sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+    	sub_imageTopic  	= it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
+	sub_resultTopic		= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
 	sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
 	sub_spec_params	= nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
 	pub_spec_params	= nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
 	pub_spec_action	= nh->advertise<std_msgs::String>("/specification_status", 1);
-	pub_dredg_action= nh->advertise<std_msgs::String>("/dredging_status", 1);
+  pub_dredg_action	= nh->advertise<std_msgs::String>("/dredging_status", 1);
 
 
     //Timer to ensure the ROS communications
@@ -344,7 +345,7 @@ void MainWindow::armTopicButtonClicked()
 
 void MainWindow::g500LoadStream()
 {
-	//QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
+//    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
     QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text();
@@ -530,13 +531,15 @@ void MainWindow::vsCancelButtonClicked()
 void MainWindow::vsTopicsButtonClicked()
 {
 	qDebug()<<"vsTopicsButton clicked: reconnecting all the VisualServoing topics";
-	sub_imageTopic.shutdown();
+    sub_imageTopic.shutdown();
+	sub_resultTopic.shutdown();
 	pub_target.shutdown();
 	qDebug()<<"VisualServoing topics have been shutdown";
 	image_transport::ImageTransport it(*nh);
-	sub_imageTopic  = nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
+	sub_resultTopic = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
-	qDebug()<<"VisualServoing topics have been reconnected";	
+	qDebug()<<"VisualServoing topics have been reconnected";
 }
 
 
@@ -680,6 +683,16 @@ void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 		drawCurrentROI();
 	}
 }
+void MainWindow::resultCallback(const sensor_msgs::Image::ConstPtr& msg)
+{
+    QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+    resultPixmapTopic = QPixmap::fromImage(dest);
+    width = resultPixmapTopic.width();
+    height = resultPixmapTopic.height();
+    ui.vsResultViewer->setPixmap(resultPixmapTopic);
+    drawCurrentROI();
+}
+
 
 void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg)
 {
@@ -844,6 +857,7 @@ void MainWindow::drawCurrentROI()
 	    showCropROI();
 	}
 }
+
 
 void MainWindow::showCropROI() 
 {

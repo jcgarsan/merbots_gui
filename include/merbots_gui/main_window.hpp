@@ -73,13 +73,17 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
-	ros::Subscriber		sub_imageTopic, sub_arm_state;
+	//ros::Subscriber		sub_imageTopic, sub_arm_state;
+	ros::Subscriber		sub_arm_state;
 	ros::Subscriber		sub_spec_params;
 	ros::Publisher		pub_spec_action, pub_spec_params;
 	ros::Publisher 		pub_dredg_action;
 	ros::ServiceClient 	srv_g500GoTo;
 
+	image_transport::Subscriber sub_imageTopic;
+	image_transport::Subscriber	sub_resultTopic;
 	image_transport::Publisher 	pub_target;
+
 	sensor_msgs::ImagePtr 		croppedImageMsg;
 
 	QTcpSocket *tcpSocket;
@@ -147,9 +151,10 @@ public Q_SLOTS:
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
 
-	void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
-	void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
-
+        void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
+        void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
+        void resultCallback(const sensor_msgs::Image::ConstPtr& msg);
+	
 	void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
 
 
@@ -166,7 +171,7 @@ private:
 
 	QImage		imageTopic;
     QPainter	painter;
-    QPixmap		pixmapTopic, croppedPixmapTopic;
+    QPixmap		pixmapTopic, resultPixmapTopic, croppedPixmapTopic;
 
     int width, height;
     int x0,y0,x1,y1;
