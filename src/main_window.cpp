@@ -138,6 +138,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.vsPublishButton, SIGNAL(clicked()),this, SLOT(vsPublishButtonClicked()));
 	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
     QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
+    QObject::connect(ui.vsRotationButton, SIGNAL(clicked()), this, SLOT(vsRotationButtonClicked()));
     
     QObject::connect(ui.getGraspingPoseButton, SIGNAL(clicked()), this, SLOT(getInitGraspPose()));
     QObject::connect(ui.graspSpecTab, SIGNAL(currentChanged(int)), this, SLOT(setSpecificationMode(int)));
@@ -199,7 +200,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
-	srv_g500GoTo 	= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
+    srv_g500GoTo    = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
+    //srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotation>(ui.vsRotationService->text().toUtf8().constData());
 
 	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
     sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
@@ -540,6 +542,34 @@ void MainWindow::vsTopicsButtonClicked()
 	sub_resultTopic = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 	qDebug()<<"VisualServoing topics have been reconnected";
+}
+
+
+void MainWindow::vsRotationButtonClicked()
+{
+    qDebug() << "VS rotation: " << ui.vsRotationDataSpinBox->value();
+    double spinBoxData = ui.vsRotationDataSpinBox->value();
+
+/*
+    merbots_ibvs::Rotate srv;
+
+    if (spinBoxData <0)
+    {
+        srv.data = -ui.vsRotationDataSpinBox->value().toDouble();
+        if(srv_vsRotation.call(srv))
+            qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
+        else
+            qDebug() << "Service call failed";
+    }
+    else
+    {
+        srv.data = ui.vsRotationDataSpinBox->value().toDouble();
+        if(srv_vsRotation.call(srv))
+            qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
+        else
+            qDebug() << "Service call failed";
+    }
+*/
 }
 
 

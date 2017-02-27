@@ -45,7 +45,6 @@ catkin_package(
 )
 
 include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS}) # ${OpenGL_INCLUDE_DIR})
-message (STATUS "LIBVLC_INCLUDE_DIR >>>>>>>>>>>>>>>>>>>>>>>>>>" ${LIBVLC_INCLUDE_DIR})
 
 ##############################################################################
 # Qt Environment

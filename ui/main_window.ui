@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -892,28 +892,28 @@ depth</string>
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="vsCCwButton">
-                     <property name="maximumSize">
-                      <size>
-                       <width>115</width>
-                       <height>16777215</height>
-                      </size>
+                    <widget class="QDoubleSpinBox" name="vsRotationDataSpinBox">
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="text">
-                      <string>Turn VS CCW</string>
+                     <property name="minimum">
+                      <double>-180.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>180.000000000000000</double>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="vsCwButton">
-                     <property name="maximumSize">
-                      <size>
-                       <width>115</width>
-                       <height>16777215</height>
-                      </size>
+                    <widget class="QPushButton" name="vsRotationButton">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
                      <property name="text">
-                      <string>Turn VS CW</string>
+                      <string>Rotate VS</string>
                      </property>
                     </widget>
                    </item>
@@ -2039,7 +2039,7 @@ depth</string>
                 <x>9</x>
                 <y>30</y>
                 <width>1221</width>
-                <height>101</height>
+                <height>145</height>
                </rect>
               </property>
               <layout class="QFormLayout" name="formLayout_7">
@@ -2067,7 +2067,7 @@ depth</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
+               <item row="3" column="0">
                 <widget class="QLabel" name="label_34">
                  <property name="text">
                   <string>Visual Servoing</string>
@@ -2081,12 +2081,22 @@ depth</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="1">
+               <item row="3" column="1">
                 <widget class="QLineEdit" name="vsResult">
                  <property name="text">
                   <string>/ibvs/debug_img</string>
                  </property>
                 </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_20">
+                 <property name="text">
+                  <string>VS Rotation</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QLineEdit" name="vsRotationService"/>
                </item>
               </layout>
              </widget>
@@ -2094,7 +2104,7 @@ depth</string>
               <property name="geometry">
                <rect>
                 <x>10</x>
-                <y>130</y>
+                <y>180</y>
                 <width>1221</width>
                 <height>27</height>
                </rect>

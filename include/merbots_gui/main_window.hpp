@@ -129,12 +129,14 @@ public Q_SLOTS:
     void addWaypoint();
     void clearWaypoints();
     void removeLastWaypoint();
+    void armTopicButtonClicked();
 
     void vsPublishButtonClicked();
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
+    void vsRotationButtonClicked();
+    
     void publishCroppedImage();
-    void armTopicButtonClicked();
 
 	void tcpDataReceive();
 
