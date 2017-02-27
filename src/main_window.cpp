@@ -473,8 +473,8 @@ void MainWindow::executeGrasping(){
 
 void MainWindow::executeDredging(){
   std_msgs::String msg;
-  msg.data = "execute";
-  pub_spec_action.publish(msg);
+  msg.data = "send_first";
+  pub_dredg_action.publish(msg);
   ros::spinOnce();
 }
 
@@ -494,7 +494,7 @@ void MainWindow::clearWaypoints(){
 
 void MainWindow::removeLastWaypoint(){
   std_msgs::String msg;
-  msg.data = "delete";
+  msg.data = "remove_last";
   pub_dredg_action.publish(msg);
   ros::spinOnce();
 }

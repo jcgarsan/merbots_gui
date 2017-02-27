@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>4</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -1537,7 +1537,7 @@ depth</string>
                       <x>0</x>
                       <y>30</y>
                       <width>331</width>
-                      <height>61</height>
+                      <height>62</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout">
@@ -1603,7 +1603,7 @@ depth</string>
                         </size>
                        </property>
                        <property name="text">
-                        <string>Execute dredging</string>
+                        <string>Send first waypoint</string>
                        </property>
                       </widget>
                      </item>
@@ -2612,7 +2612,7 @@ depth</string>
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
