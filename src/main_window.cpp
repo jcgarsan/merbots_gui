@@ -870,12 +870,15 @@ void MainWindow::drawCurrentROI()
 	    qDebug() << sposition << ": Drawing Rectangle";
 	if (!activateVS)
 	{
-	    painter.begin(&pixmapTopic);
+        QPixmap tmpPixmap = pixmapTopic.copy(); 
+        //painter.begin(&pixmapTopic);
+        painter.begin(&tmpPixmap);
 	    painter.setBrush(Qt::NoBrush);
 	    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
 	    painter.setPen(pen);
 	    painter.drawRect(x0, y0, x1-x0, y1-y0);
-	    ui.vsCameraInputViewer->setPixmap(pixmapTopic);
+        //ui.vsCameraInputViewer->setPixmap(pixmapTopic);
+        ui.vsCameraInputViewer->setPixmap(tmpPixmap);
 	    painter.end();
 	    showCropROI();
 	}
