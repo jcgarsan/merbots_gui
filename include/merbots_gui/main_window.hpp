@@ -151,9 +151,9 @@ public Q_SLOTS:
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
 
-        void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
-        void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
-        void resultCallback(const sensor_msgs::Image::ConstPtr& msg);
+    void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
+    void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
+    void resultCallback(const sensor_msgs::Image::ConstPtr& msg);
 	
 	void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
 

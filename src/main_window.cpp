@@ -202,15 +202,15 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	srv_g500GoTo 	= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
 
 	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
-    	sub_imageTopic  	= it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
-	sub_resultTopic		= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
+    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
+	sub_resultTopic	= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
-	sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
-	sub_spec_params	= nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
-	pub_spec_params	= nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
-	pub_spec_action	= nh->advertise<std_msgs::String>("/specification_status", 1);
-  pub_dredg_action	= nh->advertise<std_msgs::String>("/dredging_status", 1);
+	sub_arm_state	 = nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
+	sub_spec_params	 = nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
+	pub_spec_params	 = nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
+	pub_spec_action	 = nh->advertise<std_msgs::String>("/specification_status", 1);
+    pub_dredg_action = nh->advertise<std_msgs::String>("/dredging_status", 1);
 
 
     //Timer to ensure the ROS communications
@@ -574,9 +574,8 @@ void MainWindow::updateAndResetInteractiveSpecParams(){
   ui.interactiveSpecSlider4->setValue(0);
   ui.interactiveSpecSlider5->setValue(0);
   ui.interactiveSpecSlider6->setValue(0);
-
-
 }
+
 
 void MainWindow::updateGuidedSpecParams(){
   std_msgs::Float32MultiArray msg;
@@ -606,8 +605,6 @@ void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500Odom
 
 void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo)
 {
-	//QString labelText = "G500 BatteryLevel: " + QString::number(g500BatteryInfo->charge);
-	//qDebug() << g500BatteryInfo->charge;
 	ui.g500ServiceStatus->item(0, 0)->setText(QString::number(g500BatteryInfo->charge));
 	//ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
 	//ui.g500BatteryLabel->setText(labelText);
@@ -616,8 +613,6 @@ void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g
 
 void MainWindow::g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo)
 {
-	//QString labelText = "G500 RunningTime: " + QString::number(g500RunningTimeInfo->total_time);
-	//qDebug() << g500RunningTimeInfo->total_time;
 	ui.g500ServiceStatus->item(0, 1)->setText(QString::number(g500RunningTimeInfo->total_time));
 }
 
@@ -641,7 +636,6 @@ void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparus
 
 void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo)
 {
-	//QString labelText = "SPARUS BatteryLevel: " + QString::number(sparusBatteryInfo->charge);
 	ui.sparusServiceStatus->item(0, 0)->setText(QString::number(sparusBatteryInfo->charge));
 	//ui.sparusBatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
 	//ui.sparusBatteryLabel->setText(labelText);
@@ -650,7 +644,6 @@ void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr&
 
 void MainWindow::sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo)
 {
-	//QString labelText = "SPARUS RunningTime: " + QString::number(sparusRunningTimeInfo->total_time);
 	ui.sparusServiceStatus->item(0, 1)->setText(QString::number(sparusRunningTimeInfo->total_time));
 	//ui.sparusTimeLabel->setText(labelText);
 }
