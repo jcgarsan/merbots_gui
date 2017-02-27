@@ -204,7 +204,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     //srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotation>(ui.vsRotationService->text().toUtf8().constData());
 
 	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
-    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
+    image_transport::TransportHints hints("compressed", ros::TransportHints());
+    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this, hints);
 	sub_resultTopic	= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
@@ -274,7 +275,10 @@ void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zVa
     }
     else
     {
-        qDebug() << "Service call failed";
+        qDebug() << "Service call failed.";
+        QMessageBox msgBox;
+        msgBox.setText("Service call failed.");
+        msgBox.exec();
     }
 }
 
@@ -337,11 +341,11 @@ void MainWindow::sparusTopicsButtonClicked()
 
 void MainWindow::armTopicButtonClicked()
 {
-  qDebug()<<"armTopicsButton clicked: reconnecting all the G500 topics";
-  sub_arm_state.shutdown();
-  qDebug()<<"arm topic has been shutdown";
-  sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
-  qDebug()<<"arm topic has been reconnected";
+    qDebug()<<"armTopicsButton clicked: reconnecting all the G500 topics";
+    sub_arm_state.shutdown();
+    qDebug()<<"arm topic has been shutdown";
+    sub_arm_state	= nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
+    qDebug()<<"arm topic has been reconnected";
 }
 
 
@@ -409,9 +413,9 @@ void MainWindow::g500GoToSurface()
 {
 	qDebug() << "Sending the G500 to the surface...";
 	cola2_msgs::Goto srv;
-    srv.request.position.x		= 0;
-    srv.request.position.y		= 0;
-    srv.request.position.z		= 0;
+    srv.request.position.z      = 0;
+    srv.request.disable_axis.x  = true;
+    srv.request.disable_axis.y  = true;
     srv.request.blocking 		= false;
     srv.request.keep_position	= false;
     srv.request.position_tolerance.x = 0.4;
@@ -427,7 +431,10 @@ void MainWindow::g500GoToSurface()
     }
     else
     {
-        qDebug() << "Service call failed";
+        qDebug() << "Service call failed.";
+        QMessageBox msgBox;
+        msgBox.setText("Service call failed.");
+        msgBox.exec();
     }
 }
 
@@ -538,8 +545,9 @@ void MainWindow::vsTopicsButtonClicked()
 	pub_target.shutdown();
 	qDebug()<<"VisualServoing topics have been shutdown";
 	image_transport::ImageTransport it(*nh);
-    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
-	sub_resultTopic = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
+    image_transport::TransportHints hints("compressed", ros::TransportHints());
+    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this, hints);
+    sub_resultTopic = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 	qDebug()<<"VisualServoing topics have been reconnected";
 }
@@ -871,13 +879,11 @@ void MainWindow::drawCurrentROI()
 	if (!activateVS)
 	{
         QPixmap tmpPixmap = pixmapTopic.copy(); 
-        //painter.begin(&pixmapTopic);
         painter.begin(&tmpPixmap);
 	    painter.setBrush(Qt::NoBrush);
 	    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
 	    painter.setPen(pen);
 	    painter.drawRect(x0, y0, x1-x0, y1-y0);
-        //ui.vsCameraInputViewer->setPixmap(pixmapTopic);
         ui.vsCameraInputViewer->setPixmap(tmpPixmap);
 	    painter.end();
 	    showCropROI();
