@@ -24,6 +24,7 @@ find_package(
 		cv_bridge
 		image_transport
 		compressed_image_transport
+		merbots_ibvs
 )
 
 find_package(OpenCV REQUIRED)
@@ -42,6 +43,7 @@ catkin_package(
 	cv_bridge
 	image_transport
 	compressed_image_transport
+	merbots_ibvs
 )
 
 include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS}) # ${OpenGL_INCLUDE_DIR})
@@ -50,10 +52,10 @@ include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS}) # ${OpenGL_IN
 # Qt Environment
 ##############################################################################
 
-# this comes from qt_build's qt-ros.cmake which is automatically 
+# this comes from qt_build's qt-ros.cmake which is automatically
 # included via the dependency call in package.xml
 # Add the appropriate components to the component list here
-rosbuild_prepare_qt4(QtCore QtGui QtWebKit QtNetwork QtOpengl) 
+rosbuild_prepare_qt4(QtCore QtGui QtWebKit QtNetwork QtOpengl)
 
 ##############################################################################
 # Sections
@@ -84,5 +86,5 @@ install(TARGETS merbots_gui RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION
 install(DIRECTORY launch/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
   PATTERN ".svn" EXCLUDE)
-  
+
 #message (STATUS "QT_SOURCES >>>>>>>>>>>>>>>>>>>>>>>>>>" ${QT_SOURCES})

@@ -5,14 +5,14 @@
   <description>
       Graphical User Interface for "MERBOTS" research project. More info about the project: http://www.irs.uji.es/merbots
   </description>
-  
+
   <maintainer email="garciaju@uji.es">Juan Carlos Garcia</maintainer>
   <license>BSD</license>
   <author email="garciaju@uji.es">Juan Carlos Garcia</author>
   <url>https://github.com/jcgarsan/merbots_gui</url>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
+
   <build_depend>qt_build</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>libqt4-dev</build_depend>
@@ -28,6 +28,7 @@
   <build_depend>OpenCV</build_depend>
   <build_depend>OpenGL</build_depend>
   <build_depend>compressed_image_transport</build_depend>
+  <build_depend>merbots_ibvs</build_depend>
 
   <run_depend>qt_build</run_depend>
   <run_depend>roscpp</run_depend>
@@ -44,5 +45,6 @@
   <run_depend>OpenCV</run_depend>
   <run_depend>OpenGL</run_depend>
   <run_depend>compressed_image_transport</run_depend>
+  <run_depend>merbots_ibvs</run_depend>
 
 </package>

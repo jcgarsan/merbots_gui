@@ -20,6 +20,7 @@
 #include <iostream>
 #include "../include/merbots_gui/main_window.hpp"
 #include "../include/merbots_gui/set_robot_pose.h"
+#include <merbots_ibvs/Rotate.h>
 
 #include <QtGui>
 #include <QMessageBox>
@@ -106,6 +107,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.armJointValues->setItem(2, 2, new QTableWidgetItem("2.153"));
 	ui.armJointValues->setItem(3, 2, new QTableWidgetItem("0.000"));
 	ui.armJointValues->setItem(4, 2, new QTableWidgetItem("1.338"));
+
+
+
 
     //Main App connections
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
@@ -198,8 +202,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
     srv_g500GoTo    = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
-    //srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotation>(ui.vsRotationService->text().toUtf8().constData());
+    srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotate>(ui.vsRotationService->text().toUtf8().constData());
 
+	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
     image_transport::TransportHints hints("compressed", ros::TransportHints());
     sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this, hints);
 	sub_resultTopic	= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
@@ -557,26 +562,13 @@ void MainWindow::vsRotationButtonClicked()
     qDebug() << "VS rotation: " << ui.vsRotationDataSpinBox->value();
     double spinBoxData = ui.vsRotationDataSpinBox->value();
 
-/*
     merbots_ibvs::Rotate srv;
-
-    if (spinBoxData <0)
+    if (spinBoxData != 0.0)
     {
-        srv.data = -ui.vsRotationDataSpinBox->value().toDouble();
-        if(srv_vsRotation.call(srv))
-            qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
-        else
-            qDebug() << "Service call failed";
+        srv.request.data = spinBoxData / 180.0 * 3.141592;
+        srv_vsRotation.call(srv);
+        qDebug() << "Service merbots_ibvs::Rotate called";
     }
-    else
-    {
-        srv.data = ui.vsRotationDataSpinBox->value().toDouble();
-        if(srv_vsRotation.call(srv))
-            qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
-        else
-            qDebug() << "Service call failed";
-    }
-*/
 }
 
 
