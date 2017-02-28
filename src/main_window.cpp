@@ -34,6 +34,7 @@
 #include <QSlider>
 
 #include <ros/package.h>
+#include <sensor_msgs/image_encodings.h>
 
 
 #define DebugTOI	false
@@ -206,8 +207,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
     sub_g500Camera   = it.subscribe(ui.g500CameraTopic->text().toUtf8().constData(), 1, &MainWindow::g500CameraCallback, this);
     sub_sparusCamera = it.subscribe(ui.sparusCameraTopic->text().toUtf8().constData(), 1, &MainWindow::sparusCameraCallback, this);
-    sub_imageTopic   = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
-	sub_resultTopic  = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
+    sub_imageTopic   = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::vsInputImageCallback, this);
+	sub_resultTopic  = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::vsResultImageCallback, this);
 	pub_target		 = it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
 	sub_arm_state	 = nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
@@ -568,8 +569,8 @@ void MainWindow::vsTopicsButtonClicked()
 	pub_target.shutdown();
 	qDebug()<<"VisualServoing topics have been shutdown";
 	image_transport::ImageTransport it(*nh);
-    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
-    sub_resultTopic = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
+    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::vsInputImageCallback, this);
+    sub_resultTopic = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::vsResultImageCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 	qDebug()<<"VisualServoing topics have been reconnected";
 }
@@ -737,9 +738,10 @@ void MainWindow::sparusCameraCallback(const sensor_msgs::Image::ConstPtr& msg)
         ui.sparusStreamView->setPixmap(sparusPixmap);
 }
 
-void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
+void MainWindow::vsInputImageCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
 	QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+    
 	if (activateVS)
 	{	imageTopic = dest.copy();
 		pixmapTopic = QPixmap::fromImage(imageTopic);
@@ -750,9 +752,15 @@ void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 	}
 }
 
-void MainWindow::resultCallback(const sensor_msgs::Image::ConstPtr& msg)
+void MainWindow::vsResultImageCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
     QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+
+    //qDebug() << "msg->encoding:" << msg->encoding.c_str() << ".";
+    QString msgEncoding = QString::fromUtf8(msg->encoding.c_str());
+    if (msgEncoding.compare(QString::fromStdString(sensor_msgs::image_encodings::RGB8)) != 0)
+        dest = dest.rgbSwapped();
+
     resultPixmapTopic = QPixmap::fromImage(dest);
     width = resultPixmapTopic.width();
     height = resultPixmapTopic.height();

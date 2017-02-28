@@ -153,11 +153,12 @@ public Q_SLOTS:
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
     void sparusCameraCallback(const sensor_msgs::Image::ConstPtr& msg);
 
+    void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
     void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
-    void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
-    void resultCallback(const sensor_msgs::Image::ConstPtr& msg);
 
-	void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
+    void vsInputImageCallback(const sensor_msgs::Image::ConstPtr& msg);
+    void vsResultImageCallback(const sensor_msgs::Image::ConstPtr& msg);
+
 
 
 private Q_SLOTS:
