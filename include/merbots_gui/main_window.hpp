@@ -73,15 +73,14 @@ public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
-	//ros::Subscriber		sub_imageTopic, sub_arm_state;
 	ros::Subscriber		sub_arm_state;
 	ros::Subscriber		sub_spec_params;
 	ros::Publisher		pub_spec_action, pub_spec_params;
 	ros::Publisher 		pub_dredg_action;
 	ros::ServiceClient 	srv_g500GoTo;
 
-	image_transport::Subscriber sub_imageTopic;
-	image_transport::Subscriber	sub_resultTopic;
+	image_transport::Subscriber sub_imageTopic, sub_resultTopic;
+	image_transport::Subscriber	sub_g500Image;
 	image_transport::Publisher 	pub_target;
 
 	sensor_msgs::ImagePtr 		croppedImageMsg;
@@ -148,6 +147,9 @@ public Q_SLOTS:
 	void g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo);
 	void g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& g500DiagnosticsInfo);
 
+    void g500ImageCallback(const sensor_msgs::Image::ConstPtr& msg);
+
+
 	void sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo);
 	void sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo);
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
@@ -171,9 +173,9 @@ private:
 	Ui::MainWindowDesign	ui;
 	QNode 					qnode;
 
-	QImage		imageTopic;
+	QImage		imageTopic, g500Image;
     QPainter	painter;
-    QPixmap		pixmapTopic, resultPixmapTopic, croppedPixmapTopic;
+    QPixmap		pixmapTopic, resultPixmapTopic, croppedPixmapTopic, g500Pixmap;
 
     int width, height;
     int x0,y0,x1,y1;

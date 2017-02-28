@@ -107,9 +107,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.armJointValues->setItem(3, 2, new QTableWidgetItem("0.000"));
 	ui.armJointValues->setItem(4, 2, new QTableWidgetItem("1.338"));
 
-
-
-
     //Main App connections
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
@@ -203,10 +200,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     srv_g500GoTo    = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
     //srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotation>(ui.vsRotationService->text().toUtf8().constData());
 
-	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
     image_transport::TransportHints hints("compressed", ros::TransportHints());
     sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this, hints);
 	sub_resultTopic	= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
+    sub_g500Image   = it.subscribe("/uwsim/camera1", 1, &MainWindow::g500ImageCallback, this, hints);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
 	sub_arm_state	 = nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
@@ -351,15 +348,17 @@ void MainWindow::armTopicButtonClicked()
 
 void MainWindow::g500LoadStream()
 {
-//    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
+    //QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
-    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
+    //QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
      				+ ui.g500StreamTopic->text();
     //ui.g500StreamView->load(text);
-    qDebug() << "New G500 stream: " <<  text.toUtf8().constData();
+    //qDebug() << "New G500 stream: " <<  text.toUtf8().constData();
     //ui.g500StreamView->load(QUrl("http://www.google.com"));
 	//tcpSocket->write("GET /stream?topic=/uwsim/camera1\r\n\r\n");
-    ui.g500StreamView->load(QUrl("http://localhost:8080/snapshot?topic=/uwsim/camera1"));
+    //ui.g500StreamView->load(QUrl("http://localhost:8080/snapshot?topic=/uwsim/camera1"));
+
+    qDebug() << "g500LoadStream";
 }
 
 
@@ -386,7 +385,7 @@ void MainWindow::sparusLoadStream()
 void MainWindow::g500StopStream()
 {
 	qDebug() << "G500 stream stopped";
-	ui.g500StreamView->stop();
+	//ui.g500StreamView->stop();
 }
 
 
@@ -702,6 +701,15 @@ void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& s
   }
 }
 
+
+void MainWindow::g500ImageCallback(const sensor_msgs::Image::ConstPtr& msg)
+{
+    QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+    g500Image = dest.copy();
+    g500Pixmap = QPixmap::fromImage(g500Image);
+    ui.g500StreamView->setPixmap(g500Pixmap);
+}
+
 void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
 	QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
@@ -714,6 +722,7 @@ void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 		drawCurrentROI();
 	}
 }
+
 void MainWindow::resultCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
     QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
