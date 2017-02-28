@@ -20,6 +20,7 @@
 #include <iostream>
 #include "../include/merbots_gui/main_window.hpp"
 #include "../include/merbots_gui/set_robot_pose.h"
+#include <merbots_ibvs/Rotate.h>
 
 #include <QtGui>
 #include <QMessageBox>
@@ -95,7 +96,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	//Arm limit table init
 	for (int i=0; i<5; i++)
 		ui.armJointValues->setItem(i, 0, new QTableWidgetItem("0.0"));
-	
+
 	ui.armJointValues->setItem(0, 1, new QTableWidgetItem("-1.571"));
 	ui.armJointValues->setItem(1, 1, new QTableWidgetItem("0.000"));
 	ui.armJointValues->setItem(2, 1, new QTableWidgetItem("0.000"));
@@ -139,7 +140,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
     QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
     QObject::connect(ui.vsRotationButton, SIGNAL(clicked()), this, SLOT(vsRotationButtonClicked()));
-    
+
     QObject::connect(ui.getGraspingPoseButton, SIGNAL(clicked()), this, SLOT(getInitGraspPose()));
     QObject::connect(ui.graspSpecTab, SIGNAL(currentChanged(int)), this, SLOT(setSpecificationMode(int)));
     QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
@@ -147,7 +148,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.interactiveSpecSlider3, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
     QObject::connect(ui.interactiveSpecSlider4, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
     QObject::connect(ui.interactiveSpecSlider5, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
-    QObject::connect(ui.interactiveSpecSlider6, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));    
+    QObject::connect(ui.interactiveSpecSlider6, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
     QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
     QObject::connect(ui.interactiveSpecSlider2, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
     QObject::connect(ui.interactiveSpecSlider3, SIGNAL(sliderReleased()), this, SLOT(updateAndResetInteractiveSpecParams()));
@@ -179,7 +180,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.guidedSpecSlider2->setMinimum(-180);
     ui.guidedSpecSlider3->setMinimum(-100);
 
-    //@TODO Teleoperation mode switch; goto dredge position and execute grasp buttons...    
+    //@TODO Teleoperation mode switch; goto dredge position and execute grasp buttons...
     QObject::connect(ui.executeGraspingButton, SIGNAL(clicked()), this, SLOT(executeGrasping()));
     QObject::connect(ui.executeDredgingButton, SIGNAL(clicked()), this, SLOT(executeDredging()));
     QObject::connect(ui.addWaypointButton, SIGNAL(clicked()), this, SLOT(addWaypoint()));
@@ -190,20 +191,20 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
 	image_transport::ImageTransport it(*nh);
-	sub_g500Odometry		= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
-	sub_g500Battery			= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
-	sub_g500Runningtime		= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
-	sub_g500Diagnostics		= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
+	sub_g500Odometry		= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this);
+	sub_g500Battery			= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this);
+	sub_g500Runningtime		= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this);
+	sub_g500Diagnostics		= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this);
 
-	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
-	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
-	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
-	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
+	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this);
+	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this);
+	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this);
+	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this);
 
     srv_g500GoTo    = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
-    //srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotation>(ui.vsRotationService->text().toUtf8().constData());
+    srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotate>(ui.vsRotationService->text().toUtf8().constData());
 
-	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
+	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
     image_transport::TransportHints hints("compressed", ros::TransportHints());
     sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this, hints);
 	sub_resultTopic	= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
@@ -239,7 +240,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 	tcpSocket = new QTcpSocket(this);
 	tcpSocket->connectToHost("localhost",8080);
-	QObject::connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(tcpDataReceive()));    
+	QObject::connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(tcpDataReceive()));
 
 }
 
@@ -315,10 +316,10 @@ void MainWindow::g500TopicsButtonClicked()
 	sub_g500Diagnostics.shutdown();
 	srv_g500GoTo.shutdown();
 	qDebug()<<"g500 topics have been shutdown";
-	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
-	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
-	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
-	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
+	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this);
+	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this);
+	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this);
+	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this);
 	srv_g500GoTo 		= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
 	qDebug()<<"g500 topics have been reconnected";
 }
@@ -332,10 +333,10 @@ void MainWindow::sparusTopicsButtonClicked()
 	sub_sparusRunningtime.shutdown();
 	sub_sparusDiagnostics.shutdown();
 	qDebug()<<"sparus topics have been shutdown";
-	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
-	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
-	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
-	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
+	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this);
+	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this);
+	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this);
+	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this);
 	qDebug()<<"sparus topics have been reconnected";
 }
 
@@ -557,27 +558,13 @@ void MainWindow::vsRotationButtonClicked()
 {
     qDebug() << "VS rotation: " << ui.vsRotationDataSpinBox->value();
     double spinBoxData = ui.vsRotationDataSpinBox->value();
-
-/*
     merbots_ibvs::Rotate srv;
-
-    if (spinBoxData <0)
+    if (spinBoxData != 0.0)
     {
-        srv.data = -ui.vsRotationDataSpinBox->value().toDouble();
-        if(srv_vsRotation.call(srv))
-            qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
-        else
-            qDebug() << "Service call failed";
+        srv.request.data = spinBoxData / 180.0 * 3.141592;
+        srv_vsRotation.call(srv);
+        qDebug() << "Service merbots_ibvs::Rotate called";
     }
-    else
-    {
-        srv.data = ui.vsRotationDataSpinBox->value().toDouble();
-        if(srv_vsRotation.call(srv))
-            qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
-        else
-            qDebug() << "Service call failed";
-    }
-*/
 }
 
 
@@ -878,7 +865,7 @@ void MainWindow::drawCurrentROI()
 	    qDebug() << sposition << ": Drawing Rectangle";
 	if (!activateVS)
 	{
-        QPixmap tmpPixmap = pixmapTopic.copy(); 
+        QPixmap tmpPixmap = pixmapTopic.copy();
         painter.begin(&tmpPixmap);
 	    painter.setBrush(Qt::NoBrush);
 	    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
@@ -891,7 +878,7 @@ void MainWindow::drawCurrentROI()
 }
 
 
-void MainWindow::showCropROI() 
+void MainWindow::showCropROI()
 {
 	QRect rect(x0+3, y0+3, x1-x0-6, y1-y0-6);
 	croppedPixmapTopic = pixmapTopic.copy(rect);

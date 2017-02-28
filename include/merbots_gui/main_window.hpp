@@ -78,7 +78,8 @@ public:
 	ros::Subscriber		sub_spec_params;
 	ros::Publisher		pub_spec_action, pub_spec_params;
 	ros::Publisher 		pub_dredg_action;
-	ros::ServiceClient 	srv_g500GoTo;
+    ros::ServiceClient  srv_g500GoTo;
+	ros::ServiceClient 	srv_vsRotation;
 
 	image_transport::Subscriber sub_imageTopic;
 	image_transport::Subscriber	sub_resultTopic;
@@ -135,7 +136,7 @@ public Q_SLOTS:
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
     void vsRotationButtonClicked();
-    
+
     void publishCroppedImage();
 
 	void tcpDataReceive();
@@ -156,7 +157,7 @@ public Q_SLOTS:
     void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
     void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
     void resultCallback(const sensor_msgs::Image::ConstPtr& msg);
-	
+
 	void armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg);
 
 
