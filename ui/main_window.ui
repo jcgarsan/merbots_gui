@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -549,7 +549,7 @@ depth</string>
                  <item>
                   <layout class="QVBoxLayout" name="g500StreamLayout">
                    <property name="spacing">
-                    <number>3</number>
+                    <number>2</number>
                    </property>
                    <property name="bottomMargin">
                     <number>0</number>
@@ -577,56 +577,9 @@ depth</string>
                     </widget>
                    </item>
                    <item>
-                    <layout class="QHBoxLayout" name="g500URrlLayout">
-                     <property name="spacing">
-                      <number>3</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>0</number>
-                     </property>
-                     <item>
-                      <widget class="QLineEdit" name="g500StreamIP">
-                       <property name="enabled">
-                        <bool>false</bool>
-                       </property>
-                       <property name="text">
-                        <string>http://192.168.100.100</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="g500StreamTopic">
-                       <property name="enabled">
-                        <bool>false</bool>
-                       </property>
-                       <property name="text">
-                        <string>/image_topic/raw</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QComboBox" name="g500StreamType">
-                       <property name="enabled">
-                        <bool>false</bool>
-                       </property>
-                       <item>
-                        <property name="text">
-                         <string>mjpeg</string>
-                        </property>
-                       </item>
-                       <item>
-                        <property name="text">
-                         <string>ros_compression</string>
-                        </property>
-                       </item>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
                     <layout class="QHBoxLayout" name="g500StreamButtonLayout">
                      <property name="spacing">
-                      <number>3</number>
+                      <number>4</number>
                      </property>
                      <property name="bottomMargin">
                       <number>0</number>
@@ -646,6 +599,18 @@ depth</string>
                      </item>
                      <item>
                       <widget class="QPushButton" name="g500LoadStreamButton">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>30</height>
+                        </size>
+                       </property>
                        <property name="text">
                         <string>Load G500 stream</string>
                        </property>
@@ -653,6 +618,18 @@ depth</string>
                      </item>
                      <item>
                       <widget class="QPushButton" name="g500StopStreamButton">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>30</height>
+                        </size>
+                       </property>
                        <property name="text">
                         <string>Stop streaming</string>
                        </property>
@@ -678,7 +655,7 @@ depth</string>
                  <item>
                   <layout class="QVBoxLayout" name="sparusStreamLayout">
                    <property name="spacing">
-                    <number>3</number>
+                    <number>2</number>
                    </property>
                    <property name="rightMargin">
                     <number>0</number>
@@ -687,56 +664,31 @@ depth</string>
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="QWebView" name="sparusStreamView">
-                     <property name="url">
-                      <url>
-                       <string>about:blank</string>
-                      </url>
+                    <widget class="QLabel" name="sparusStreamView">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>500</width>
+                       <height>250</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>SPARUS camera input</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <layout class="QHBoxLayout" name="sparusURrlLayout">
-                     <property name="spacing">
-                      <number>3</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>0</number>
-                     </property>
-                     <item>
-                      <widget class="QLineEdit" name="sparusStreamIP">
-                       <property name="text">
-                        <string>http://192.168.100.200</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="sparusStreamTopic">
-                       <property name="text">
-                        <string>/image_topic/raw</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QComboBox" name="sparusStreamType">
-                       <item>
-                        <property name="text">
-                         <string>ros</string>
-                        </property>
-                       </item>
-                       <item>
-                        <property name="text">
-                         <string>ros_compression</string>
-                        </property>
-                       </item>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
                     <layout class="QHBoxLayout" name="sparusStreamButtonLayout">
                      <property name="spacing">
-                      <number>3</number>
+                      <number>4</number>
                      </property>
                      <property name="rightMargin">
                       <number>0</number>
@@ -759,6 +711,18 @@ depth</string>
                      </item>
                      <item>
                       <widget class="QPushButton" name="sparusLoadStreamButton">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>30</height>
+                        </size>
+                       </property>
                        <property name="text">
                         <string>Load SPARUS stream</string>
                        </property>
@@ -766,6 +730,18 @@ depth</string>
                      </item>
                      <item>
                       <widget class="QPushButton" name="sparusStopStreamButton">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>30</height>
+                        </size>
+                       </property>
                        <property name="text">
                         <string>Stop streaming</string>
                        </property>
@@ -893,17 +869,40 @@ depth</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="vsCancelButton">
-                   <property name="maximumSize">
-                    <size>
-                     <width>240</width>
-                     <height>16777215</height>
-                    </size>
+                  <layout class="QHBoxLayout" name="horizontalLayout_7">
+                   <property name="topMargin">
+                    <number>0</number>
                    </property>
-                   <property name="text">
-                    <string>Cancel current Visual Servoing</string>
+                   <property name="bottomMargin">
+                    <number>0</number>
                    </property>
-                  </widget>
+                   <item>
+                    <widget class="QPushButton" name="vsStartCameraButton">
+                     <property name="maximumSize">
+                      <size>
+                       <width>120</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Start camera</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="vsCancelButton">
+                     <property name="maximumSize">
+                      <size>
+                       <width>120</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Cancel VS</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -915,6 +914,12 @@ depth</string>
                    </property>
                    <item>
                     <widget class="QDoubleSpinBox" name="vsRotationDataSpinBox">
+                     <property name="maximumSize">
+                      <size>
+                       <width>120</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
@@ -933,6 +938,12 @@ depth</string>
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>120</width>
+                       <height>16777215</height>
+                      </size>
                      </property>
                      <property name="text">
                       <string>Rotate VS</string>
@@ -1153,7 +1164,7 @@ depth</string>
                       <rect>
                        <x>5</x>
                        <y>8</y>
-                       <width>191</width>
+                       <width>226</width>
                        <height>161</height>
                       </rect>
                      </property>
@@ -1205,6 +1216,15 @@ depth</string>
                          <enum>Qt::Horizontal</enum>
                         </property>
                        </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QDoubleSpinBox" name="guidedSpecSpin1"/>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QDoubleSpinBox" name="guidedSpecSpin2"/>
+                      </item>
+                      <item row="5" column="1">
+                       <widget class="QDoubleSpinBox" name="guidedSpecSpin3"/>
                       </item>
                      </layout>
                     </widget>
@@ -1673,9 +1693,9 @@ depth</string>
                   <number>3</number>
                  </property>
                  <item>
-                  <widget class="QWebView" name="g500StreamView2">
+                  <widget class="QLabel" name="g500StreamView2">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -1688,14 +1708,15 @@ depth</string>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>300</width>
+                     <width>400</width>
                      <height>300</height>
                     </size>
                    </property>
-                   <property name="url">
-                    <url>
-                     <string>about:blank</string>
-                    </url>
+                   <property name="text">
+                    <string>G500 camera input</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -2029,7 +2050,7 @@ depth</string>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
-          <string>VisualServoing Settings</string>
+          <string>RobotCams and VS Settings</string>
          </attribute>
          <widget class="QWidget" name="verticalLayoutWidget_2">
           <property name="geometry">
@@ -2042,8 +2063,75 @@ depth</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <property name="spacing">
-            <number>2</number>
+            <number>3</number>
            </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox_7">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>105</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Robot camera</string>
+             </property>
+             <widget class="QWidget" name="formLayoutWidget_3">
+              <property name="geometry">
+               <rect>
+                <x>8</x>
+                <y>29</y>
+                <width>1221</width>
+                <height>71</height>
+               </rect>
+              </property>
+              <layout class="QFormLayout" name="formLayout_3">
+               <property name="horizontalSpacing">
+                <number>2</number>
+               </property>
+               <property name="verticalSpacing">
+                <number>2</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_21">
+                 <property name="text">
+                  <string>G500</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_31">
+                 <property name="text">
+                  <string>SPARUS</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="g500CameraTopic"/>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="sparusCameraTopic"/>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>Reconnect cameras</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QGroupBox" name="groupBox_6">
              <property name="sizePolicy">
@@ -2119,7 +2207,7 @@ depth</string>
                </item>
                <item row="4" column="1">
                 <widget class="QLineEdit" name="vsRotationService">
-                  <property name="text">
+                 <property name="text">
                   <string>/ibvs/rotate</string>
                  </property>
                 </widget>
@@ -2140,19 +2228,6 @@ depth</string>
               </property>
              </widget>
             </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_6">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>
@@ -2695,13 +2770,6 @@ depth</string>
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../resources/images.qrc"/>
  </resources>

@@ -122,18 +122,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.g500LoadStreamButton2, SIGNAL(clicked()), this, SLOT(g500LoadStream2()));
     QObject::connect(ui.g500StopStreamButton, SIGNAL(clicked()), this, SLOT(g500StopStream()));
     QObject::connect(ui.g500StopStreamButton2, SIGNAL(clicked()), this, SLOT(g500StopStream2()));
-    QObject::connect(ui.g500StreamIP, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
-    QObject::connect(ui.g500StreamTopic, SIGNAL(returnPressed()), this, SLOT(g500LoadStream()));
-    QObject::connect(ui.g500StreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(g500LoadStream()));
     QObject::connect(ui.g500TopicsButton, SIGNAL(clicked()), this, SLOT(g500TopicsButtonClicked()));
     QObject::connect(ui.g500GoToPositionButton, SIGNAL(clicked()), this, SLOT(g500GoToPositionButtonClicked()));
     QObject::connect(ui.g500GoToSurfaceButton, SIGNAL(clicked()), this, SLOT(g500GoToSurface()));
 
     QObject::connect(ui.sparusLoadStreamButton, SIGNAL(clicked()), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusStopStreamButton, SIGNAL(clicked()), this, SLOT(sparusStopStream()));
-    QObject::connect(ui.sparusStreamIP, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
-    QObject::connect(ui.sparusStreamTopic, SIGNAL(returnPressed()), this, SLOT(sparusLoadStream()));
-    QObject::connect(ui.sparusStreamType, SIGNAL(currentIndexChanged(int)), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusTopicsButton, SIGNAL(clicked()), this, SLOT(sparusTopicsButtonClicked()));
 
     QObject::connect(ui.vsPublishButton, SIGNAL(clicked()),this, SLOT(vsPublishButtonClicked()));
@@ -353,58 +347,37 @@ void MainWindow::armTopicButtonClicked()
 
 void MainWindow::g500LoadStream()
 {
-    //QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
-     				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
-    //QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
-     				+ ui.g500StreamTopic->text();
-    //ui.g500StreamView->load(text);
-    //qDebug() << "New G500 stream: " <<  text.toUtf8().constData();
-    //ui.g500StreamView->load(QUrl("http://www.google.com"));
-	//tcpSocket->write("GET /stream?topic=/uwsim/camera1\r\n\r\n");
-    //ui.g500StreamView->load(QUrl("http://localhost:8080/snapshot?topic=/uwsim/camera1"));
-
     qDebug() << "g500LoadStream";
 }
 
 
 void MainWindow::g500LoadStream2()
 {
-    QString text = ui.g500StreamIP->text() + ":8080/stream?topic=" \
-     				+ ui.g500StreamTopic->text() + "&type=" + ui.g500StreamType->currentText();
-    qDebug() << "New G500 stream2: " <<  text.toUtf8().constData();
-    ui.g500StreamView2->load(QUrl("http://www.google.com"));
-    //ui.g500StreamView->load(text);
+    qDebug() << "New G500 stream2";
 }
 
 
 void MainWindow::sparusLoadStream()
 {
-    QString text = ui.sparusStreamIP->text() + ":8080/stream?topic=" \
-     				+ ui.sparusStreamTopic->text() + "&type=" + ui.sparusStreamType->currentText();
-    qDebug() << "New SPARUS stream: " <<  text.toUtf8().constData();
-    ui.sparusStreamView->load(QUrl("http://www.google.com"));
-    //ui.sparusStreamView->load(text);
+    qDebug() << "New SPARUS stream";
 }
 
 
 void MainWindow::g500StopStream()
 {
 	qDebug() << "G500 stream stopped";
-	//ui.g500StreamView->stop();
 }
 
 
 void MainWindow::g500StopStream2()
 {
 	qDebug() << "G500 stream stopped";
-	ui.g500StreamView2->stop();
 }
 
 
 void MainWindow::sparusStopStream()
 {
 	qDebug() << "SPARUS stream stopped";
-	ui.sparusStreamView->stop();
 }
 
 
