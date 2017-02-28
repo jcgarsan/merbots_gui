@@ -36,6 +36,7 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Float32MultiArray.h>
+#include <std_srvs/Empty.h>
 #include <auv_msgs/NavSts.h>
 #include <cola2_msgs/BatteryLevel.h>
 #include <cola2_msgs/TotalTime.h>
@@ -78,17 +79,16 @@ public:
 	ros::Publisher		pub_spec_action, pub_spec_params;
 	ros::Publisher 		pub_dredg_action;
     ros::ServiceClient  srv_g500GoTo;
-	ros::ServiceClient 	srv_vsRotation;
+	ros::ServiceClient 	srv_vsRotation, srv_vsCancel;
 
 	image_transport::Subscriber sub_imageTopic, sub_resultTopic;
-	image_transport::Subscriber	sub_g500Image;
+	image_transport::Subscriber	sub_g500Camera, sub_sparusCamera;
 	image_transport::Publisher 	pub_target;
 
 	sensor_msgs::ImagePtr 		croppedImageMsg;
 
-	QTcpSocket *tcpSocket;
-
-	bool activeCurrentVS, activateVS;
+	bool activateVS;
+    bool g500CameraEnable, g500CameraEnable2, sparusCameraEnable;
 
 	SetRobotPoseDlg *dlg;
 
@@ -132,13 +132,11 @@ public Q_SLOTS:
     void armTopicButtonClicked();
 
     void vsPublishButtonClicked();
+    void vsStartCameraButtonClicked();
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
     void vsRotationButtonClicked();
-
-    void publishCroppedImage();
-
-	void tcpDataReceive();
+    void robotCamsTopicsButtonClicked();
 
 	/******************************************
 	** Implemenation [Callbacks]
@@ -147,14 +145,13 @@ public Q_SLOTS:
 	void g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo);
 	void g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo);
 	void g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& g500DiagnosticsInfo);
-
-    void g500ImageCallback(const sensor_msgs::Image::ConstPtr& msg);
-
+    void g500CameraCallback(const sensor_msgs::Image::ConstPtr& msg);
 
 	void sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo);
 	void sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo);
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
+    void sparusCameraCallback(const sensor_msgs::Image::ConstPtr& msg);
 
     void specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams);
     void imageCallback(const sensor_msgs::Image::ConstPtr& msg);
@@ -174,13 +171,12 @@ private:
 	Ui::MainWindowDesign	ui;
 	QNode 					qnode;
 
-	QImage		imageTopic, g500Image;
+	QImage		imageTopic, g500Image, sparusImage;
     QPainter	painter;
-    QPixmap		pixmapTopic, resultPixmapTopic, croppedPixmapTopic, g500Pixmap;
+    QPixmap		pixmapTopic, resultPixmapTopic, croppedPixmapTopic, g500Pixmap, sparusPixmap;
 
     int width, height;
     int x0,y0,x1,y1;
-    bool roiStarted;
 
     void startROI(int x0, int y0);
     void endROI(int x1, int y1);

@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -2058,7 +2058,7 @@ depth</string>
             <x>5</x>
             <y>6</y>
             <width>1241</width>
-            <height>491</height>
+            <height>441</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -2116,17 +2116,25 @@ depth</string>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="g500CameraTopic"/>
+                <widget class="QLineEdit" name="g500CameraTopic">
+                 <property name="text">
+                  <string>/uwsim/camera1</string>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="sparusCameraTopic"/>
+                <widget class="QLineEdit" name="sparusCameraTopic">
+                 <property name="text">
+                  <string>/uwsim/camera1</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="robotCamsTopicsButton">
              <property name="text">
               <string>Reconnect cameras</string>
              </property>
@@ -2135,10 +2143,16 @@ depth</string>
            <item>
             <widget class="QGroupBox" name="groupBox_6">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>225</height>
+              </size>
              </property>
              <property name="title">
               <string>Target selection</string>
@@ -2149,10 +2163,13 @@ depth</string>
                 <x>9</x>
                 <y>30</y>
                 <width>1221</width>
-                <height>145</height>
+                <height>157</height>
                </rect>
               </property>
               <layout class="QFormLayout" name="formLayout_7">
+               <property name="horizontalSpacing">
+                <number>5</number>
+               </property>
                <property name="verticalSpacing">
                 <number>2</number>
                </property>
@@ -2212,13 +2229,27 @@ depth</string>
                  </property>
                 </widget>
                </item>
+               <item row="5" column="0">
+                <widget class="QLabel" name="label_35">
+                 <property name="text">
+                  <string>VS Cancel</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="1">
+                <widget class="QLineEdit" name="vsCancelService">
+                 <property name="text">
+                  <string>/ibvs/restart</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
              <widget class="QPushButton" name="vsTopicsButton">
               <property name="geometry">
                <rect>
                 <x>10</x>
-                <y>180</y>
+                <y>190</y>
                 <width>1221</width>
                 <height>27</height>
                </rect>
@@ -2228,6 +2259,19 @@ depth</string>
               </property>
              </widget>
             </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>

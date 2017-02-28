@@ -64,8 +64,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.mainTabs->setCurrentIndex(0);
 	ui.graspSpecTab->setCurrentIndex(0);
 
-    activeCurrentVS = false;
-    activateVS 		= true;
+    activateVS         = true;
+    g500CameraEnable   = false;
+    g500CameraEnable2  = false;
+    sparusCameraEnable = false;
 
 	//Init section
 	ros::init(argc,argv,"merbots_gui");
@@ -130,7 +132,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.sparusStopStreamButton, SIGNAL(clicked()), this, SLOT(sparusStopStream()));
     QObject::connect(ui.sparusTopicsButton, SIGNAL(clicked()), this, SLOT(sparusTopicsButtonClicked()));
 
+    QObject::connect(ui.robotCamsTopicsButton, SIGNAL(clicked()), this, SLOT(robotCamsTopicsButtonClicked()));
+
     QObject::connect(ui.vsPublishButton, SIGNAL(clicked()),this, SLOT(vsPublishButtonClicked()));
+    QObject::connect(ui.vsStartCameraButton, SIGNAL(clicked()), this, SLOT(vsStartCameraButtonClicked()));
 	QObject::connect(ui.vsCancelButton, SIGNAL(clicked()),this, SLOT(vsCancelButtonClicked()));
     QObject::connect(ui.vsTopicsButton, SIGNAL(clicked()), this, SLOT(vsTopicsButtonClicked()));
     QObject::connect(ui.vsRotationButton, SIGNAL(clicked()), this, SLOT(vsRotationButtonClicked()));
@@ -184,7 +189,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
 	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
-	image_transport::ImageTransport it(*nh);
+    image_transport::ImageTransport it(*nh);
 	sub_g500Odometry		= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
 	sub_g500Battery			= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
 	sub_g500Runningtime		= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
@@ -197,13 +202,13 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 
     srv_g500GoTo    = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
     srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotate>(ui.vsRotationService->text().toUtf8().constData());
+    srv_vsCancel    = nh->serviceClient<std_srvs::Empty>(ui.vsCancelService->text().toUtf8().constData());
 
-	//sub_imageTopic	= nh->subscribe<sensor_msgs::Image>(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this); 
-    image_transport::TransportHints hints("compressed", ros::TransportHints());
-    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this, hints);
-	sub_resultTopic	= it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
-    sub_g500Image   = it.subscribe("/uwsim/camera1", 1, &MainWindow::g500ImageCallback, this, hints);
-	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
+    sub_g500Camera   = it.subscribe(ui.g500CameraTopic->text().toUtf8().constData(), 1, &MainWindow::g500CameraCallback, this);
+    sub_sparusCamera = it.subscribe(ui.sparusCameraTopic->text().toUtf8().constData(), 1, &MainWindow::sparusCameraCallback, this);
+    sub_imageTopic   = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
+	sub_resultTopic  = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
+	pub_target		 = it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 
 	sub_arm_state	 = nh->subscribe<sensor_msgs::JointState>(ui.armTopic->text().toUtf8().constData(), 1, &MainWindow::armStateCallback, this);
 	sub_spec_params	 = nh->subscribe<std_msgs::Float32MultiArray>("/specification_params_to_gui", 1, &MainWindow::specParamsCallback, this);
@@ -223,7 +228,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     //VisualServoing user interaction init
     ui.vsCameraInputViewer->setPixmap(pixmapTopic);
     ui.vsCameraInputViewer->installEventFilter(this);
-    roiStarted = false;
     x0 = 0; y0 = 0;
     x1 = 1; y1 = 1;
 
@@ -233,50 +237,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     				 this, SLOT(setRobotPosition(double, double, double, double, double, double)));
 
 
-	tcpSocket = new QTcpSocket(this);
-	tcpSocket->connectToHost("localhost",8080);
-	QObject::connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(tcpDataReceive()));    
 
 }
 
-void MainWindow::tcpDataReceive()
-{
-    QByteArray data = QByteArray::fromHex(tcpSocket->readAll());
-    qDebug() << data;
-}
 
-
-void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zValueSrv, double rollValueSrv, double pitchValueSrv, double yawValueSrv)
-{
-	qDebug() << "Sending the G500 to the new position...";
-	qDebug() << xValueSrv << " " << yValueSrv << " " << zValueSrv << " " << rollValueSrv << " " << pitchValueSrv << " " << yawValueSrv;
-
-	cola2_msgs::Goto srv;
-    srv.request.position.x		= xValueSrv;
-    srv.request.position.y		= yValueSrv;
-    srv.request.position.z		= zValueSrv;
-    srv.request.yaw	  			= yawValueSrv;
-    srv.request.blocking 		= false;
-    srv.request.keep_position	= false;
-    srv.request.position_tolerance.x = 0.4;
-    srv.request.position_tolerance.y = 0.4;
-    srv.request.position_tolerance.z = 0.4;
-    srv.request.altitude_mode	= false;
-    srv.request.priority		= 10;
-    srv.request.reference 		= srv.request.REFERENCE_NED;
-
-    if(srv_g500GoTo.call(srv))
-    {
-        qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
-    }
-    else
-    {
-        qDebug() << "Service call failed.";
-        QMessageBox msgBox;
-        msgBox.setText("Service call failed.");
-        msgBox.exec();
-    }
-}
 
 MainWindow::~MainWindow() { }
 
@@ -335,6 +299,20 @@ void MainWindow::sparusTopicsButtonClicked()
 	qDebug()<<"sparus topics have been reconnected";
 }
 
+
+void MainWindow::robotCamsTopicsButtonClicked()
+{
+    qDebug()<<"robotCamsTopicsButton clicked: reconnecting all the cameras topics";
+    sub_g500Camera.shutdown();
+    sub_sparusCamera.shutdown();
+    qDebug()<<"Robot cameras topics have been shutdown";
+    image_transport::ImageTransport it(*nh);
+    sub_g500Camera   = it.subscribe(ui.g500CameraTopic->text().toUtf8().constData(), 1, &MainWindow::g500CameraCallback, this);
+    sub_sparusCamera = it.subscribe(ui.sparusCameraTopic->text().toUtf8().constData(), 1, &MainWindow::sparusCameraCallback, this);
+    qDebug()<<"Robot cameras topics have been reconnected";
+}
+
+
 void MainWindow::armTopicButtonClicked()
 {
     qDebug()<<"armTopicsButton clicked: reconnecting all the G500 topics";
@@ -348,42 +326,88 @@ void MainWindow::armTopicButtonClicked()
 void MainWindow::g500LoadStream()
 {
     qDebug() << "g500LoadStream";
+    g500CameraEnable = true;
 }
 
 
 void MainWindow::g500LoadStream2()
 {
-    qDebug() << "New G500 stream2";
+    qDebug() << "Enabling G500 streaming";
+    g500CameraEnable2 = true;
 }
 
 
 void MainWindow::sparusLoadStream()
 {
     qDebug() << "New SPARUS stream";
+    sparusCameraEnable = true;
 }
 
 
 void MainWindow::g500StopStream()
 {
-	qDebug() << "G500 stream stopped";
+	qDebug() << "G500 streaming stopped";
+    g500CameraEnable = false;
+    ui.g500StreamView->clear();
+    ui.g500StreamView->setText("G500 camera input");
 }
 
 
 void MainWindow::g500StopStream2()
 {
-	qDebug() << "G500 stream stopped";
+	qDebug() << "G500 streaming stopped";
+    g500CameraEnable2 = false;
+    ui.g500StreamView2->clear();
+    ui.g500StreamView2->setText("G500 camera input");
 }
 
 
 void MainWindow::sparusStopStream()
 {
-	qDebug() << "SPARUS stream stopped";
+	qDebug() << "SPARUS streaming stopped";
+    sparusCameraEnable = false;
+    ui.sparusStreamView->clear();
+    ui.sparusStreamView->setText("SPARUS camera input");
 }
 
 
 void MainWindow::g500GoToPositionButtonClicked()
 {
+    //This shows a QDialog to enter manually the robot desired position or get it from UWSim (ToDo)
 	dlg->show();
+}
+
+
+void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zValueSrv, double rollValueSrv, double pitchValueSrv, double yawValueSrv)
+{
+    qDebug() << "Sending the G500 to the new position...";
+    qDebug() << xValueSrv << " " << yValueSrv << " " << zValueSrv << " " << rollValueSrv << " " << pitchValueSrv << " " << yawValueSrv;
+
+    cola2_msgs::Goto srv;
+    srv.request.position.x      = xValueSrv;
+    srv.request.position.y      = yValueSrv;
+    srv.request.position.z      = zValueSrv;
+    srv.request.yaw             = yawValueSrv;
+    srv.request.blocking        = false;
+    srv.request.keep_position   = false;
+    srv.request.position_tolerance.x = 0.4;
+    srv.request.position_tolerance.y = 0.4;
+    srv.request.position_tolerance.z = 0.4;
+    srv.request.altitude_mode   = false;
+    srv.request.priority        = 10;
+    srv.request.reference       = srv.request.REFERENCE_NED;
+
+    if(srv_g500GoTo.call(srv))
+    {
+        qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
+    }
+    else
+    {
+        qDebug() << "Service call failed.";
+        QMessageBox msgBox;
+        msgBox.setText("Service call failed.");
+        msgBox.exec();
+    }
 }
 
 void MainWindow::g500GoToSurface()
@@ -423,6 +447,7 @@ void MainWindow::getInitGraspPose(){
   ros::spinOnce();
 }
 
+
 void MainWindow::setSpecificationMode( int tab ){
 
   std_msgs::String msg;
@@ -450,12 +475,14 @@ void MainWindow::updateInteractiveSpecParams(){
   ros::spinOnce();
 }
 
+
 void MainWindow::executeGrasping(){
   std_msgs::String msg;
   msg.data = "execute";
   pub_spec_action.publish(msg);
   ros::spinOnce();
 }
+
 
 void MainWindow::executeDredging(){
   std_msgs::String msg;
@@ -464,12 +491,14 @@ void MainWindow::executeDredging(){
   ros::spinOnce();
 }
 
+
 void MainWindow::addWaypoint(){
   std_msgs::String msg;
   msg.data = "add";
   pub_dredg_action.publish(msg);
   ros::spinOnce();
 }
+
 
 void MainWindow::clearWaypoints(){
   std_msgs::String msg;
@@ -478,12 +507,14 @@ void MainWindow::clearWaypoints(){
   ros::spinOnce();
 }
 
+
 void MainWindow::removeLastWaypoint(){
   std_msgs::String msg;
   msg.data = "remove_last";
   pub_dredg_action.publish(msg);
   ros::spinOnce();
 }
+
 
 void MainWindow::vsPublishButtonClicked()
 {
@@ -500,19 +531,34 @@ void MainWindow::vsPublishButtonClicked()
 
 	// Converting the image to sensor_msgs::ImagePtr bgr8
 	croppedImageMsg = cv_bridge::CvImage(std_msgs::Header(), "rgb8", cvImage).toImageMsg();
-	activeCurrentVS = true; //Boolean used to stop publishing the cropped
+    qDebug() << "Publishing ToI...";
 	pub_target.publish(croppedImageMsg);
+    activateVS = true;
+}
+
+
+void MainWindow::vsStartCameraButtonClicked()
+{
+    //Re-activate VS
+    activateVS = true;
 }
 
 
 void MainWindow::vsCancelButtonClicked()
 {
-	//Flag to disable publishing the cropped image
-	activeCurrentVS = false;
+    std_srvs::Empty srv;
 
-	//Re-activate VS
-	activateVS = true;
+    if (srv_vsCancel.call(srv))
+        qDebug() << "Current VS cancelled.";
+    else
+    {
+        qDebug() << "Service call failed.";
+        QMessageBox msgBox;
+        msgBox.setText("Service call failed.");
+        msgBox.exec();
+    }
 }
+
 
 void MainWindow::vsTopicsButtonClicked()
 {
@@ -522,8 +568,7 @@ void MainWindow::vsTopicsButtonClicked()
 	pub_target.shutdown();
 	qDebug()<<"VisualServoing topics have been shutdown";
 	image_transport::ImageTransport it(*nh);
-    image_transport::TransportHints hints("compressed", ros::TransportHints());
-    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this, hints);
+    sub_imageTopic  = it.subscribe(ui.vsCameraInput->text().toUtf8().constData(), 1, &MainWindow::imageCallback, this);
     sub_resultTopic = it.subscribe(ui.vsResult->text().toUtf8().constData(), 1, &MainWindow::resultCallback, this);
 	pub_target		= it.advertise(ui.vsCroppedImage->text().toUtf8().constData(), 1);
 	qDebug()<<"VisualServoing topics have been reconnected";
@@ -535,23 +580,27 @@ void MainWindow::vsRotationButtonClicked()
     qDebug() << "VS rotation: " << ui.vsRotationDataSpinBox->value();
     double spinBoxData = ui.vsRotationDataSpinBox->value();
 
+    QMessageBox msgBox;
     merbots_ibvs::Rotate srv;
     if (spinBoxData != 0.0)
     {
         srv.request.data = spinBoxData / 180.0 * 3.141592;
-        srv_vsRotation.call(srv);
-        qDebug() << "Service merbots_ibvs::Rotate called";
+        if (srv_vsRotation.call(srv))
+            qDebug() << "Service merbots_ibvs::Rotate called";
+        else
+        {
+            qDebug() << "Service call failed.";
+            msgBox.setText("Service call failed.");
+            msgBox.exec();
+        }
+    }
+    else
+    {
+        msgBox.setText("Rotation angle must be different to 0.");
+        msgBox.exec();
     }
 }
 
-
-void MainWindow::publishCroppedImage()
-{
-	if (activeCurrentVS)
-	{	// Publishing the new target
-		pub_target.publish(croppedImageMsg);
-	}
-}
 
 void MainWindow::updateAndResetInteractiveSpecParams(){
   std_msgs::Float32MultiArray msg;
@@ -667,12 +716,25 @@ void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& s
 }
 
 
-void MainWindow::g500ImageCallback(const sensor_msgs::Image::ConstPtr& msg)
+void MainWindow::g500CameraCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
     QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
     g500Image = dest.copy();
     g500Pixmap = QPixmap::fromImage(g500Image);
-    ui.g500StreamView->setPixmap(g500Pixmap);
+    if (g500CameraEnable)
+        ui.g500StreamView->setPixmap(g500Pixmap);
+    if (g500CameraEnable2)
+        ui.g500StreamView2->setPixmap(g500Pixmap);
+}
+
+
+void MainWindow::sparusCameraCallback(const sensor_msgs::Image::ConstPtr& msg)
+{
+    QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+    sparusImage = dest.copy();
+    sparusPixmap = QPixmap::fromImage(sparusImage);
+    if (sparusCameraEnable)
+        ui.sparusStreamView->setPixmap(sparusPixmap);
 }
 
 void MainWindow::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
@@ -802,7 +864,6 @@ void MainWindow::startROI(int _x0, int _y0)
     {
         x0 = _x0;
         y0 = _y0;
-        roiStarted = true;
         QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x0), QString::number(y0));
         if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
 	        qDebug() << sposition << ": START ROI";
@@ -815,7 +876,6 @@ void MainWindow::endROI(int _x1, int _y1)
     if(validPoint1(_x1, _y1))
     {
         updatePoint1(_x1, _y1);
-        roiStarted = false;
         QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x1), QString::number(y1));
         if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
 	        qDebug() << sposition << ": END ROI";
