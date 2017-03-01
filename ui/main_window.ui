@@ -1459,27 +1459,32 @@ depth</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>325</width>
-                     <height>160</height>
+                     <width>362</width>
+                     <height>145</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>325</width>
-                     <height>160</height>
+                     <width>362</width>
+                     <height>145</height>
                     </size>
                    </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>9</pointsize>
+                    </font>
+                   </property>
                    <attribute name="horizontalHeaderDefaultSectionSize">
-                    <number>70</number>
+                    <number>85</number>
                    </attribute>
                    <attribute name="horizontalHeaderMinimumSectionSize">
-                    <number>70</number>
+                    <number>85</number>
                    </attribute>
                    <attribute name="verticalHeaderDefaultSectionSize">
-                    <number>25</number>
+                    <number>22</number>
                    </attribute>
                    <attribute name="verticalHeaderMinimumSectionSize">
-                    <number>25</number>
+                    <number>22</number>
                    </attribute>
                    <row>
                     <property name="text">
@@ -1557,7 +1562,7 @@ depth</string>
                     </size>
                    </property>
                    <property name="text">
-                    <string>/arm5e/joint_state</string>
+                    <string>/arm5e/joint_state_angle</string>
                    </property>
                   </widget>
                  </item>
@@ -1788,7 +1793,7 @@ depth</string>
             <x>11</x>
             <y>11</y>
             <width>1241</width>
-            <height>421</height>
+            <height>401</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1831,18 +1836,39 @@ depth</string>
               <property name="geometry">
                <rect>
                 <x>9</x>
-                <y>29</y>
+                <y>20</y>
                 <width>1231</width>
-                <height>161</height>
+                <height>143</height>
                </rect>
               </property>
-              <layout class="QFormLayout" name="formLayout_2">
-               <property name="verticalSpacing">
-                <number>2</number>
-               </property>
+              <layout class="QGridLayout" name="gridLayout_2">
                <property name="bottomMargin">
                 <number>0</number>
                </property>
+               <property name="spacing">
+                <number>4</number>
+               </property>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>Battery level</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="g500TopicBatteryLevel">
+                 <property name="text">
+                  <string>/cola2_safety/ocean_server_batteries</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Diagnostics</string>
+                 </property>
+                </widget>
+               </item>
                <item row="0" column="0">
                 <widget class="QLabel" name="label_11">
                  <property name="text">
@@ -1850,66 +1876,87 @@ depth</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_12">
-                 <property name="text">
-                  <string>Battery level</string>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="g500TopicOdometry">
                  <property name="text">
-                  <string>/g500/cola2_navigation/nav_sts_hz</string>
+                  <string>/cola2_navigation/nav_sts_hz</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="1">
-                <widget class="QLineEdit" name="g500TopicBatteryLevel">
+               <item row="0" column="2">
+                <widget class="QLabel" name="label_37">
                  <property name="text">
-                  <string>/g500/cola2_safety/ocean_server_batteries</string>
+                  <string>Merged body velocity</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
+               <item row="4" column="1">
+                <widget class="QLineEdit" name="g500TopicDiagnostics">
+                 <property name="text">
+                  <string>/diagnostics_agg</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QLabel" name="label_36">
+                 <property name="text">
+                  <string>Merged world</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QLineEdit" name="g500TopicMergedBodyVel">
+                 <property name="text">
+                  <string>/cola2_control/merged_body_velocity_req_hz</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3">
+                <widget class="QLineEdit" name="g500TopicMergedWorld">
+                 <property name="text">
+                  <string>/cola2_control/merged_world_waypoint_req_hz</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="3">
+                <widget class="QLineEdit" name="g500TopicRunningTime">
+                 <property name="text">
+                  <string>/cola2_safety/total_time</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2">
                 <widget class="QLabel" name="label_3">
                  <property name="text">
                   <string>Running time</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="label_4">
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="g500TopicGoToService">
                  <property name="text">
-                  <string>Diagnostics</string>
+                  <string>/cola2_control/enable_goto</string>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="0">
+               <item row="4" column="3">
+                <widget class="QLineEdit" name="g500CameraTopic">
+                 <property name="text">
+                  <string>/stereo_camera/right/image_rect_color</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="2">
+                <widget class="QLabel" name="label_38">
+                 <property name="text">
+                  <string>G500 camera</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
                 <widget class="QLabel" name="label_5">
                  <property name="text">
                   <string>GoTo service</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLineEdit" name="g500TopicRunningTime">
-                 <property name="text">
-                  <string>/g500/cola2_safety/total_time</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1">
-                <widget class="QLineEdit" name="g500TopicDiagnostics">
-                 <property name="text">
-                  <string>/g500/diagnostics_agg</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QLineEdit" name="g500TopicGoToService">
-                 <property name="text">
-                  <string>/g500/cola2_control/enable_goto</string>
                  </property>
                 </widget>
                </item>
@@ -1946,31 +1993,17 @@ depth</string>
                 <x>9</x>
                 <y>29</y>
                 <width>1231</width>
-                <height>161</height>
+                <height>141</height>
                </rect>
               </property>
-              <layout class="QFormLayout" name="formLayout">
-               <property name="verticalSpacing">
-                <number>2</number>
+              <layout class="QGridLayout" name="gridLayout_4">
+               <property name="spacing">
+                <number>4</number>
                </property>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_6">
+               <item row="2" column="2">
+                <widget class="QLabel" name="label_40">
                  <property name="text">
-                  <string>Odometry</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="sparusTopicOdometry">
-                 <property name="text">
-                  <string>/sparus/cola2_navigation/nav_sts_hz</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_7">
-                 <property name="text">
-                  <string>Battery level</string>
+                  <string>Running time</string>
                  </property>
                 </widget>
                </item>
@@ -1981,24 +2014,38 @@ depth</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_8">
-                 <property name="text">
-                  <string>Running time</string>
-                 </property>
-                </widget>
-               </item>
                <item row="2" column="1">
-                <widget class="QLineEdit" name="sparusTopicRunningTime">
+                <widget class="QLineEdit" name="sparusTopicGoToService">
                  <property name="text">
-                  <string>/sparus/cola2_safety/total_time</string>
+                  <string>/cola2_control/enable_goto</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="label_9">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_6">
                  <property name="text">
-                  <string>Diagnostics</string>
+                  <string>Odometry</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="4">
+                <widget class="QLineEdit" name="sparusCameraTopic">
+                 <property name="text">
+                  <string>/uwsim/camera1</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Battery level</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2">
+                <widget class="QLabel" name="label_31">
+                 <property name="text">
+                  <string>SPARUS camera</string>
                  </property>
                 </widget>
                </item>
@@ -2009,15 +2056,53 @@ depth</string>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="0">
-                <widget class="QLabel" name="label_10">
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="sparusTopicOdometry">
                  <property name="text">
-                  <string>Other topic</string>
+                  <string>/sparus/cola2_navigation/nav_sts_hz</string>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="1">
-                <widget class="QLineEdit" name="lineEdit_10"/>
+               <item row="1" column="2">
+                <widget class="QLabel" name="label_39">
+                 <property name="text">
+                  <string>Merged world</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>GoTo service</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>Body velocity</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Diagnostics</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="4">
+                <widget class="QLineEdit" name="sparusTopicMergedBodyVel"/>
+               </item>
+               <item row="1" column="4">
+                <widget class="QLineEdit" name="sparusTopicMergedWorld"/>
+               </item>
+               <item row="2" column="4">
+                <widget class="QLineEdit" name="sparusTopicRunningTime">
+                 <property name="text">
+                  <string>/sparus/cola2_safety/total_time</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -2049,7 +2134,7 @@ depth</string>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
-          <string>RobotCams and VS Settings</string>
+          <string>Visual servoing Settings</string>
          </attribute>
          <widget class="QWidget" name="verticalLayoutWidget_2">
           <property name="geometry">
@@ -2064,87 +2149,6 @@ depth</string>
            <property name="spacing">
             <number>3</number>
            </property>
-           <item>
-            <widget class="QGroupBox" name="groupBox_7">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>145</height>
-              </size>
-             </property>
-             <property name="title">
-              <string>Robot camera</string>
-             </property>
-             <widget class="QWidget" name="formLayoutWidget_3">
-              <property name="geometry">
-               <rect>
-                <x>8</x>
-                <y>29</y>
-                <width>1221</width>
-                <height>71</height>
-               </rect>
-              </property>
-              <layout class="QFormLayout" name="formLayout_3">
-               <property name="horizontalSpacing">
-                <number>2</number>
-               </property>
-               <property name="verticalSpacing">
-                <number>2</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_21">
-                 <property name="text">
-                  <string>G500</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_31">
-                 <property name="text">
-                  <string>SPARUS</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="g500CameraTopic">
-                 <property name="text">
-                  <string>/uwsim/camera1</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QLineEdit" name="sparusCameraTopic">
-                 <property name="text">
-                  <string>/uwsim/camera1</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QPushButton" name="robotCamsTopicsButton">
-              <property name="geometry">
-               <rect>
-                <x>7</x>
-                <y>101</y>
-                <width>1221</width>
-                <height>29</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Reconnect cameras</string>
-              </property>
-             </widget>
-            </widget>
-           </item>
            <item>
             <widget class="QGroupBox" name="groupBox_6">
              <property name="sizePolicy">
@@ -2316,16 +2320,16 @@ depth</string>
            <number>6</number>
           </property>
           <property name="leftMargin">
-           <number>20</number>
+           <number>0</number>
           </property>
           <property name="topMargin">
-           <number>20</number>
+           <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>20</number>
+           <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>20</number>
+           <number>0</number>
           </property>
           <item>
            <spacer name="verticalSpacer">
@@ -2344,22 +2348,6 @@ depth</string>
            </spacer>
           </item>
           <item>
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
            <widget class="QTableWidget" name="g500OdometryTable">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -2369,14 +2357,14 @@ depth</string>
             </property>
             <property name="minimumSize">
              <size>
-              <width>462</width>
-              <height>78</height>
+              <width>586</width>
+              <height>125</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>462</width>
-              <height>78</height>
+              <width>586</width>
+              <height>125</height>
              </size>
             </property>
             <property name="font">
@@ -2385,10 +2373,10 @@ depth</string>
              </font>
             </property>
             <attribute name="horizontalHeaderDefaultSectionSize">
-             <number>60</number>
+             <number>80</number>
             </attribute>
             <attribute name="horizontalHeaderMinimumSectionSize">
-             <number>60</number>
+             <number>80</number>
             </attribute>
             <attribute name="verticalHeaderDefaultSectionSize">
              <number>24</number>
@@ -2403,7 +2391,17 @@ depth</string>
             </row>
             <row>
              <property name="text">
+              <string>Desired pose</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
               <string>Current twist</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Desired twist</string>
              </property>
             </row>
             <column>
@@ -2464,14 +2462,14 @@ depth</string>
             </property>
             <property name="minimumSize">
              <size>
-              <width>462</width>
-              <height>78</height>
+              <width>586</width>
+              <height>125</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>462</width>
-              <height>78</height>
+              <width>586</width>
+              <height>125</height>
              </size>
             </property>
             <property name="font">
@@ -2480,10 +2478,10 @@ depth</string>
              </font>
             </property>
             <attribute name="horizontalHeaderDefaultSectionSize">
-             <number>60</number>
+             <number>80</number>
             </attribute>
             <attribute name="horizontalHeaderMinimumSectionSize">
-             <number>60</number>
+             <number>80</number>
             </attribute>
             <attribute name="verticalHeaderDefaultSectionSize">
              <number>24</number>
@@ -2498,7 +2496,17 @@ depth</string>
             </row>
             <row>
              <property name="text">
+              <string>Desired pose</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
               <string>Current twist</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Desired twist</string>
              </property>
             </row>
             <column>
@@ -2606,13 +2614,13 @@ depth</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>346</width>
+            <width>392</width>
             <height>54</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>346</width>
+            <width>392</width>
             <height>54</height>
            </size>
           </property>
@@ -2622,16 +2630,16 @@ depth</string>
            </font>
           </property>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>100</number>
+           <number>115</number>
           </attribute>
           <attribute name="horizontalHeaderMinimumSectionSize">
-           <number>60</number>
+           <number>115</number>
           </attribute>
           <attribute name="verticalHeaderDefaultSectionSize">
-           <number>24</number>
+           <number>22</number>
           </attribute>
           <attribute name="verticalHeaderMinimumSectionSize">
-           <number>24</number>
+           <number>22</number>
           </attribute>
           <row>
            <property name="text">
@@ -2678,13 +2686,13 @@ depth</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>368</width>
+            <width>410</width>
             <height>54</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>368</width>
+            <width>410</width>
             <height>54</height>
            </size>
           </property>
@@ -2694,10 +2702,10 @@ depth</string>
            </font>
           </property>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>100</number>
+           <number>115</number>
           </attribute>
           <attribute name="horizontalHeaderMinimumSectionSize">
-           <number>60</number>
+           <number>115</number>
           </attribute>
           <attribute name="verticalHeaderDefaultSectionSize">
            <number>24</number>

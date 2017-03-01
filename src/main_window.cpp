@@ -21,6 +21,7 @@
 #include "../include/merbots_gui/main_window.hpp"
 #include "../include/merbots_gui/set_robot_pose.h"
 #include <merbots_ibvs/Rotate.h>
+#include <math.h>
 
 #include <QtGui>
 #include <QMessageBox>
@@ -80,7 +81,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	}
 
 	//Odometry tables init
-	for (int i=0; i<2; i++)
+	for (int i=0; i<4; i++)
 	{
 		for (int j=0; j<6; j++)
 			{
@@ -132,8 +133,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.sparusLoadStreamButton, SIGNAL(clicked()), this, SLOT(sparusLoadStream()));
     QObject::connect(ui.sparusStopStreamButton, SIGNAL(clicked()), this, SLOT(sparusStopStream()));
     QObject::connect(ui.sparusTopicsButton, SIGNAL(clicked()), this, SLOT(sparusTopicsButtonClicked()));
-
-    QObject::connect(ui.robotCamsTopicsButton, SIGNAL(clicked()), this, SLOT(robotCamsTopicsButtonClicked()));
 
     QObject::connect(ui.vsPublishButton, SIGNAL(clicked()),this, SLOT(vsPublishButtonClicked()));
     QObject::connect(ui.vsStartCameraButton, SIGNAL(clicked()), this, SLOT(vsStartCameraButtonClicked()));
@@ -191,15 +190,17 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	//Connecting ROS callbacks
 	nh = new ros::NodeHandle();
     image_transport::ImageTransport it(*nh);
-	sub_g500Odometry		= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
-	sub_g500Battery			= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
-	sub_g500Runningtime		= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
-	sub_g500Diagnostics		= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
+    sub_g500Odometry      = nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
+    sub_g500MergedBodyVel = nh->subscribe<auv_msgs::BodyVelocityReq>(ui.g500TopicMergedBodyVel->text().toUtf8().constData(), 1, &MainWindow::g500MergedBodyVelCallback, this); 
+    sub_g500MergedWorld   = nh->subscribe<auv_msgs::WorldWaypointReq>(ui.g500TopicMergedWorld->text().toUtf8().constData(), 1, &MainWindow::g500MergedWorldCallback, this); 
+	sub_g500Battery		  = nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
+	sub_g500Runningtime	  = nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
+	sub_g500Diagnostics	  = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
 
-	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
-	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
-	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
-	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
+	sub_sparusOdometry	  = nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
+	sub_sparusBattery	  = nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
+	sub_sparusRunningtime = nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
+	sub_sparusDiagnostics = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
     srv_g500GoTo    = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
     srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotate>(ui.vsRotationService->text().toUtf8().constData());
@@ -239,7 +240,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.g500StreamView->setScaledContents(true);
     ui.g500StreamView2->setScaledContents(true);
     ui.sparusStreamView->setScaledContents(true);
-
 }
 
 
@@ -272,16 +272,23 @@ void MainWindow::g500TopicsButtonClicked()
 {
 	qDebug()<<"g500TopicsButton clicked: reconnecting all the G500 topics...";
 	sub_g500Odometry.shutdown();
+    sub_g500MergedBodyVel.shutdown();
+    sub_g500MergedWorld.shutdown();
 	sub_g500Battery.shutdown();
 	sub_g500Runningtime.shutdown();
 	sub_g500Diagnostics.shutdown();
 	srv_g500GoTo.shutdown();
+    sub_g500Camera.shutdown();
 	qDebug()<<"g500 topics have been shutdown";
-	sub_g500Odometry	= nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
-	sub_g500Battery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
-	sub_g500Runningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
-	sub_g500Diagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
-	srv_g500GoTo 		= nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
+	sub_g500Odometry	  = nh->subscribe<auv_msgs::NavSts>(ui.g500TopicOdometry->text().toUtf8().constData(), 1, &MainWindow::g500OdometryCallback, this); 
+    sub_g500MergedBodyVel = nh->subscribe<auv_msgs::BodyVelocityReq>(ui.g500TopicMergedBodyVel->text().toUtf8().constData(), 1, &MainWindow::g500MergedBodyVelCallback, this); 
+    sub_g500MergedWorld   = nh->subscribe<auv_msgs::WorldWaypointReq>(ui.g500TopicMergedWorld->text().toUtf8().constData(), 1, &MainWindow::g500MergedWorldCallback, this); 
+	sub_g500Battery		  = nh->subscribe<cola2_msgs::BatteryLevel>(ui.g500TopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::g500BatteryCallback, this); 
+	sub_g500Runningtime	  = nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
+	sub_g500Diagnostics	  = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
+	srv_g500GoTo 		  = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
+    image_transport::ImageTransport it(*nh);
+    sub_g500Camera   = it.subscribe(ui.g500CameraTopic->text().toUtf8().constData(), 1, &MainWindow::g500CameraCallback, this);
 	qDebug()<<"g500 topics have been reconnected";
 }
 
@@ -293,25 +300,15 @@ void MainWindow::sparusTopicsButtonClicked()
 	sub_sparusBattery.shutdown();
 	sub_sparusRunningtime.shutdown();
 	sub_sparusDiagnostics.shutdown();
+    sub_sparusCamera.shutdown();
 	qDebug()<<"sparus topics have been shutdown";
 	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
 	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
-	qDebug()<<"sparus topics have been reconnected";
-}
-
-
-void MainWindow::robotCamsTopicsButtonClicked()
-{
-    qDebug()<<"robotCamsTopicsButton clicked: reconnecting all the cameras topics";
-    sub_g500Camera.shutdown();
-    sub_sparusCamera.shutdown();
-    qDebug()<<"Robot cameras topics have been shutdown";
     image_transport::ImageTransport it(*nh);
-    sub_g500Camera   = it.subscribe(ui.g500CameraTopic->text().toUtf8().constData(), 1, &MainWindow::g500CameraCallback, this);
     sub_sparusCamera = it.subscribe(ui.sparusCameraTopic->text().toUtf8().constData(), 1, &MainWindow::sparusCameraCallback, this);
-    qDebug()<<"Robot cameras topics have been reconnected";
+	qDebug()<<"sparus topics have been reconnected";
 }
 
 
@@ -386,7 +383,12 @@ void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zVa
     srv.request.position.x      = xValueSrv;
     srv.request.position.y      = yValueSrv;
     srv.request.position.z      = zValueSrv;
-    srv.request.yaw             = yawValueSrv;
+    srv.request.disable_axis.x  = false;
+    srv.request.disable_axis.y  = true;
+    srv.request.disable_axis.z  = false;
+    srv.request.disable_axis.roll  = true;
+    srv.request.disable_axis.pitch = true;
+    srv.request.disable_axis.yaw   = false;
     srv.request.blocking        = false;
     srv.request.keep_position   = false;
     srv.request.position_tolerance.x = 0.4;
@@ -642,14 +644,111 @@ void MainWindow::updateGuidedSpecParams(){
 ** Implemenation [Callbacks]
 *****************************************************************************/
 
+double MainWindow::rad2grad(double rads)
+{
+    //Converts radians to grads
+    return (rads*180/M_PI);
+}
+
 void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo)
 {
 	ui.g500OdometryTable->item(0, 0)->setText(QString::number(g500OdometryInfo->position.north));
 	ui.g500OdometryTable->item(0, 1)->setText(QString::number(g500OdometryInfo->position.east));
 	ui.g500OdometryTable->item(0, 2)->setText(QString::number(g500OdometryInfo->position.depth));
-	ui.g500OdometryTable->item(0, 3)->setText(QString::number(g500OdometryInfo->orientation.roll));
-	ui.g500OdometryTable->item(0, 4)->setText(QString::number(g500OdometryInfo->orientation.pitch));
-	ui.g500OdometryTable->item(0, 5)->setText(QString::number(g500OdometryInfo->orientation.yaw));
+	ui.g500OdometryTable->item(0, 3)->setText(QString::number(rad2grad(g500OdometryInfo->orientation.roll)));
+	ui.g500OdometryTable->item(0, 4)->setText(QString::number(rad2grad(g500OdometryInfo->orientation.pitch)));
+	ui.g500OdometryTable->item(0, 5)->setText(QString::number(rad2grad(g500OdometryInfo->orientation.yaw)));
+
+    ui.g500OdometryTable->item(2, 0)->setText(QString::number(g500OdometryInfo->body_velocity.x));
+    ui.g500OdometryTable->item(2, 1)->setText(QString::number(g500OdometryInfo->body_velocity.y));
+    ui.g500OdometryTable->item(2, 2)->setText(QString::number(g500OdometryInfo->body_velocity.z));
+    ui.g500OdometryTable->item(2, 3)->setText(QString::number(rad2grad(g500OdometryInfo->orientation_rate.roll)));
+    ui.g500OdometryTable->item(2, 4)->setText(QString::number(rad2grad(g500OdometryInfo->orientation_rate.pitch)));
+    ui.g500OdometryTable->item(2, 5)->setText(QString::number(rad2grad(g500OdometryInfo->orientation_rate.yaw)));
+}
+
+
+void MainWindow::g500MergedWorldCallback(const auv_msgs::WorldWaypointReq::ConstPtr& g500MergedWorldInfo)
+{
+    ui.g500OdometryTable->item(1, 0)->setText(QString::number(g500MergedWorldInfo->position.north));
+    ui.g500OdometryTable->item(1, 1)->setText(QString::number(g500MergedWorldInfo->position.east));
+    ui.g500OdometryTable->item(1, 2)->setText(QString::number(g500MergedWorldInfo->position.depth));
+    ui.g500OdometryTable->item(1, 3)->setText(QString::number(rad2grad(g500MergedWorldInfo->orientation.roll)));
+    ui.g500OdometryTable->item(1, 4)->setText(QString::number(rad2grad(g500MergedWorldInfo->orientation.pitch)));
+    ui.g500OdometryTable->item(1, 5)->setText(QString::number(rad2grad(g500MergedWorldInfo->orientation.yaw)));
+
+    if (g500MergedWorldInfo->disable_axis.x)
+//        ui.g500OdometryTable->item(3, 0)->setBackground(Qt::lightGray);
+        ui.g500OdometryTable->item(3, 0)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 0)->setForeground(Qt::darkGray);
+
+    if (g500MergedWorldInfo->disable_axis.y)
+        ui.g500OdometryTable->item(3, 1)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 1)->setForeground(Qt::darkGray);
+
+    if (g500MergedWorldInfo->disable_axis.z)
+        ui.g500OdometryTable->item(3, 2)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 2)->setForeground(Qt::darkGray);
+
+    if (g500MergedWorldInfo->disable_axis.roll)
+        ui.g500OdometryTable->item(3, 3)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 3)->setForeground(Qt::darkGray);
+
+    if (g500MergedWorldInfo->disable_axis.pitch)
+        ui.g500OdometryTable->item(3, 4)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 4)->setForeground(Qt::darkGray);
+
+    if (g500MergedWorldInfo->disable_axis.yaw)
+        ui.g500OdometryTable->item(3, 5)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 5)->setForeground(Qt::darkGray);
+}
+
+
+void MainWindow::g500MergedBodyVelCallback(const auv_msgs::BodyVelocityReq::ConstPtr& g500MergedBodyVelInfo)
+{
+    ui.g500OdometryTable->item(3, 0)->setText(QString::number(g500MergedBodyVelInfo->twist.linear.x));
+    ui.g500OdometryTable->item(3, 1)->setText(QString::number(g500MergedBodyVelInfo->twist.linear.y));
+    ui.g500OdometryTable->item(3, 2)->setText(QString::number(g500MergedBodyVelInfo->twist.linear.z));
+    ui.g500OdometryTable->item(3, 3)->setText(QString::number(g500MergedBodyVelInfo->twist.angular.x));
+    ui.g500OdometryTable->item(3, 4)->setText(QString::number(g500MergedBodyVelInfo->twist.angular.y));
+    ui.g500OdometryTable->item(3, 5)->setText(QString::number(g500MergedBodyVelInfo->twist.angular.z));
+
+    if (g500MergedBodyVelInfo->disable_axis.x)
+//        ui.g500OdometryTable->item(3, 0)->setBackground(Qt::lightGray);
+        ui.g500OdometryTable->item(3, 0)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 0)->setForeground(Qt::darkGray);
+
+    if (g500MergedBodyVelInfo->disable_axis.y)
+        ui.g500OdometryTable->item(3, 1)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 1)->setForeground(Qt::darkGray);
+
+    if (g500MergedBodyVelInfo->disable_axis.z)
+        ui.g500OdometryTable->item(3, 2)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 2)->setForeground(Qt::darkGray);
+
+    if (g500MergedBodyVelInfo->disable_axis.roll)
+        ui.g500OdometryTable->item(3, 3)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 3)->setForeground(Qt::darkGray);
+
+    if (g500MergedBodyVelInfo->disable_axis.pitch)
+        ui.g500OdometryTable->item(3, 4)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 4)->setForeground(Qt::darkGray);
+
+    if (g500MergedBodyVelInfo->disable_axis.yaw)
+        ui.g500OdometryTable->item(3, 5)->setForeground(Qt::gray);
+    else
+        ui.g500OdometryTable->item(3, 5)->setForeground(Qt::darkGray);
 }
 
 
@@ -720,6 +819,11 @@ void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& s
 void MainWindow::g500CameraCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
     QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+
+    QString msgEncoding = QString::fromUtf8(msg->encoding.c_str());
+    if (msgEncoding.compare(QString::fromStdString(sensor_msgs::image_encodings::RGB8)) != 0)
+        dest = dest.rgbSwapped();
+
     g500Image = dest.copy();
     g500Pixmap = QPixmap::fromImage(g500Image);
     if (g500CameraEnable)
@@ -732,6 +836,11 @@ void MainWindow::g500CameraCallback(const sensor_msgs::Image::ConstPtr& msg)
 void MainWindow::sparusCameraCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
     QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
+
+    QString msgEncoding = QString::fromUtf8(msg->encoding.c_str());
+    if (msgEncoding.compare(QString::fromStdString(sensor_msgs::image_encodings::RGB8)) != 0)
+        dest = dest.rgbSwapped();
+
     sparusImage = dest.copy();
     sparusPixmap = QPixmap::fromImage(sparusImage);
     if (sparusCameraEnable)
@@ -745,6 +854,10 @@ void MainWindow::vsInputImageCallback(const sensor_msgs::Image::ConstPtr& msg)
 
 	if (activateVS)
 	{	
+        QString msgEncoding = QString::fromUtf8(msg->encoding.c_str());
+        if (msgEncoding.compare(QString::fromStdString(sensor_msgs::image_encodings::RGB8)) != 0)
+            dest = dest.rgbSwapped();
+
         dest = dest.scaled(400, 400, Qt::KeepAspectRatio);
         imageTopic = dest.copy();
 		pixmapTopic = QPixmap::fromImage(imageTopic);

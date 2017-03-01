@@ -38,6 +38,8 @@
 #include <std_msgs/Float32MultiArray.h>
 #include <std_srvs/Empty.h>
 #include <auv_msgs/NavSts.h>
+#include <auv_msgs/BodyVelocityReq.h>
+#include <auv_msgs/WorldWaypointReq.h>
 #include <cola2_msgs/BatteryLevel.h>
 #include <cola2_msgs/TotalTime.h>
 #include <cola2_msgs/Goto.h>
@@ -72,7 +74,7 @@ Q_OBJECT
 
 public:
 	ros::NodeHandle		*nh;
-	ros::Subscriber		sub_g500Odometry, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
+	ros::Subscriber		sub_g500Odometry, sub_g500MergedBodyVel, sub_g500MergedWorld, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
 	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
 	ros::Subscriber		sub_arm_state;
 	ros::Subscriber		sub_spec_params;
@@ -97,6 +99,7 @@ public:
 
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
+    double rad2grad(double rads);
 
 
 Q_SIGNALS:
@@ -137,12 +140,13 @@ public Q_SLOTS:
     void vsCancelButtonClicked();
     void vsTopicsButtonClicked();
     void vsRotationButtonClicked();
-    void robotCamsTopicsButtonClicked();
 
 	/******************************************
 	** Implemenation [Callbacks]
 	*******************************************/
 	void g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo);
+    void g500MergedBodyVelCallback(const auv_msgs::BodyVelocityReq::ConstPtr& g500MergedBodyVelInfo);
+    void g500MergedWorldCallback(const auv_msgs::WorldWaypointReq::ConstPtr& g500MergedWorldInfo);
 	void g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo);
 	void g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo);
 	void g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& g500DiagnosticsInfo);
