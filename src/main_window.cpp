@@ -37,7 +37,7 @@
 #include <sensor_msgs/image_encodings.h>
 
 
-#define DebugTOI	false
+#define DEBUG	false
 
 
 /*****************************************************************************
@@ -221,8 +221,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     //Timer to ensure the ROS communications
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
-    //Timer used to publish croppedImageMsg until boolean condition
-    //connect(timer, SIGNAL(timeout()), this, SLOT(publishCroppedImage()));
     timer->start();
 
 
@@ -665,6 +663,7 @@ void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g
 
 void MainWindow::g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& g500RunningTimeInfo)
 {
+
 	ui.g500ServiceStatus->item(0, 1)->setText(QString::number(g500RunningTimeInfo->total_time));
 }
 
@@ -785,7 +784,7 @@ void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armSt
 void MainWindow::mouseReleaseEvent(QMouseEvent * _event)
 {
     endROI(x1, y1);
-    if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+    if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
 	    qDebug() << "Mouse release";
     QMainWindow::mouseReleaseEvent(_event);
 }
@@ -804,8 +803,9 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             _event = static_cast<QMouseEvent*>(event);
             position = _event->pos();
             sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
-            notifyPoint1(position.x(), position.y());
-			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+            notifyPoint(position.x(), position.y());
+            drawCurrentROI();
+			if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
         	    qDebug() << sposition << ": Mouse MOVE event";
         }
         else if (etype == QEvent::MouseButtonPress)
@@ -816,7 +816,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
 			startROI(position.x(), position.y());
 			activateVS = false;
-			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+			if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
             	qDebug() << sposition << ": Mouse button PRESSED";
         }
         else if (etype == QEvent::MouseButtonRelease)
@@ -826,17 +826,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
             sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(position.x()), QString::number(position.y()));
 			endROI(position.x(), position.y());
-			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+			if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
         	    qDebug() << sposition << ": Mouse button RELEASED";
         }
         else if(etype == QEvent::HoverMove)
         {
-			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+			if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
     	        qDebug() << sposition << "Mouse hover move event";
         }
         else if(etype == QEvent::MouseTrackingChange)
         {
-			if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+			if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
 	            qDebug() << sposition << "Mouse tracking change";
         }
     }
@@ -845,17 +845,10 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 }
 
 
-bool MainWindow::validPoint0(int x, int y)
+bool MainWindow::validPoint(int x, int y)
 {
 
     return pointIn(x, y);
-}
-
-
-bool MainWindow::validPoint1(int x, int y)
-{
-
-    return pointIn(x,y) && x0 < x &&  y0 < y;
 }
 
 
@@ -868,12 +861,12 @@ bool MainWindow::pointIn(int x, int y)
 
 void MainWindow::startROI(int _x0, int _y0)
 {
-    if(validPoint0(_x0, _y0))
+    if(validPoint(_x0, _y0))
     {
         x0 = _x0;
         y0 = _y0;
         QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x0), QString::number(y0));
-        if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
 	        qDebug() << sposition << ": START ROI";
     }
 }
@@ -881,30 +874,30 @@ void MainWindow::startROI(int _x0, int _y0)
 
 void MainWindow::endROI(int _x1, int _y1)
 {
-    if(validPoint1(_x1, _y1))
+    if(validPoint(_x1, _y1))
     {
-        updatePoint1(_x1, _y1);
+        updatePoint(_x1, _y1);
         QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x1), QString::number(y1));
-        if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+        if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
 	        qDebug() << sposition << ": END ROI";
     }
 }
 
 
-void MainWindow::notifyPoint1(int x, int y)
+void MainWindow::notifyPoint(int x, int y)
 {
-    if(validPoint1(x, y))
+    if(validPoint(x, y))
     {
         x1 = x;
     	y1 = y;
         QString sposition = QString("(x: %0 ; y: %1 )").arg(QString::number(x1), QString::number(y1));
-		if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+		if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
         	qDebug() << sposition << ": updating ROI";
     }
 }
 
 
-void MainWindow::updatePoint1(int x, int y)
+void MainWindow::updatePoint(int x, int y)
 {
     x1 = x;
     y1 = y;
@@ -916,7 +909,7 @@ void MainWindow::drawCurrentROI()
 {
     QString sposition = QString("(x0: %0 ; y0: %1 ; x1: %2 ; y1: %3)").arg(
                 QString::number(x0), QString::number(y0),QString::number(x1), QString::number(y1) );
-    if ((ui.mainTabs->currentIndex() == 2) and DebugTOI)
+    if ((ui.mainTabs->currentIndex() == 2) and DEBUG)
 	    qDebug() << sposition << ": Drawing Rectangle";
 	if (!activateVS)
 	{
@@ -935,7 +928,7 @@ void MainWindow::drawCurrentROI()
 
 void MainWindow::showCropROI() 
 {
-	QRect rect(x0+3, y0+3, x1-x0-6, y1-y0-6);
+    QRect rect(min(x0,x1)+3, min(y0,y1)+3, max(x1-x0,x0-x1)-6, max(y1-y0,y0-y1)-6);
 	croppedPixmapTopic = pixmapTopic.copy(rect);
 	ui.vsTarget->setPixmap(croppedPixmapTopic);
 }
@@ -960,6 +953,7 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+
 	QMainWindow::closeEvent(event);
 }
 

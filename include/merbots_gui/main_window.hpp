@@ -112,7 +112,8 @@ public Q_SLOTS:
     void g500StopStream2();
     void g500GoToSurface();
     void g500GoToPositionButtonClicked();
-    void setRobotPosition(double xValueSrv, double yValueSrv, double zValueSrv, double rollValueSrv, double pitchValueSrv, double yawValueSrv);
+    void setRobotPosition(double xValueSrv, double yValueSrv, double zValueSrv, 
+                        double rollValueSrv, double pitchValueSrv, double yawValueSrv);
 
 	void sparusTopicsButtonClicked();
     void sparusLoadStream();
@@ -182,10 +183,9 @@ private:
     void startROI(int x0, int y0);
     void endROI(int x1, int y1);
     void drawCurrentROI();
-    void updatePoint1(int x, int y);
-    bool validPoint0(int x, int y);
-    bool validPoint1(int x, int y);
-    void notifyPoint1(int x, int y);
+    void updatePoint(int x, int y);
+    bool validPoint(int x, int y);
+    void notifyPoint(int x, int y);
     bool pointIn(int x, int y);
     void showCropROI();
 
