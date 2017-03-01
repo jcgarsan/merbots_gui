@@ -157,6 +157,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.guidedSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
     QObject::connect(ui.guidedSpecSlider2, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
     QObject::connect(ui.guidedSpecSlider3, SIGNAL(sliderMoved(int)), this, SLOT(updateGuidedSpecParams()));
+    QObject::connect(ui.guidedSpecSpin1, SIGNAL(valueChanged(double)), this, SLOT(updateGuidedSpecParamsSpin1()));
+    QObject::connect(ui.guidedSpecSpin2, SIGNAL(valueChanged(double)), this, SLOT(updateGuidedSpecParamsSpin2()));
+    QObject::connect(ui.guidedSpecSpin3, SIGNAL(valueChanged(double)), this, SLOT(updateGuidedSpecParamsSpin3()));
+
 
 
     ui.interactiveSpecSlider1->setMaximum(100);
@@ -168,6 +172,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.guidedSpecSlider1->setMaximum(100);
     ui.guidedSpecSlider2->setMaximum(180);
     ui.guidedSpecSlider3->setMaximum(100);
+    ui.guidedSpecSpin1->setMaximum(100);
+    ui.guidedSpecSpin2->setMaximum(180);
+    ui.guidedSpecSpin3->setMaximum(100);
 
     ui.interactiveSpecSlider1->setMinimum(-100);
     ui.interactiveSpecSlider2->setMinimum(-100);
@@ -178,6 +185,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.guidedSpecSlider1->setMinimum(-100);
     ui.guidedSpecSlider2->setMinimum(-180);
     ui.guidedSpecSlider3->setMinimum(-100);
+    ui.guidedSpecSpin1->setMinimum(-100);
+    ui.guidedSpecSpin2->setMinimum(-180);
+    ui.guidedSpecSpin3->setMinimum(-100);
 
     //@TODO Teleoperation mode switch; goto dredge position and execute grasp buttons...    
     QObject::connect(ui.executeGraspingButton, SIGNAL(clicked()), this, SLOT(executeGrasping()));
@@ -630,6 +640,11 @@ void MainWindow::updateAndResetInteractiveSpecParams(){
 
 
 void MainWindow::updateGuidedSpecParams(){
+
+  ui.guidedSpecSpin1->setValue(ui.guidedSpecSlider1->value());
+  ui.guidedSpecSpin2->setValue(ui.guidedSpecSlider2->value());
+  ui.guidedSpecSpin3->setValue(ui.guidedSpecSlider3->value());
+
   std_msgs::Float32MultiArray msg;
   msg.data.push_back(ui.guidedSpecSlider1->value());
   msg.data.push_back(ui.guidedSpecSlider2->value());
@@ -637,6 +652,37 @@ void MainWindow::updateGuidedSpecParams(){
   msg.data.push_back(ui.gripperOpeningSlider->value());
   pub_spec_params.publish(msg);
   ros::spinOnce();
+}
+
+void MainWindow::updateGuidedSpecParamsSpin1(){
+
+  ui.guidedSpecSlider1->setValue(ui.guidedSpecSpin1->value());
+  publishSliders();
+
+}
+void MainWindow::updateGuidedSpecParamsSpin2(){
+
+  ui.guidedSpecSlider2->setValue(ui.guidedSpecSpin2->value());
+  publishSliders();
+
+}
+void MainWindow::updateGuidedSpecParamsSpin3(){
+
+  ui.guidedSpecSlider3->setValue(ui.guidedSpecSpin3->value());
+  publishSliders();
+
+}
+
+void MainWindow::publishSliders(){
+
+  std_msgs::Float32MultiArray msg;
+  msg.data.push_back(ui.guidedSpecSlider1->value());
+  msg.data.push_back(ui.guidedSpecSlider2->value());
+  msg.data.push_back(ui.guidedSpecSlider3->value());
+  msg.data.push_back(ui.gripperOpeningSlider->value());
+  pub_spec_params.publish(msg);
+  ros::spinOnce();
+
 }
 
 
@@ -812,6 +858,10 @@ void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& s
     ui.guidedSpecSlider2->setValue( specificationParams->data[1] );
     ui.guidedSpecSlider3->setValue( specificationParams->data[2] );
     ui.gripperOpeningSlider->setValue( specificationParams->data[3] );
+
+    ui.guidedSpecSpin2->setValue(ui.guidedSpecSlider2->value());
+    ui.guidedSpecSpin1->setValue(ui.guidedSpecSlider1->value());
+    ui.guidedSpecSpin3->setValue(ui.guidedSpecSlider3->value());
   }
 }
 

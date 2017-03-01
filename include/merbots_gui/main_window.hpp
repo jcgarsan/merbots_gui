@@ -127,6 +127,10 @@ public Q_SLOTS:
     void updateInteractiveSpecParams();
     void updateAndResetInteractiveSpecParams();
     void updateGuidedSpecParams();
+    void updateGuidedSpecParamsSpin1();
+    void updateGuidedSpecParamsSpin2();
+    void updateGuidedSpecParamsSpin3();
+    void publishSliders();
 
     void executeGrasping();
     void executeDredging();
