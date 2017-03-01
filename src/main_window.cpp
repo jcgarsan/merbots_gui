@@ -235,7 +235,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(dlg, SIGNAL(newRobotPose(double, double, double, double, double, double)),
     				 this, SLOT(setRobotPosition(double, double, double, double, double, double)));
 
-
+    //Parameters to set content label to fill the label size
+    ui.g500StreamView->setScaledContents(true);
+    ui.g500StreamView2->setScaledContents(true);
+    ui.sparusStreamView->setScaledContents(true);
 
 }
 
@@ -324,28 +327,27 @@ void MainWindow::armTopicButtonClicked()
 
 void MainWindow::g500LoadStream()
 {
-    qDebug() << "g500LoadStream";
+
     g500CameraEnable = true;
 }
 
 
 void MainWindow::g500LoadStream2()
 {
-    qDebug() << "Enabling G500 streaming";
+
     g500CameraEnable2 = true;
 }
 
 
 void MainWindow::sparusLoadStream()
 {
-    qDebug() << "New SPARUS stream";
+
     sparusCameraEnable = true;
 }
 
 
 void MainWindow::g500StopStream()
 {
-	qDebug() << "G500 streaming stopped";
     g500CameraEnable = false;
     ui.g500StreamView->clear();
     ui.g500StreamView->setText("G500 camera input");
@@ -354,7 +356,6 @@ void MainWindow::g500StopStream()
 
 void MainWindow::g500StopStream2()
 {
-	qDebug() << "G500 streaming stopped";
     g500CameraEnable2 = false;
     ui.g500StreamView2->clear();
     ui.g500StreamView2->setText("G500 camera input");
@@ -363,7 +364,6 @@ void MainWindow::g500StopStream2()
 
 void MainWindow::sparusStopStream()
 {
-	qDebug() << "SPARUS streaming stopped";
     sparusCameraEnable = false;
     ui.sparusStreamView->clear();
     ui.sparusStreamView->setText("SPARUS camera input");
@@ -705,6 +705,7 @@ void MainWindow::sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArra
 	//stuff
 }
 
+
 void MainWindow::specParamsCallback(const std_msgs::Float32MultiArrayConstPtr& specificationParams){
   //Used to receive defaults.
   if(specificationParams->data.size()==4){
@@ -737,12 +738,15 @@ void MainWindow::sparusCameraCallback(const sensor_msgs::Image::ConstPtr& msg)
         ui.sparusStreamView->setPixmap(sparusPixmap);
 }
 
+
 void MainWindow::vsInputImageCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
 	QImage dest (msg->data.data(), msg->width, msg->height, QImage::Format_RGB888);
-    
+
 	if (activateVS)
-	{	imageTopic = dest.copy();
+	{	
+        dest = dest.scaled(400, 400, Qt::KeepAspectRatio);
+        imageTopic = dest.copy();
 		pixmapTopic = QPixmap::fromImage(imageTopic);
 		width = pixmapTopic.width();
 		height = pixmapTopic.height();
