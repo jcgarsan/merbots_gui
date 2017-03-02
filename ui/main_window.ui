@@ -1459,14 +1459,14 @@ depth</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>362</width>
-                     <height>145</height>
+                     <width>354</width>
+                     <height>142</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>362</width>
-                     <height>145</height>
+                     <width>354</width>
+                     <height>142</height>
                     </size>
                    </property>
                    <property name="font">
@@ -1858,7 +1858,7 @@ depth</string>
                <item row="2" column="1">
                 <widget class="QLineEdit" name="g500TopicBatteryLevel">
                  <property name="text">
-                  <string>/cola2_safety/ocean_server_batteries</string>
+                  <string>/ocean_server_bms</string>
                  </property>
                 </widget>
                </item>

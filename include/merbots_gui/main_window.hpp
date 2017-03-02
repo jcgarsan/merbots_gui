@@ -91,6 +91,9 @@ public:
 
 	bool activateVS;
     bool g500CameraEnable, g500CameraEnable2, sparusCameraEnable;
+    int  g500DiagnosticsErrorLevel, sparusDiagnosticsErrorLevel;
+    
+    QString g500DiagnosticsErrorName, sparusDiagnosticsErrorName;
 
 	SetRobotPoseDlg *dlg;
 
@@ -157,6 +160,8 @@ public Q_SLOTS:
     void g500CameraCallback(const sensor_msgs::Image::ConstPtr& msg);
 
 	void sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo);
+    void sparusMergedBodyVelCallback(const auv_msgs::BodyVelocityReq::ConstPtr& sparusMergedBodyVelInfo);
+    void sparusMergedWorldCallback(const auv_msgs::WorldWaypointReq::ConstPtr& sparusMergedWorldInfo);
 	void sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo);
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);

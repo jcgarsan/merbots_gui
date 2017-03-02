@@ -66,10 +66,15 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.mainTabs->setCurrentIndex(0);
 	ui.graspSpecTab->setCurrentIndex(0);
 
+    //Booleans control
     activateVS         = true;
     g500CameraEnable   = false;
     g500CameraEnable2  = false;
     sparusCameraEnable = false;
+
+    //Variable to control the 'diagnostics_agg' topic
+    g500DiagnosticsErrorLevel = 0;
+    sparusDiagnosticsErrorLevel = 0;
 
 	//Init section
 	ros::init(argc,argv,"merbots_gui");
@@ -389,7 +394,9 @@ void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zVa
     qDebug() << "Sending the G500 to the new position...";
     qDebug() << xValueSrv << " " << yValueSrv << " " << zValueSrv << " " << rollValueSrv << " " << pitchValueSrv << " " << yawValueSrv;
 
+    QMessageBox msgBox;
     cola2_msgs::Goto srv;
+
     srv.request.position.x      = xValueSrv;
     srv.request.position.y      = yValueSrv;
     srv.request.position.z      = zValueSrv;
@@ -410,44 +417,49 @@ void MainWindow::setRobotPosition(double xValueSrv, double yValueSrv, double zVa
 
     if(srv_g500GoTo.call(srv))
     {
-        qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
+        qDebug() << "Service call success.";
+        msgBox.setText("Service call successfully.");
     }
     else
     {
         qDebug() << "Service call failed.";
-        QMessageBox msgBox;
         msgBox.setText("Service call failed.");
-        msgBox.exec();
     }
+    msgBox.exec();
 }
 
 void MainWindow::g500GoToSurface()
 {
 	qDebug() << "Sending the G500 to the surface...";
+
 	cola2_msgs::Goto srv;
-    srv.request.position.z      = 0;
-    srv.request.disable_axis.x  = true;
-    srv.request.disable_axis.y  = true;
-    srv.request.blocking 		= false;
-    srv.request.keep_position	= false;
+    QMessageBox msgBox;
+
+    srv.request.position.z       = 0;
+    srv.request.disable_axis.x   = true;
+    srv.request.disable_axis.y   = true;
+    srv.request.disable_axis.z   = false;
+    srv.request.disable_axis.yaw = false;
+    srv.request.blocking 		 = false;
+    srv.request.keep_position	 = false;
     srv.request.position_tolerance.x = 0.4;
     srv.request.position_tolerance.y = 0.4;
     srv.request.position_tolerance.z = 0.4;
-    srv.request.altitude_mode	= false;
-    srv.request.priority		= 10;
-    srv.request.reference 		= srv.request.REFERENCE_NED;
+    srv.request.altitude_mode	 = false;
+    srv.request.priority		 = 10;
+    srv.request.reference 		 = srv.request.REFERENCE_NED;
 
     if(srv_g500GoTo.call(srv))
     {
-        qDebug() << "Service call success. Result: {}", srv.response.success ? "success" : "failed";
+        qDebug() << "Service call success.";
+        msgBox.setText("Service call successfully.");
     }
     else
     {
         qDebug() << "Service call failed.";
-        QMessageBox msgBox;
         msgBox.setText("Service call failed.");
-        msgBox.exec();
     }
+    msgBox.exec();
 }
 
 
@@ -696,6 +708,7 @@ double MainWindow::rad2grad(double rads)
     return (rads*180/M_PI);
 }
 
+
 void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo)
 {
 	ui.g500OdometryTable->item(0, 0)->setText(QString::number(g500OdometryInfo->position.north));
@@ -724,35 +737,34 @@ void MainWindow::g500MergedWorldCallback(const auv_msgs::WorldWaypointReq::Const
     ui.g500OdometryTable->item(1, 5)->setText(QString::number(rad2grad(g500MergedWorldInfo->orientation.yaw)));
 
     if (g500MergedWorldInfo->disable_axis.x)
-//        ui.g500OdometryTable->item(3, 0)->setBackground(Qt::lightGray);
-        ui.g500OdometryTable->item(3, 0)->setForeground(Qt::gray);
+        ui.g500OdometryTable->item(1, 0)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 0)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(1, 0)->setForeground(QColor(48,48,48));
 
     if (g500MergedWorldInfo->disable_axis.y)
-        ui.g500OdometryTable->item(3, 1)->setForeground(Qt::gray);
+        ui.g500OdometryTable->item(1, 1)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 1)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(1, 1)->setForeground(QColor(48,48,48));
 
     if (g500MergedWorldInfo->disable_axis.z)
-        ui.g500OdometryTable->item(3, 2)->setForeground(Qt::gray);
+        ui.g500OdometryTable->item(1, 2)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 2)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(1, 2)->setForeground(QColor(48,48,48));
 
     if (g500MergedWorldInfo->disable_axis.roll)
-        ui.g500OdometryTable->item(3, 3)->setForeground(Qt::gray);
+        ui.g500OdometryTable->item(1, 3)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 3)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(1, 3)->setForeground(QColor(48,48,48));
 
     if (g500MergedWorldInfo->disable_axis.pitch)
-        ui.g500OdometryTable->item(3, 4)->setForeground(Qt::gray);
+        ui.g500OdometryTable->item(1, 4)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 4)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(1, 4)->setForeground(QColor(48,48,48));
 
     if (g500MergedWorldInfo->disable_axis.yaw)
-        ui.g500OdometryTable->item(3, 5)->setForeground(Qt::gray);
+        ui.g500OdometryTable->item(1, 5)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 5)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(1, 5)->setForeground(QColor(48,48,48));
 }
 
 
@@ -766,43 +778,45 @@ void MainWindow::g500MergedBodyVelCallback(const auv_msgs::BodyVelocityReq::Cons
     ui.g500OdometryTable->item(3, 5)->setText(QString::number(g500MergedBodyVelInfo->twist.angular.z));
 
     if (g500MergedBodyVelInfo->disable_axis.x)
-//        ui.g500OdometryTable->item(3, 0)->setBackground(Qt::lightGray);
         ui.g500OdometryTable->item(3, 0)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 0)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(3, 0)->setForeground(QColor(48,48,48));
 
     if (g500MergedBodyVelInfo->disable_axis.y)
         ui.g500OdometryTable->item(3, 1)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 1)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(3, 1)->setForeground(QColor(48,48,48));
 
     if (g500MergedBodyVelInfo->disable_axis.z)
         ui.g500OdometryTable->item(3, 2)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 2)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(3, 2)->setForeground(QColor(48,48,48));
 
     if (g500MergedBodyVelInfo->disable_axis.roll)
         ui.g500OdometryTable->item(3, 3)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 3)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(3, 3)->setForeground(QColor(48,48,48));
 
     if (g500MergedBodyVelInfo->disable_axis.pitch)
         ui.g500OdometryTable->item(3, 4)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 4)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(3, 4)->setForeground(QColor(48,48,48));
 
     if (g500MergedBodyVelInfo->disable_axis.yaw)
         ui.g500OdometryTable->item(3, 5)->setForeground(Qt::gray);
     else
-        ui.g500OdometryTable->item(3, 5)->setForeground(Qt::darkGray);
+        ui.g500OdometryTable->item(3, 5)->setForeground(QColor(48,48,48));
 }
 
 
 void MainWindow::g500BatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& g500BatteryInfo)
 {
-	ui.g500ServiceStatus->item(0, 0)->setText(QString::number(g500BatteryInfo->charge));
-	//ui.g500BatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
-	//ui.g500BatteryLabel->setText(labelText);
+	if (g500BatteryInfo->charge <= 20)
+        ui.g500ServiceStatus->item(0, 0)->setBackground(Qt::red);
+    else
+        ui.g500ServiceStatus->item(0, 0)->setBackground(Qt::white);
+
+    ui.g500ServiceStatus->item(0, 0)->setText(QString::number(g500BatteryInfo->charge));
 }
 
 
@@ -815,39 +829,185 @@ void MainWindow::g500RunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& 
 
 void MainWindow::g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& g500DiagnosticsInfo)
 {
-	//stuff
+    int currentError;
+
+    if (g500DiagnosticsInfo->status[0].message == "Error")
+        currentError = 2;
+    else
+        if (g500DiagnosticsInfo->status[0].message == "Warning")
+            currentError = 1;
+        else
+            if (g500DiagnosticsInfo->status[0].message == "Ok")
+                currentError = 0;
+
+    if ((currentError >= g500DiagnosticsErrorLevel) and (g500DiagnosticsErrorLevel > 0))
+    {
+        g500DiagnosticsErrorLevel = currentError;
+        g500DiagnosticsErrorName  = QString::fromStdString(g500DiagnosticsInfo->status[0].name);
+        ui.g500ServiceStatus->item(0, 2)->setText(g500DiagnosticsErrorName);
+    }
+    else
+        ui.g500ServiceStatus->item(0, 2)->setText(QString::fromStdString("OK"));
+
+    switch (currentError)
+    {
+        case 0:
+            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::white);
+        case 1:
+            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::yellow);
+        case 2:
+            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::red);
+    }
 }
 
 
 void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo)
 {
-	ui.sparusOdometryTable->item(0, 0)->setText(QString::number(sparusOdometryInfo->position.north));
-	ui.sparusOdometryTable->item(0, 1)->setText(QString::number(sparusOdometryInfo->position.east));
-	ui.sparusOdometryTable->item(0, 2)->setText(QString::number(sparusOdometryInfo->position.depth));
-	ui.sparusOdometryTable->item(0, 3)->setText(QString::number(sparusOdometryInfo->orientation.roll));
-	ui.sparusOdometryTable->item(0, 4)->setText(QString::number(sparusOdometryInfo->orientation.pitch));
-	ui.sparusOdometryTable->item(0, 5)->setText(QString::number(sparusOdometryInfo->orientation.yaw));
+    ui.sparusOdometryTable->item(0, 0)->setText(QString::number(sparusOdometryInfo->position.north));
+    ui.sparusOdometryTable->item(0, 1)->setText(QString::number(sparusOdometryInfo->position.east));
+    ui.sparusOdometryTable->item(0, 2)->setText(QString::number(sparusOdometryInfo->position.depth));
+    ui.sparusOdometryTable->item(0, 3)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation.roll)));
+    ui.sparusOdometryTable->item(0, 4)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation.pitch)));
+    ui.sparusOdometryTable->item(0, 5)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation.yaw)));
+
+    ui.sparusOdometryTable->item(2, 0)->setText(QString::number(sparusOdometryInfo->body_velocity.x));
+    ui.sparusOdometryTable->item(2, 1)->setText(QString::number(sparusOdometryInfo->body_velocity.y));
+    ui.sparusOdometryTable->item(2, 2)->setText(QString::number(sparusOdometryInfo->body_velocity.z));
+    ui.sparusOdometryTable->item(2, 3)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation_rate.roll)));
+    ui.sparusOdometryTable->item(2, 4)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation_rate.pitch)));
+    ui.sparusOdometryTable->item(2, 5)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation_rate.yaw)));
 }
 
 
+void MainWindow::sparusMergedWorldCallback(const auv_msgs::WorldWaypointReq::ConstPtr& sparusMergedWorldInfo)
+{
+    ui.sparusOdometryTable->item(1, 0)->setText(QString::number(sparusMergedWorldInfo->position.north));
+    ui.sparusOdometryTable->item(1, 1)->setText(QString::number(sparusMergedWorldInfo->position.east));
+    ui.sparusOdometryTable->item(1, 2)->setText(QString::number(sparusMergedWorldInfo->position.depth));
+    ui.sparusOdometryTable->item(1, 3)->setText(QString::number(rad2grad(sparusMergedWorldInfo->orientation.roll)));
+    ui.sparusOdometryTable->item(1, 4)->setText(QString::number(rad2grad(sparusMergedWorldInfo->orientation.pitch)));
+    ui.sparusOdometryTable->item(1, 5)->setText(QString::number(rad2grad(sparusMergedWorldInfo->orientation.yaw)));
+
+    if (sparusMergedWorldInfo->disable_axis.x)
+        ui.sparusOdometryTable->item(1, 0)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(1, 0)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedWorldInfo->disable_axis.y)
+        ui.sparusOdometryTable->item(1, 1)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(1, 1)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedWorldInfo->disable_axis.z)
+        ui.sparusOdometryTable->item(1, 2)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(1, 2)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedWorldInfo->disable_axis.roll)
+        ui.sparusOdometryTable->item(1, 3)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(1, 3)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedWorldInfo->disable_axis.pitch)
+        ui.sparusOdometryTable->item(1, 4)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(1, 4)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedWorldInfo->disable_axis.yaw)
+        ui.sparusOdometryTable->item(1, 5)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(1, 5)->setForeground(QColor(48,48,48));
+}
+
+
+void MainWindow::sparusMergedBodyVelCallback(const auv_msgs::BodyVelocityReq::ConstPtr& sparusMergedBodyVelInfo)
+{
+    ui.sparusOdometryTable->item(3, 0)->setText(QString::number(sparusMergedBodyVelInfo->twist.linear.x));
+    ui.sparusOdometryTable->item(3, 1)->setText(QString::number(sparusMergedBodyVelInfo->twist.linear.y));
+    ui.sparusOdometryTable->item(3, 2)->setText(QString::number(sparusMergedBodyVelInfo->twist.linear.z));
+    ui.sparusOdometryTable->item(3, 3)->setText(QString::number(sparusMergedBodyVelInfo->twist.angular.x));
+    ui.sparusOdometryTable->item(3, 4)->setText(QString::number(sparusMergedBodyVelInfo->twist.angular.y));
+    ui.sparusOdometryTable->item(3, 5)->setText(QString::number(sparusMergedBodyVelInfo->twist.angular.z));
+
+    if (sparusMergedBodyVelInfo->disable_axis.x)
+        ui.sparusOdometryTable->item(3, 0)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(3, 0)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedBodyVelInfo->disable_axis.y)
+        ui.sparusOdometryTable->item(3, 1)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(3, 1)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedBodyVelInfo->disable_axis.z)
+        ui.sparusOdometryTable->item(3, 2)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(3, 2)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedBodyVelInfo->disable_axis.roll)
+        ui.sparusOdometryTable->item(3, 3)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(3, 3)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedBodyVelInfo->disable_axis.pitch)
+        ui.sparusOdometryTable->item(3, 4)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(3, 4)->setForeground(QColor(48,48,48));
+
+    if (sparusMergedBodyVelInfo->disable_axis.yaw)
+        ui.sparusOdometryTable->item(3, 5)->setForeground(Qt::gray);
+    else
+        ui.sparusOdometryTable->item(3, 5)->setForeground(QColor(48,48,48));
+}
+
 void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo)
 {
+    if (sparusBatteryInfo->charge <= 20)
+        ui.sparusServiceStatus->item(0, 0)->setBackground(Qt::red);
+    else
+        ui.sparusServiceStatus->item(0, 0)->setBackground(Qt::white);
+
 	ui.sparusServiceStatus->item(0, 0)->setText(QString::number(sparusBatteryInfo->charge));
-	//ui.sparusBatteryLabel->setStyleSheet("QLabel { background-color : red; color : black; }");
-	//ui.sparusBatteryLabel->setText(labelText);
 }
 
 
 void MainWindow::sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo)
 {
 	ui.sparusServiceStatus->item(0, 1)->setText(QString::number(sparusRunningTimeInfo->total_time));
-	//ui.sparusTimeLabel->setText(labelText);
 }
 
 
 void MainWindow::sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo)
 {
-	//stuff
+    int currentError;
+
+    if (sparusDiagnosticsInfo->status[0].message == "Error")
+        currentError = 2;
+    else
+        if (sparusDiagnosticsInfo->status[0].message == "Warning")
+            currentError = 1;
+        else
+            if (sparusDiagnosticsInfo->status[0].message == "Ok")
+                currentError = 0;
+
+    if ((currentError >= sparusDiagnosticsErrorLevel) and (sparusDiagnosticsErrorLevel > 0))
+    {
+        sparusDiagnosticsErrorLevel = currentError;
+        sparusDiagnosticsErrorName  = QString::fromStdString(sparusDiagnosticsInfo->status[0].name);
+        ui.sparusServiceStatus->item(0, 2)->setText(sparusDiagnosticsErrorName);
+    }
+    else
+        ui.sparusServiceStatus->item(0, 2)->setText(QString::fromStdString("OK"));
+
+    switch (currentError)
+    {
+        case 0:
+            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::white);
+        case 1:
+            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::yellow);
+        case 2:
+            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::red);
+    }
 }
 
 
@@ -942,6 +1102,7 @@ void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armSt
   ui.armJointValues->item(2, 0)->setText(QString::number(armStateMsg->position[2]));
   ui.armJointValues->item(3, 0)->setText(QString::number(armStateMsg->position[3]));
   ui.armJointValues->item(4, 0)->setText(QString::number(armStateMsg->position[4]));
+  ui.armCurrentLimitLabel->setText("Arm current limit: " + QString::number(armStateMsg->effort[0]));
 }
 
 
