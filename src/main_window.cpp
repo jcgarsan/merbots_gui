@@ -1102,7 +1102,8 @@ void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armSt
   ui.armJointValues->item(2, 0)->setText(QString::number(armStateMsg->position[2]));
   ui.armJointValues->item(3, 0)->setText(QString::number(armStateMsg->position[3]));
   ui.armJointValues->item(4, 0)->setText(QString::number(armStateMsg->position[4]));
-  ui.armCurrentLimitLabel->setText("Arm current limit: " + QString::number(armStateMsg->effort[0]));
+  QString armEffort = QString::number(armStateMsg->effort[0]);
+  ui.armCurrentLimitLabel->setText("Arm current limit: " + armEffort.mid(0,5));
 }
 
 
