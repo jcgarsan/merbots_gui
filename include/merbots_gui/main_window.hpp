@@ -104,6 +104,23 @@ public:
 	void showNoMasterMessage();
     double rad2grad(double rads);
 
+    //Arm data
+	int axisindex[6];
+	int AxisDir[5];
+	int buttonindex[5], lastValue_[5];
+	double error_;
+	double scale_;
+	double current;
+	ros::Publisher vel_pub_;
+	ros::Subscriber joy_sub_;
+	ros::Subscriber arm_sub_, arm_angle_sub_;
+	bool slewLocked_, jawRotateLocked_, jawOpenLocked_, fixSlew_, park_;
+	double angles_[5], desired_[5];
+	void joyCallback(const sensor_msgs::Joy::ConstPtr& joy);
+	void armCallback(const sensor_msgs::JointState::ConstPtr& mes);
+	void armAngleCallback(const sensor_msgs::JointState::ConstPtr& mes);
+	sensor_msgs::JointState js;
+
 
 Q_SIGNALS:
 
@@ -134,6 +151,7 @@ public Q_SLOTS:
     void updateGuidedSpecParamsSpin2();
     void updateGuidedSpecParamsSpin3();
     void publishSliders();
+	void armPublisher();
 
     void executeGrasping();
     void executeDredging();
