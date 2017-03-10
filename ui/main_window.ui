@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -777,6 +777,88 @@ depth</string>
          <attribute name="title">
           <string>RoI selection</string>
          </attribute>
+         <widget class="QWidget" name="">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>90</y>
+            <width>198</width>
+            <height>174</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>Slew</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QProgressBar" name="slewProgressBar">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QProgressBar" name="shoulderProgressBar">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QProgressBar" name="elbowProgressBar">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QProgressBar" name="jawRotateProgressBar">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QProgressBar" name="jawOpeningProgressBar">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_41">
+             <property name="text">
+              <string>Shoulder</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_42">
+             <property name="text">
+              <string>Elbow</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_43">
+             <property name="text">
+              <string>JawRotate</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_44">
+             <property name="text">
+              <string>JawOpening</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
         <widget class="QWidget" name="mainTabs_toi">
          <attribute name="title">

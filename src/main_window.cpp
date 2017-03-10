@@ -119,8 +119,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.armJointValues->setItem(3, 2, new QTableWidgetItem("0.000"));
 	ui.armJointValues->setItem(4, 2, new QTableWidgetItem("1.338"));
 
-
-
+	ui.slewProgressBar->setAlignment(Qt::AlignCenter);
+	ui.shoulderProgressBar->setAlignment(Qt::AlignCenter);
+	ui.elbowProgressBar->setAlignment(Qt::AlignCenter);
+	ui.jawRotateProgressBar->setAlignment(Qt::AlignCenter);
+	ui.jawOpeningProgressBar->setAlignment(Qt::AlignCenter);
+	
 
     //Main App connections
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
@@ -327,7 +331,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	desired_[4]=0.36;    
 
 }
-
 
 
 MainWindow::~MainWindow() { }
@@ -1342,13 +1345,69 @@ void MainWindow::vsResultImageCallback(const sensor_msgs::Image::ConstPtr& msg)
 
 void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg)
 {
-  ui.armJointValues->item(0, 0)->setText(QString::number(armStateMsg->position[0]));
-  ui.armJointValues->item(1, 0)->setText(QString::number(armStateMsg->position[1]));
-  ui.armJointValues->item(2, 0)->setText(QString::number(armStateMsg->position[2]));
-  ui.armJointValues->item(3, 0)->setText(QString::number(armStateMsg->position[3]));
-  ui.armJointValues->item(4, 0)->setText(QString::number(armStateMsg->position[4]));
-  QString armEffort = QString::number(armStateMsg->effort[0]);
-  ui.armCurrentLimitLabel->setText("Arm current limit: " + armEffort.mid(0,5));
+	ui.armJointValues->item(0, 0)->setText(QString::number(armStateMsg->position[0]));
+	ui.armJointValues->item(1, 0)->setText(QString::number(armStateMsg->position[1]));
+	ui.armJointValues->item(2, 0)->setText(QString::number(armStateMsg->position[2]));
+	ui.armJointValues->item(3, 0)->setText(QString::number(armStateMsg->position[3]));
+	ui.armJointValues->item(4, 0)->setText(QString::number(armStateMsg->position[4]));
+
+	QString armEffort = QString::number(armStateMsg->effort[0]);
+	ui.armCurrentLimitLabel->setText("Arm current limit: " + armEffort.mid(0,5));
+
+	double value = armStateMsg->position[0]; 
+	if (value < 0)
+		value = (value / -1.571) * 100;
+	else
+		value = (value / 0.549) * 100;
+	ui.slewProgressBar->setValue(value);
+	if (value < 60)
+		ui.slewProgressBar->setStyleSheet("::chunk {background-color: green}");
+	else
+		if (value < 80)
+			ui.slewProgressBar->setStyleSheet("::chunk {background-color: orange}");
+		else
+			ui.slewProgressBar->setStyleSheet("::chunk {background-color: red}");
+
+	value = (armStateMsg->position[1] / 1.587) * 100;
+	ui.shoulderProgressBar->setValue(value);
+	if (armStateMsg->position[1] < 60)
+		ui.shoulderProgressBar->setStyleSheet("::chunk {background-color: green}");
+	else
+		if (armStateMsg->position[1] < 80)
+			ui.shoulderProgressBar->setStyleSheet("::chunk {background-color: orange}");
+		else
+			ui.shoulderProgressBar->setStyleSheet("::chunk {background-color: red}");
+
+	value = (armStateMsg->position[2] / 2.153) * 100;
+	ui.elbowProgressBar->setValue(value);
+	if (armStateMsg->position[2] < 60)
+		ui.elbowProgressBar->setStyleSheet("::chunk {background-color: green}");
+	else
+		if (armStateMsg->position[2] < 80)
+			ui.elbowProgressBar->setStyleSheet("::chunk {background-color: orange}");
+		else
+			ui.elbowProgressBar->setStyleSheet("::chunk {background-color: red}");
+
+	value = (armStateMsg->position[3] / 1.338) * 100;
+	ui.jawRotateProgressBar->setValue(value);
+	if (armStateMsg->position[3] < 60)
+		ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: green}");
+	else
+		if (armStateMsg->position[3] < 80)
+			ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: orange}");
+		else
+			ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: red}");
+
+	value = (armStateMsg->position[4] / 0.549) * 100;
+	ui.jawOpeningProgressBar->setValue(value);
+	if (armStateMsg->position[4] < 60)
+		ui.jawOpeningProgressBar->setStyleSheet("::chunk {background-color: green}");
+	else
+		if (armStateMsg->position[4] < 80)
+			ui.jawOpeningProgressBar->setStyleSheet("::chunk {background-color: orange}");
+		else
+			ui.jawOpeningProgressBar->setStyleSheet("::chunk {background-color: red}");
+
 }
 
 
