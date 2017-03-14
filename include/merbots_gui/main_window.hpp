@@ -143,6 +143,7 @@ public Q_SLOTS:
     void sparusStopStream();
 
     void getInitGraspPose();
+    void getInitGraspPoseRansac();
     void setSpecificationMode(int);
     void updateInteractiveSpecParams();
     void updateAndResetInteractiveSpecParams();

@@ -152,6 +152,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.vsRotationButton, SIGNAL(clicked()), this, SLOT(vsRotationButtonClicked()));
     
     QObject::connect(ui.getGraspingPoseButton, SIGNAL(clicked()), this, SLOT(getInitGraspPose()));
+    QObject::connect(ui.getGraspingPoseRansacButton, SIGNAL(clicked()), this, SLOT(getInitGraspPoseRansac()));
     QObject::connect(ui.graspSpecTab, SIGNAL(currentChanged(int)), this, SLOT(setSpecificationMode(int)));
     QObject::connect(ui.interactiveSpecSlider1, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
     QObject::connect(ui.interactiveSpecSlider2, SIGNAL(sliderMoved(int)), this, SLOT(updateInteractiveSpecParams()));
@@ -713,11 +714,17 @@ void MainWindow::g500GoToSurface()
 
 void MainWindow::getInitGraspPose(){
   std_msgs::String msg;
-  msg.data = "init";
+  msg.data = "initFromPose";
   pub_spec_action.publish(msg);
   ros::spinOnce();
 }
 
+void MainWindow::getInitGraspPoseRansac(){
+  std_msgs::String msg;
+  msg.data = "initFromRansac";
+  pub_spec_action.publish(msg);
+  ros::spinOnce();
+}
 
 void MainWindow::setSpecificationMode( int tab ){
 
