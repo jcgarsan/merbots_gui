@@ -43,6 +43,7 @@
 #include <cola2_msgs/BatteryLevel.h>
 #include <cola2_msgs/TotalTime.h>
 #include <cola2_msgs/Goto.h>
+#include <cola2_msgs/Setpoints.h>
 #include <diagnostic_msgs/DiagnosticArray.h>
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/Joy.h>
@@ -79,7 +80,7 @@ public:
 	ros::Subscriber		sub_arm_state;
 	ros::Subscriber		sub_spec_params;
 	ros::Publisher		pub_spec_action, pub_spec_params;
-	ros::Publisher 		pub_dredg_action;
+	ros::Publisher 		pub_dredg_action, pub_dredging;
     ros::ServiceClient  srv_g500GoTo;
 	ros::ServiceClient 	srv_vsRotation, srv_vsCancel;
 
@@ -153,6 +154,7 @@ public Q_SLOTS:
     void updateGuidedSpecParamsSpin3();
     void publishSliders();
 	void armPublisher();
+    void dredgingPublisher();
 
     void executeGrasping();
     void executeDredging();

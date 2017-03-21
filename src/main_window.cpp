@@ -238,15 +238,18 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	pub_spec_params	 = nh->advertise<std_msgs::Float32MultiArray>("/specification_params_to_uwsim", 1);
 	pub_spec_action	 = nh->advertise<std_msgs::String>("/specification_status", 1);
     pub_dredg_action = nh->advertise<std_msgs::String>("/dredging_status", 1);
-
+    pub_dredging     = nh->advertise<cola2_msgs::Setpoints>("/dredge_pump_setpoint", 1);
 
     //Timer to ensure the ROS communications
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(processSpinOnce()));
     timer->start();
     QTimer *armTimer = new QTimer(this);
-	connect(armTimer, SIGNAL(timeout()), this, SLOT(armPublisher()));
+    connect(armTimer, SIGNAL(timeout()), this, SLOT(armPublisher()));
     armTimer->start(300);
+    QTimer *dredginTimer = new QTimer(this);
+    connect(dredginTimer, SIGNAL(timeout()), this, SLOT(dredgingPublisher()));
+    dredginTimer->start(100);   //10Hz
 
 
     //VisualServoing user interaction init
@@ -500,9 +503,24 @@ void MainWindow::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 
 void MainWindow::armPublisher()
 {
-	if (ui.armTeleopCheckbox->isChecked())
-		vel_pub_.publish(js);
+    if (ui.armTeleopCheckbox->isChecked())
+        vel_pub_.publish(js);
 }
+
+
+void MainWindow::dredgingPublisher()
+{
+    cola2_msgs::Setpoints dredgingMsg;
+    dredgingMsg.setpoints.resize(0);
+
+    if (ui.dredgingSpinBox->value() > 0)
+    {
+        qDebug() << "dredgingSpinBox.value= " << ui.dredgingSpinBox->value();
+        dredgingMsg.setpoints.push_back(ui.dredgingSpinBox->value());
+        pub_dredging.publish(dredgingMsg);
+    }
+}
+
 
 void MainWindow::armCallback(const sensor_msgs::JointState::ConstPtr& mes){
 	current=mes->effort[0];
