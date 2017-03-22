@@ -2,11 +2,12 @@
 
 <launch>
     <!-- Topics -->
-    <arg name="altitude" default="/s2_altitude_throttle_merbots"/>
-    <arg name="body_velocity_req" default="/s2_body_velocity_req_throttle_merbots"/>
+    <arg name="altitude" default="/sparus/cola2_perception/altitude"/>
+    <arg name="body_velocity_req" default="/sparus/cola2_control/body_velocity_req"/>
     <!-- Common params -->
-    <arg name="camera_ns"           default="/s2_stereo_camera" />
-    <arg name="image"               default="image_raw" />
+    <arg name="camera_ns"           default="/sparus/stereo_camera" />
+    <arg name="girona_camera_ns"    default="/girona500/stereo_camera" />
+    <arg name="image"               default="image_rect_color" />
     <arg name="image_repub"         default="image_repub" />
     <arg name="target_from_file"    default="" />
     <arg name="debug"               default="true" />
@@ -24,9 +25,16 @@
     <node pkg="tf" type="static_transform_publisher" name="sparus2_to_stereo" args="0.79325 -0.0725 0.1097 1.5708 0.0 0.79 $(arg robot_frame) $(arg camera_ns) 100" />
     <node pkg="tf" type="static_transform_publisher" name="stereo_to_left_optical" args="0.0 0.0 0.0 0.0 0.0 0.0 $(arg camera_ns) $(arg camera_frame) 100" />
 
+    <!-- Republish SparusII camera -->
     <node if="$(arg enable_republish)" pkg="image_transport" type="republish" name="republish" args="compressed">
       <remap from="in" to="$(arg camera_ns)/left/$(arg image)"/>
       <remap from="out" to="$(arg camera_ns)/left/$(arg image_repub)"/>
+    </node>
+
+    <!-- Republish Girona500 camera -->
+    <node if="$(arg enable_republish)" pkg="image_transport" type="republish" name="republish" args="compressed">
+      <remap from="in" to="$(arg girona_camera_ns)/left/$(arg image)"/>
+      <remap from="out" to="$(arg girona_camera_ns)/left/$(arg image_repub)"/>
     </node>
 
     <node pkg="merbots_gui" type="merbots_gui" name="merbots_gui" output="screen"/>
