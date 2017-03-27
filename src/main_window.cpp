@@ -1394,40 +1394,40 @@ void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armSt
 
 	value = (armStateMsg->position[1] / 1.587) * 100;
 	ui.shoulderProgressBar->setValue(value);
-	if (armStateMsg->position[1] < 60)
+	if (value < 60)
 		ui.shoulderProgressBar->setStyleSheet("::chunk {background-color: green}");
 	else
-		if (armStateMsg->position[1] < 80)
+		if (value < 80)
 			ui.shoulderProgressBar->setStyleSheet("::chunk {background-color: orange}");
 		else
 			ui.shoulderProgressBar->setStyleSheet("::chunk {background-color: red}");
 
 	value = (armStateMsg->position[2] / 2.153) * 100;
 	ui.elbowProgressBar->setValue(value);
-	if (armStateMsg->position[2] < 60)
+	if (value < 60)
 		ui.elbowProgressBar->setStyleSheet("::chunk {background-color: green}");
 	else
-		if (armStateMsg->position[2] < 80)
+		if (value < 80)
 			ui.elbowProgressBar->setStyleSheet("::chunk {background-color: orange}");
 		else
 			ui.elbowProgressBar->setStyleSheet("::chunk {background-color: red}");
 
 	value = (armStateMsg->position[3] / 1.338) * 100;
 	ui.jawRotateProgressBar->setValue(value);
-	if (armStateMsg->position[3] < 60)
+	if (value < 60)
 		ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: green}");
 	else
-		if (armStateMsg->position[3] < 80)
+		if (value < 80)
 			ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: orange}");
 		else
 			ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: red}");
 
 	value = (armStateMsg->position[4] / 0.549) * 100;
 	ui.jawOpeningProgressBar->setValue(value);
-	if (armStateMsg->position[4] < 60)
+	if (value < 60)
 		ui.jawOpeningProgressBar->setStyleSheet("::chunk {background-color: green}");
 	else
-		if (armStateMsg->position[4] < 80)
+		if (value < 80)
 			ui.jawOpeningProgressBar->setStyleSheet("::chunk {background-color: orange}");
 		else
 			ui.jawOpeningProgressBar->setStyleSheet("::chunk {background-color: red}");
