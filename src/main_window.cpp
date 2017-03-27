@@ -25,7 +25,6 @@
 
 #include <QtGui>
 #include <QMessageBox>
-#include <QtWebKit/QWebView>
 #include <QLineEdit>
 #include <QString>
 #include <QtCore>

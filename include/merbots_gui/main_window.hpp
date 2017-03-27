@@ -25,7 +25,6 @@
 #include "set_robot_pose.h"
 
 #include <QtGui/QMainWindow>
-#include <QtWebKit/QWebView>
 #include <QtOpenGL>
 #include <QWidget>
 #include <QImage>
