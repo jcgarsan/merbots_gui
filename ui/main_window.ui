@@ -779,6 +779,12 @@ depth</string>
          </attribute>
         </widget>
         <widget class="QWidget" name="mainTabs_toi">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <attribute name="title">
           <string>ToI selection</string>
          </attribute>
@@ -786,10 +792,16 @@ depth</string>
           <item row="0" column="0" colspan="2">
            <widget class="QGroupBox" name="groupBox_13">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
             </property>
             <property name="title">
              <string>Target of Interest Selection</string>
@@ -994,7 +1006,7 @@ depth</string>
                  <item>
                   <widget class="QLabel" name="vsCameraInputViewer">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -1042,7 +1054,7 @@ depth</string>
                  <item>
                   <widget class="QLabel" name="vsResultViewer">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -2328,7 +2340,7 @@ grasping</string>
           </layout>
          </widget>
         </widget>
-        <widget class="QWidget" name="tab">
+        <widget class="QWidget" name="visualServoing_settings">
          <attribute name="title">
           <string>Visual servoing Settings</string>
          </attribute>
@@ -2976,7 +2988,7 @@ grasping</string>
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

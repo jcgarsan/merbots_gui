@@ -251,6 +251,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.g500StreamView->setScaledContents(true);
     ui.g500StreamView2->setScaledContents(true);
     ui.sparusStreamView->setScaledContents(true);
+    ui.vsResultViewer->setScaledContents(true);
 
 
     //Arm teleoperation init
@@ -1325,7 +1326,9 @@ void MainWindow::vsInputImageCallback(const sensor_msgs::Image::ConstPtr& msg)
         if (msgEncoding.compare(QString::fromStdString(sensor_msgs::image_encodings::RGB8)) != 0)
             dest = dest.rgbSwapped();
 
-        dest = dest.scaled(400, 400, Qt::KeepAspectRatio);
+        int labelHeight = ui.vsCameraInputViewer->height();
+        qDebug() << "labelHeight" << labelHeight;
+        dest = dest.scaled(labelHeight, labelHeight, Qt::KeepAspectRatio);
         imageTopic = dest.copy();
 		pixmapTopic = QPixmap::fromImage(imageTopic);
 		width = pixmapTopic.width();
