@@ -3,6 +3,7 @@
 <launch>
     <!-- Topics -->
     <arg name="altitude" default="/sparus/cola2_perception/altitude"/>
+    <arg name="body_velocity_req_ibvs" default="/ibvs/cola2_control/body_velocity_req"/>
     <arg name="body_velocity_req" default="/sparus/cola2_control/body_velocity_req"/>
     <!-- Common params -->
     <arg name="camera_ns"           default="/sparus/stereo_camera" />
@@ -19,20 +20,20 @@
 
     <!-- Enable/disable -->
     <arg name="enable_vely"         default="true" />
-    <arg name="enable_republish"    default="true" />
+    <arg name="enable_republish"    default="false" />
     <arg name="enable_recovery"     default="false" />
 
     <node pkg="tf" type="static_transform_publisher" name="sparus2_to_stereo" args="0.79325 -0.0725 0.1097 1.5708 0.0 0.79 $(arg robot_frame) $(arg camera_ns) 100" />
     <node pkg="tf" type="static_transform_publisher" name="stereo_to_left_optical" args="0.0 0.0 0.0 0.0 0.0 0.0 $(arg camera_ns) $(arg camera_frame) 100" />
 
     <!-- Republish SparusII camera -->
-    <node if="$(arg enable_republish)" pkg="image_transport" type="republish" name="republish" args="compressed">
+    <node if="$(arg enable_republish)" pkg="image_transport" name="republish_s2" type="republish" args="compressed">
       <remap from="in" to="$(arg camera_ns)/left/$(arg image)"/>
       <remap from="out" to="$(arg camera_ns)/left/$(arg image_repub)"/>
     </node>
 
     <!-- Republish Girona500 camera -->
-    <node if="$(arg enable_republish)" pkg="image_transport" type="republish" name="republish" args="compressed">
+    <node if="$(arg enable_republish)" pkg="image_transport" name="republish_g500" type="republish" args="compressed">
       <remap from="in" to="$(arg girona_camera_ns)/left/$(arg image)"/>
       <remap from="out" to="$(arg girona_camera_ns)/left/$(arg image_repub)"/>
     </node>
@@ -45,7 +46,7 @@
     <node pkg="merbots_tracking" type="det_and_track_node" name="det_and_track" output="screen">
         <param name="camera_angle" value="$(arg camera_angle)" />
         <remap from="~dist" to="$(arg altitude)" />
-        <remap from="~camera_info" to="$(arg camera_ns)/left/camera_info" />
+        <remap from="~camera_info" to="$(arg camera_ns)/right/camera_info" />
         <remap unless="$(arg enable_republish)" from="~image" to="$(arg camera_ns)/left/$(arg image)" />
         <remap if="$(arg enable_republish)" from="~image" to="$(arg camera_ns)/left/$(arg image_repub)" />
     </node>
@@ -56,11 +57,11 @@
         <param name="robot_frame" value="$(arg robot_frame)" />
         <param name="camera_frame" value="$(arg camera_frame)" />
 
-        <remap from="~twist" to="$(arg body_velocity_req)" />
+        <remap from="~twist" to="$(arg body_velocity_req_ibvs)" />
         <remap from="~target" to="/det_and_track/target" />
         <remap from="~roi" to="/det_and_track/roi" />
         <remap from="~dist" to="$(arg altitude)" />
-        <remap from="~camera_info" to="$(arg camera_ns)/left/camera_info" />
+        <remap from="~camera_info" to="$(arg camera_ns)/right/camera_info" />
         <remap unless="$(arg enable_republish)" from="~image" to="$(arg camera_ns)/left/$(arg image)" />
         <remap if="$(arg enable_republish)" from="~image" to="$(arg camera_ns)/left/$(arg image_repub)" />
     </node>
@@ -69,7 +70,7 @@
         <param name="camera_angle" value="$(arg camera_angle)" />
         <remap from="~roi" to="/det_and_track/roi" />
         <remap from="~dist" to="$(arg altitude)" />
-        <remap from="~camera_info" to="$(arg camera_ns)/left/camera_info" />
+        <remap from="~camera_info" to="$(arg camera_ns)/right/camera_info" />
     </node>
 
     <!-- IBVS recovery -->
@@ -77,4 +78,6 @@
         <remap from="nav_sts" to="/cola2_navigation/nav_sts"/>
         <remap from="ibvs_info" to="/ibvs/ibvs_info"/>
     </node>
+
+    <node name="gui_bvr_merbots" pkg="topic_tools" type="relay" args="$(arg body_velocity_req_ibvs) $(arg body_velocity_req)"/>
 </launch>
