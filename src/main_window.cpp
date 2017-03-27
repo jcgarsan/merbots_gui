@@ -103,21 +103,6 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 		ui.sparusServiceStatus->setItem(0, i, new QTableWidgetItem("0.0"));
 	}
 
-	//Arm limit table init
-	for (int i=0; i<5; i++)
-		ui.armJointValues->setItem(i, 0, new QTableWidgetItem("0.0"));
-	
-	ui.armJointValues->setItem(0, 1, new QTableWidgetItem("-1.571"));
-	ui.armJointValues->setItem(1, 1, new QTableWidgetItem("0.000"));
-	ui.armJointValues->setItem(2, 1, new QTableWidgetItem("0.000"));
-	ui.armJointValues->setItem(3, 1, new QTableWidgetItem("0.000"));
-	ui.armJointValues->setItem(4, 1, new QTableWidgetItem("-0.058"));
-	ui.armJointValues->setItem(0, 2, new QTableWidgetItem("0.549"));
-	ui.armJointValues->setItem(1, 2, new QTableWidgetItem("1.587"));
-	ui.armJointValues->setItem(2, 2, new QTableWidgetItem("2.153"));
-	ui.armJointValues->setItem(3, 2, new QTableWidgetItem("0.000"));
-	ui.armJointValues->setItem(4, 2, new QTableWidgetItem("1.338"));
-
 	ui.slewProgressBar->setAlignment(Qt::AlignCenter);
 	ui.shoulderProgressBar->setAlignment(Qt::AlignCenter);
 	ui.elbowProgressBar->setAlignment(Qt::AlignCenter);
@@ -1369,12 +1354,6 @@ void MainWindow::vsResultImageCallback(const sensor_msgs::Image::ConstPtr& msg)
 
 void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armStateMsg)
 {
-	ui.armJointValues->item(0, 0)->setText(QString::number(armStateMsg->position[0]));
-	ui.armJointValues->item(1, 0)->setText(QString::number(armStateMsg->position[1]));
-	ui.armJointValues->item(2, 0)->setText(QString::number(armStateMsg->position[2]));
-	ui.armJointValues->item(3, 0)->setText(QString::number(armStateMsg->position[3]));
-	ui.armJointValues->item(4, 0)->setText(QString::number(armStateMsg->position[4]));
-
 	QString armEffort = QString::number(armStateMsg->effort[0]);
 	ui.armCurrentLimitLabel->setText("Arm current limit: " + armEffort.mid(0,5));
 
@@ -1412,7 +1391,7 @@ void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armSt
 		else
 			ui.elbowProgressBar->setStyleSheet("::chunk {background-color: red}");
 
-	value = (armStateMsg->position[3] / 1.338) * 100;
+	value = ((armStateMsg->position[3] + M_PI/2) /M_PI) * 100;
 	ui.jawRotateProgressBar->setValue(value);
 	if (value < 60)
 		ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: green}");
@@ -1422,7 +1401,7 @@ void MainWindow::armStateCallback(const sensor_msgs::JointState::ConstPtr& armSt
 		else
 			ui.jawRotateProgressBar->setStyleSheet("::chunk {background-color: red}");
 
-	value = (armStateMsg->position[4] / 0.549) * 100;
+	value = (armStateMsg->position[4] / 1.338) * 100;
 	ui.jawOpeningProgressBar->setValue(value);
 	if (value < 60)
 		ui.jawOpeningProgressBar->setStyleSheet("::chunk {background-color: green}");

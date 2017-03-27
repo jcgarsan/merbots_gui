@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -777,88 +777,6 @@ depth</string>
          <attribute name="title">
           <string>RoI selection</string>
          </attribute>
-         <widget class="QWidget" name="layoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>140</x>
-            <y>90</y>
-            <width>209</width>
-            <height>179</height>
-           </rect>
-          </property>
-          <layout class="QFormLayout" name="formLayout">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_21">
-             <property name="text">
-              <string>Slew</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QProgressBar" name="slewProgressBar">
-             <property name="value">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QProgressBar" name="shoulderProgressBar">
-             <property name="value">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QProgressBar" name="elbowProgressBar">
-             <property name="value">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QProgressBar" name="jawRotateProgressBar">
-             <property name="value">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QProgressBar" name="jawOpeningProgressBar">
-             <property name="value">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_41">
-             <property name="text">
-              <string>Shoulder</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_42">
-             <property name="text">
-              <string>Elbow</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_43">
-             <property name="text">
-              <string>JawRotate</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_44">
-             <property name="text">
-              <string>JawOpening</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
         </widget>
         <widget class="QWidget" name="mainTabs_toi">
          <attribute name="title">
@@ -1075,6 +993,12 @@ depth</string>
                  </item>
                  <item>
                   <widget class="QLabel" name="vsCameraInputViewer">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="minimumSize">
                     <size>
                      <width>468</width>
@@ -1658,83 +1582,147 @@ grasping</string>
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QTableWidget" name="armJointValues">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <layout class="QFormLayout" name="formLayout_2">
+                   <property name="sizeConstraint">
+                    <enum>QLayout::SetMinimumSize</enum>
                    </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>354</width>
-                     <height>142</height>
-                    </size>
+                   <property name="horizontalSpacing">
+                    <number>5</number>
                    </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>354</width>
-                     <height>142</height>
-                    </size>
+                   <property name="verticalSpacing">
+                    <number>2</number>
                    </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                    </font>
-                   </property>
-                   <attribute name="horizontalHeaderDefaultSectionSize">
-                    <number>85</number>
-                   </attribute>
-                   <attribute name="horizontalHeaderMinimumSectionSize">
-                    <number>85</number>
-                   </attribute>
-                   <attribute name="verticalHeaderDefaultSectionSize">
-                    <number>22</number>
-                   </attribute>
-                   <attribute name="verticalHeaderMinimumSectionSize">
-                    <number>22</number>
-                   </attribute>
-                   <row>
-                    <property name="text">
-                     <string>Slew</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>Shoulder</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>Elbow</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>JawRotate</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>JawOpening</string>
-                    </property>
-                   </row>
-                   <column>
-                    <property name="text">
-                     <string>Value</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>Min</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>Max</string>
-                    </property>
-                   </column>
-                  </widget>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_46">
+                     <property name="text">
+                      <string>Slew</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QProgressBar" name="slewProgressBar">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>225</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_47">
+                     <property name="text">
+                      <string>Shoulder</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_48">
+                     <property name="text">
+                      <string>Elbow</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="label_49">
+                     <property name="text">
+                      <string>JawRotate</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="label_50">
+                     <property name="text">
+                      <string>JawOpenning</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QProgressBar" name="shoulderProgressBar">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>225</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QProgressBar" name="elbowProgressBar">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>225</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QProgressBar" name="jawRotateProgressBar">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>225</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QProgressBar" name="jawOpeningProgressBar">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>225</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_15">
@@ -1798,7 +1786,7 @@ grasping</string>
                    <property name="title">
                     <string>Dredging options</string>
                    </property>
-                   <widget class="QWidget" name="layoutWidget">
+                   <widget class="QWidget" name="layoutWidget_0">
                     <property name="geometry">
                      <rect>
                       <x>0</x>
@@ -1995,7 +1983,7 @@ grasping</string>
          <attribute name="title">
           <string>VehicleControl Settings</string>
          </attribute>
-         <widget class="QWidget" name="layoutWidget">
+         <widget class="QWidget" name="layoutWidget_1">
           <property name="geometry">
            <rect>
             <x>11</x>
