@@ -2400,7 +2400,7 @@ grasping</string>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="vsCameraInput">
                  <property name="text">
-                  <string>/stereo_forward/left/image_repub</string>
+                  <string>/sparus/stereo_camera/left/image_rect_color</string>
                  </property>
                 </widget>
                </item>
