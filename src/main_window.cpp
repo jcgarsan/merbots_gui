@@ -1327,7 +1327,6 @@ void MainWindow::vsInputImageCallback(const sensor_msgs::Image::ConstPtr& msg)
             dest = dest.rgbSwapped();
 
         int labelHeight = ui.vsCameraInputViewer->height();
-        qDebug() << "labelHeight" << labelHeight;
         dest = dest.scaled(labelHeight, labelHeight, Qt::KeepAspectRatio);
         imageTopic = dest.copy();
 		pixmapTopic = QPixmap::fromImage(imageTopic);
