@@ -20,7 +20,7 @@ ibvs/kd_x: 0.001
 ibvs/kp_y: 0.05
 ibvs/ki_y: 0.01
 ibvs/kd_y: 0.001
-ibvs/kp_z: 0.02
+ibvs/kp_z: 0.1
 ibvs/ki_z: 0.005
 ibvs/kd_z: 0.0005
 ibvs/max_vx: 0.15

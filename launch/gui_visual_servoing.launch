@@ -78,6 +78,4 @@
         <remap from="nav_sts" to="/cola2_navigation/nav_sts"/>
         <remap from="ibvs_info" to="/ibvs/ibvs_info"/>
     </node>
-
-    <node name="gui_bvr_merbots" pkg="topic_tools" type="relay" args="$(arg body_velocity_req_ibvs) $(arg body_velocity_req)"/>
 </launch>
