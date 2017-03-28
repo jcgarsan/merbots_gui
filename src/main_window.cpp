@@ -1103,18 +1103,15 @@ void MainWindow::g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray:
         g500DiagnosticsErrorLevel = currentError;
         g500DiagnosticsErrorName  = QString::fromStdString(g500DiagnosticsInfo->status[0].name);
         ui.g500ServiceStatus->item(0, 2)->setText(g500DiagnosticsErrorName);
+        if (sparusDiagnosticsErrorLevel == 1)
+            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::yellow);
+        if (sparusDiagnosticsErrorLevel == 2)
+            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::red);
     }
     else
-        ui.g500ServiceStatus->item(0, 2)->setText(QString::fromStdString("OK"));
-
-    switch (currentError)
     {
-        case 0:
-            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::white);
-        case 1:
-            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::yellow);
-        case 2:
-            ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::red);
+        ui.g500ServiceStatus->item(0, 2)->setText(QString::fromStdString("OK"));
+        ui.g500ServiceStatus->item(0, 2)->setForeground(QColor(48,48,48));
     }
 }
 
@@ -1218,6 +1215,7 @@ void MainWindow::sparusMergedBodyVelCallback(const auv_msgs::BodyVelocityReq::Co
         ui.sparusOdometryTable->item(3, 5)->setForeground(QColor(48,48,48));
 }
 
+
 void MainWindow::sparusBatteryCallback(const cola2_msgs::EmusBms::ConstPtr& sparusBatteryInfo)
 {
     if (sparusBatteryInfo->stateOfCharge <= 20)
@@ -1254,18 +1252,22 @@ void MainWindow::sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArra
         sparusDiagnosticsErrorLevel = currentError;
         sparusDiagnosticsErrorName  = QString::fromStdString(sparusDiagnosticsInfo->status[0].name);
         ui.sparusServiceStatus->item(0, 2)->setText(sparusDiagnosticsErrorName);
+        if (sparusDiagnosticsErrorLevel == 1)
+            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::yellow);
+        if (sparusDiagnosticsErrorLevel == 2)
+            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::red);
     }
     else
+    {
         ui.sparusServiceStatus->item(0, 2)->setText(QString::fromStdString("OK"));
+        ui.sparusServiceStatus->item(0, 2)->setForeground(QColor(48,48,48));
+    }
 
     switch (currentError)
     {
         case 0:
-            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::white);
         case 1:
-            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::yellow);
-        case 2:
-            ui.sparusServiceStatus->item(0, 2)->setForeground(Qt::red);
+            
     }
 }
 
