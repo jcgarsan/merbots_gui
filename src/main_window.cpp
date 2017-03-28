@@ -1262,13 +1262,6 @@ void MainWindow::sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArra
         ui.sparusServiceStatus->item(0, 2)->setText(QString::fromStdString("OK"));
         ui.sparusServiceStatus->item(0, 2)->setForeground(QColor(48,48,48));
     }
-
-    switch (currentError)
-    {
-        case 0:
-        case 1:
-            
-    }
 }
 
 
