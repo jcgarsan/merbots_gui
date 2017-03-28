@@ -1103,9 +1103,9 @@ void MainWindow::g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray:
         g500DiagnosticsErrorLevel = currentError;
         g500DiagnosticsErrorName  = QString::fromStdString(g500DiagnosticsInfo->status[0].name);
         ui.g500ServiceStatus->item(0, 2)->setText(g500DiagnosticsErrorName);
-        if (sparusDiagnosticsErrorLevel == 1)
+        if (g500DiagnosticsErrorLevel == 1)
             ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::yellow);
-        if (sparusDiagnosticsErrorLevel == 2)
+        if (g500DiagnosticsErrorLevel == 2)
             ui.g500ServiceStatus->item(0, 2)->setForeground(Qt::red);
     }
     else
