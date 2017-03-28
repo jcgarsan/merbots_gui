@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -2218,7 +2218,7 @@ grasping</string>
                <item row="1" column="1">
                 <widget class="QLineEdit" name="sparusTopicBatteryLevel">
                  <property name="text">
-                  <string>/sparus/cola2_safety/ocean_server_batteries</string>
+                  <string>/cola2_safety/emus_bms</string>
                  </property>
                 </widget>
                </item>

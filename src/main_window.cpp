@@ -1231,6 +1231,7 @@ void MainWindow::sparusBatteryCallback(const cola2_msgs::EmusBms::ConstPtr& spar
 
 void MainWindow::sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo)
 {
+    
 	ui.sparusServiceStatus->item(0, 1)->setText(QString::number(sparusRunningTimeInfo->total_time));
 }
 
