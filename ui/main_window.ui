@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -2225,7 +2225,7 @@ grasping</string>
                <item row="2" column="1">
                 <widget class="QLineEdit" name="sparusTopicGoToService">
                  <property name="text">
-                  <string>/cola2_control/enable_goto</string>
+                  <string>/sparus/cola2_control/enable_goto</string>
                  </property>
                 </widget>
                </item>
@@ -2239,7 +2239,7 @@ grasping</string>
                <item row="3" column="4">
                 <widget class="QLineEdit" name="sparusCameraTopic">
                  <property name="text">
-                  <string>/uwsim/camera1</string>
+                  <string>/sparus/stereo_camera/left/image_rect_color</string>
                  </property>
                 </widget>
                </item>
@@ -2267,7 +2267,7 @@ grasping</string>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="sparusTopicOdometry">
                  <property name="text">
-                  <string>/sparus/cola2_navigation/nav_sts_hz</string>
+                  <string>/sparus/cola2_navigation/nav_sts</string>
                  </property>
                 </widget>
                </item>
@@ -2300,10 +2300,18 @@ grasping</string>
                 </widget>
                </item>
                <item row="0" column="4">
-                <widget class="QLineEdit" name="sparusTopicMergedBodyVel"/>
+                <widget class="QLineEdit" name="sparusTopicMergedBodyVel">
+                 <property name="text">
+                  <string>/sparus/cola2_control/merged_body_velocity_req</string>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="4">
-                <widget class="QLineEdit" name="sparusTopicMergedWorld"/>
+                <widget class="QLineEdit" name="sparusTopicMergedWorld">
+                 <property name="text">
+                  <string>/sparus/cola2_control/merged_world_waypoint_req</string>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="4">
                 <widget class="QLineEdit" name="sparusTopicRunningTime">
@@ -2988,7 +2996,7 @@ grasping</string>
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
