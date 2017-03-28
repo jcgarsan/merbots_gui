@@ -203,7 +203,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_g500Diagnostics	  = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
 
 	sub_sparusOdometry	  = nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
-	sub_sparusBattery	  = nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
+	sub_sparusBattery	  = nh->subscribe<cola2_msgs::EmusBms>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
 	sub_sparusRunningtime = nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
@@ -570,7 +570,7 @@ void MainWindow::sparusTopicsButtonClicked()
     sub_sparusCamera.shutdown();
 	qDebug()<<"sparus topics have been shutdown";
 	sub_sparusOdometry		= nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
-	sub_sparusBattery		= nh->subscribe<cola2_msgs::BatteryLevel>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
+	sub_sparusBattery		= nh->subscribe<cola2_msgs::EmusBms>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
 	sub_sparusRunningtime	= nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
 	sub_sparusDiagnostics	= nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
     image_transport::ImageTransport it(*nh);
@@ -1218,14 +1218,14 @@ void MainWindow::sparusMergedBodyVelCallback(const auv_msgs::BodyVelocityReq::Co
         ui.sparusOdometryTable->item(3, 5)->setForeground(QColor(48,48,48));
 }
 
-void MainWindow::sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo)
+void MainWindow::sparusBatteryCallback(const cola2_msgs::EmusBms::ConstPtr& sparusBatteryInfo)
 {
-    if (sparusBatteryInfo->charge <= 20)
+    if (sparusBatteryInfo->stateOfCharge <= 20)
         ui.sparusServiceStatus->item(0, 0)->setBackground(Qt::red);
     else
         ui.sparusServiceStatus->item(0, 0)->setBackground(Qt::white);
 
-	ui.sparusServiceStatus->item(0, 0)->setText(QString::number(sparusBatteryInfo->charge));
+	ui.sparusServiceStatus->item(0, 0)->setText(QString::number(sparusBatteryInfo->stateOfCharge));
 }
 
 

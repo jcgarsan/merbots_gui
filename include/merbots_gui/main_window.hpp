@@ -40,6 +40,7 @@
 #include <auv_msgs/BodyVelocityReq.h>
 #include <auv_msgs/WorldWaypointReq.h>
 #include <cola2_msgs/BatteryLevel.h>
+#include <cola2_msgs/EmusBms.h>
 #include <cola2_msgs/TotalTime.h>
 #include <cola2_msgs/Goto.h>
 #include <cola2_msgs/Setpoints.h>
@@ -182,7 +183,7 @@ public Q_SLOTS:
 	void sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo);
     void sparusMergedBodyVelCallback(const auv_msgs::BodyVelocityReq::ConstPtr& sparusMergedBodyVelInfo);
     void sparusMergedWorldCallback(const auv_msgs::WorldWaypointReq::ConstPtr& sparusMergedWorldInfo);
-	void sparusBatteryCallback(const cola2_msgs::BatteryLevel::ConstPtr& sparusBatteryInfo);
+	void sparusBatteryCallback(const cola2_msgs::EmusBms::ConstPtr& sparusBatteryInfo);
 	void sparusRunningTimeCallback(const cola2_msgs::TotalTime::ConstPtr& sparusRunningTimeInfo);
 	void sparusDiagnosticsCallback(const diagnostic_msgs::DiagnosticArray::ConstPtr& sparusDiagnosticsInfo);
     void sparusCameraCallback(const sensor_msgs::Image::ConstPtr& msg);
