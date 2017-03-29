@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+	<node pkg="merbots_gui" type="merbots_gui" name="merbots_gui" output="screen"/>
+	<node pkg="ros_uji_joystick" type="ros_uji_joystick.py" name="ros_uji_joystick" output="screen"/>
+</launch>
