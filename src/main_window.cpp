@@ -202,10 +202,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	sub_g500Runningtime	  = nh->subscribe<cola2_msgs::TotalTime>(ui.g500TopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::g500RunningTimeCallback, this); 
 	sub_g500Diagnostics	  = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.g500TopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::g500DiagnosticsCallback, this); 
 
-	sub_sparusOdometry	  = nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
-	sub_sparusBattery	  = nh->subscribe<cola2_msgs::EmusBms>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
-	sub_sparusRunningtime = nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
-	sub_sparusDiagnostics = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
+	sub_sparusOdometry	    = nh->subscribe<auv_msgs::NavSts>(ui.sparusTopicOdometry->text().toUtf8().constData(), 1, &MainWindow::sparusOdometryCallback, this); 
+    sub_sparusMergedBodyVel = nh->subscribe<auv_msgs::BodyVelocityReq>(ui.sparusTopicMergedBodyVel->text().toUtf8().constData(), 1, &MainWindow::sparusMergedBodyVelCallback, this); 
+    sub_sparusMergedWorld   = nh->subscribe<auv_msgs::WorldWaypointReq>(ui.sparusTopicMergedWorld->text().toUtf8().constData(), 1, &MainWindow::sparusMergedWorldCallback, this); 
+	sub_sparusBattery	    = nh->subscribe<cola2_msgs::EmusBms>(ui.sparusTopicBatteryLevel->text().toUtf8().constData(), 1, &MainWindow::sparusBatteryCallback, this); 
+	sub_sparusRunningtime   = nh->subscribe<cola2_msgs::TotalTime>(ui.sparusTopicRunningTime->text().toUtf8().constData(), 1, &MainWindow::sparusRunningTimeCallback, this); 
+	sub_sparusDiagnostics   = nh->subscribe<diagnostic_msgs::DiagnosticArray>(ui.sparusTopicDiagnostics->text().toUtf8().constData(), 1, &MainWindow::sparusDiagnosticsCallback, this); 
 
     srv_g500GoTo    = nh->serviceClient<cola2_msgs::Goto>(ui.g500TopicGoToService->text().toUtf8().constData());
     srv_vsRotation  = nh->serviceClient<merbots_ibvs::Rotate>(ui.vsRotationService->text().toUtf8().constData());

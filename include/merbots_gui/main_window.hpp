@@ -76,7 +76,7 @@ Q_OBJECT
 public:
 	ros::NodeHandle		*nh;
 	ros::Subscriber		sub_g500Odometry, sub_g500MergedBodyVel, sub_g500MergedWorld, sub_g500Battery, sub_g500Runningtime, sub_g500Diagnostics;
-	ros::Subscriber		sub_sparusOdometry, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
+	ros::Subscriber		sub_sparusOdometry, sub_sparusMergedBodyVel, sub_sparusMergedWorld, sub_sparusBattery, sub_sparusRunningtime, sub_sparusDiagnostics;
 	ros::Subscriber		sub_arm_state;
 	ros::Subscriber		sub_spec_params;
 	ros::Publisher		pub_spec_action, pub_spec_params;
