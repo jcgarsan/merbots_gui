@@ -7,7 +7,7 @@
     <arg name="body_velocity_req" default="/sparus/cola2_control/body_velocity_req"/>
     <!-- Common params -->
     <arg name="camera_ns"           default="/sparus/stereo_camera" />
-    <arg name="girona_camera_ns"    default="/girona500/stereo_camera" />
+    <arg name="girona_camera_ns"    default="/stereo_camera" />
     <arg name="image"               default="image_rect_color" />
     <arg name="image_repub"         default="image_repub" />
     <arg name="target_from_file"    default="" />
@@ -20,7 +20,7 @@
 
     <!-- Enable/disable -->
     <arg name="enable_vely"         default="true" />
-    <arg name="enable_republish"    default="false" />
+    <arg name="enable_republish"    default="true" />
     <arg name="enable_recovery"     default="false" />
 
     <node pkg="tf" type="static_transform_publisher" name="sparus2_to_stereo" args="0.79325 -0.0725 0.1097 1.5708 0.0 0.79 $(arg robot_frame) $(arg camera_ns) 100" />
@@ -33,7 +33,7 @@
     </node>
 
     <!-- Republish Girona500 camera -->
-    <node if="$(arg enable_republish)" pkg="image_transport" name="republish_g500" type="republish" args="compressed">
+    <node pkg="image_transport" name="republish_g500" type="republish" args="compressed">
       <remap from="in" to="$(arg girona_camera_ns)/left/$(arg image)"/>
       <remap from="out" to="$(arg girona_camera_ns)/left/$(arg image_repub)"/>
     </node>
