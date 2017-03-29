@@ -498,7 +498,7 @@ void MainWindow::dredgingPublisher()
     cola2_msgs::Setpoints dredgingMsg;
     dredgingMsg.setpoints.resize(0);
 
-    double value = round( ui.dredgingSpinBox->value() * 10.0 ) / 10.0;
+    double value = round( ui.dredgingSpinBox->value() * -10.0 ) / 10.0;
     dredgingMsg.setpoints.push_back(value);
     pub_dredging.publish(dredgingMsg);
 
