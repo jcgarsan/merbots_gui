@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -2156,7 +2156,7 @@ grasping</string>
                <item row="4" column="3">
                 <widget class="QLineEdit" name="g500CameraTopic">
                  <property name="text">
-                  <string>/stereo_camera/right/image_rect_color</string>
+                  <string>/stereo_camera/left/image_repub</string>
                  </property>
                 </widget>
                </item>
