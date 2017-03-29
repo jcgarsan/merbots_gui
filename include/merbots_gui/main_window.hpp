@@ -103,7 +103,8 @@ public:
 
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
-    double rad2grad(double rads);
+    float rad2grad(double rads);
+    float trun2dec(double value);
 
     //Arm data
 	int axisindex[6];

@@ -960,25 +960,34 @@ void MainWindow::publishSliders(){
 ** Implemenation [Callbacks]
 *****************************************************************************/
 
-double MainWindow::rad2grad(double rads)
+float MainWindow::rad2grad(double rads)
 {
     //Converts radians to grads
-    return (rads*180/M_PI);
+    float roundedRad = roundf( (rads*180/M_PI) * 100) /100;
+    return roundedRad;
 }
 
 
+float MainWindow::trun2dec(double value)
+{
+    //Converts doubles to float with 2 decimals
+    float roundedValue = roundf(value * 100) / 100;
+    return roundedValue;
+}
+
 void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500OdometryInfo)
 {
-	ui.g500OdometryTable->item(0, 0)->setText(QString::number(g500OdometryInfo->position.north));
-	ui.g500OdometryTable->item(0, 1)->setText(QString::number(g500OdometryInfo->position.east));
-	ui.g500OdometryTable->item(0, 2)->setText(QString::number(g500OdometryInfo->position.depth));
+	ui.g500OdometryTable->item(0, 0)->setText(QString::number(trun2dec(g500OdometryInfo->position.north)));
+	ui.g500OdometryTable->item(0, 1)->setText(QString::number(trun2dec(g500OdometryInfo->position.east)));
+    QString zData = QString::number(trun2dec(g500OdometryInfo->position.depth)) + " / " + QString::number(trun2dec(g500OdometryInfo->altitude));
+	ui.g500OdometryTable->item(0, 2)->setText(zData);
 	ui.g500OdometryTable->item(0, 3)->setText(QString::number(rad2grad(g500OdometryInfo->orientation.roll)));
 	ui.g500OdometryTable->item(0, 4)->setText(QString::number(rad2grad(g500OdometryInfo->orientation.pitch)));
 	ui.g500OdometryTable->item(0, 5)->setText(QString::number(rad2grad(g500OdometryInfo->orientation.yaw)));
 
-    ui.g500OdometryTable->item(2, 0)->setText(QString::number(g500OdometryInfo->body_velocity.x));
-    ui.g500OdometryTable->item(2, 1)->setText(QString::number(g500OdometryInfo->body_velocity.y));
-    ui.g500OdometryTable->item(2, 2)->setText(QString::number(g500OdometryInfo->body_velocity.z));
+    ui.g500OdometryTable->item(2, 0)->setText(QString::number(trun2dec(g500OdometryInfo->body_velocity.x)));
+    ui.g500OdometryTable->item(2, 1)->setText(QString::number(trun2dec(g500OdometryInfo->body_velocity.y)));
+    ui.g500OdometryTable->item(2, 2)->setText(QString::number(trun2dec(g500OdometryInfo->body_velocity.z)));
     ui.g500OdometryTable->item(2, 3)->setText(QString::number(rad2grad(g500OdometryInfo->orientation_rate.roll)));
     ui.g500OdometryTable->item(2, 4)->setText(QString::number(rad2grad(g500OdometryInfo->orientation_rate.pitch)));
     ui.g500OdometryTable->item(2, 5)->setText(QString::number(rad2grad(g500OdometryInfo->orientation_rate.yaw)));
@@ -987,9 +996,9 @@ void MainWindow::g500OdometryCallback(const auv_msgs::NavSts::ConstPtr& g500Odom
 
 void MainWindow::g500MergedWorldCallback(const auv_msgs::WorldWaypointReq::ConstPtr& g500MergedWorldInfo)
 {
-    ui.g500OdometryTable->item(1, 0)->setText(QString::number(g500MergedWorldInfo->position.north));
-    ui.g500OdometryTable->item(1, 1)->setText(QString::number(g500MergedWorldInfo->position.east));
-    ui.g500OdometryTable->item(1, 2)->setText(QString::number(g500MergedWorldInfo->position.depth));
+    ui.g500OdometryTable->item(1, 0)->setText(QString::number(trun2dec(g500MergedWorldInfo->position.north)));
+    ui.g500OdometryTable->item(1, 1)->setText(QString::number(trun2dec(g500MergedWorldInfo->position.east)));
+    ui.g500OdometryTable->item(1, 2)->setText(QString::number(trun2dec(g500MergedWorldInfo->position.depth)));
     ui.g500OdometryTable->item(1, 3)->setText(QString::number(rad2grad(g500MergedWorldInfo->orientation.roll)));
     ui.g500OdometryTable->item(1, 4)->setText(QString::number(rad2grad(g500MergedWorldInfo->orientation.pitch)));
     ui.g500OdometryTable->item(1, 5)->setText(QString::number(rad2grad(g500MergedWorldInfo->orientation.yaw)));
@@ -1028,12 +1037,12 @@ void MainWindow::g500MergedWorldCallback(const auv_msgs::WorldWaypointReq::Const
 
 void MainWindow::g500MergedBodyVelCallback(const auv_msgs::BodyVelocityReq::ConstPtr& g500MergedBodyVelInfo)
 {
-    ui.g500OdometryTable->item(3, 0)->setText(QString::number(g500MergedBodyVelInfo->twist.linear.x));
-    ui.g500OdometryTable->item(3, 1)->setText(QString::number(g500MergedBodyVelInfo->twist.linear.y));
-    ui.g500OdometryTable->item(3, 2)->setText(QString::number(g500MergedBodyVelInfo->twist.linear.z));
-    ui.g500OdometryTable->item(3, 3)->setText(QString::number(g500MergedBodyVelInfo->twist.angular.x));
-    ui.g500OdometryTable->item(3, 4)->setText(QString::number(g500MergedBodyVelInfo->twist.angular.y));
-    ui.g500OdometryTable->item(3, 5)->setText(QString::number(g500MergedBodyVelInfo->twist.angular.z));
+    ui.g500OdometryTable->item(3, 0)->setText(QString::number(trun2dec(g500MergedBodyVelInfo->twist.linear.x)));
+    ui.g500OdometryTable->item(3, 1)->setText(QString::number(trun2dec(g500MergedBodyVelInfo->twist.linear.y)));
+    ui.g500OdometryTable->item(3, 2)->setText(QString::number(trun2dec(g500MergedBodyVelInfo->twist.linear.z)));
+    ui.g500OdometryTable->item(3, 3)->setText(QString::number(trun2dec(g500MergedBodyVelInfo->twist.angular.x)));
+    ui.g500OdometryTable->item(3, 4)->setText(QString::number(trun2dec(g500MergedBodyVelInfo->twist.angular.y)));
+    ui.g500OdometryTable->item(3, 5)->setText(QString::number(trun2dec(g500MergedBodyVelInfo->twist.angular.z)));
 
     if (g500MergedBodyVelInfo->disable_axis.x)
         ui.g500OdometryTable->item(3, 0)->setForeground(Qt::gray);
@@ -1118,16 +1127,17 @@ void MainWindow::g500DiagnosticsCallback(const diagnostic_msgs::DiagnosticArray:
 
 void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparusOdometryInfo)
 {
-    ui.sparusOdometryTable->item(0, 0)->setText(QString::number(sparusOdometryInfo->position.north));
-    ui.sparusOdometryTable->item(0, 1)->setText(QString::number(sparusOdometryInfo->position.east));
-    ui.sparusOdometryTable->item(0, 2)->setText(QString::number(sparusOdometryInfo->position.depth));
+    ui.sparusOdometryTable->item(0, 0)->setText(QString::number(trun2dec(sparusOdometryInfo->position.north)));
+    ui.sparusOdometryTable->item(0, 1)->setText(QString::number(trun2dec(sparusOdometryInfo->position.east)));
+    QString zData = QString::number(trun2dec(sparusOdometryInfo->position.depth)) + " / " + QString::number(trun2dec(sparusOdometryInfo->altitude));
+    ui.sparusOdometryTable->item(0, 2)->setText(zData);
     ui.sparusOdometryTable->item(0, 3)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation.roll)));
     ui.sparusOdometryTable->item(0, 4)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation.pitch)));
     ui.sparusOdometryTable->item(0, 5)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation.yaw)));
 
-    ui.sparusOdometryTable->item(2, 0)->setText(QString::number(sparusOdometryInfo->body_velocity.x));
-    ui.sparusOdometryTable->item(2, 1)->setText(QString::number(sparusOdometryInfo->body_velocity.y));
-    ui.sparusOdometryTable->item(2, 2)->setText(QString::number(sparusOdometryInfo->body_velocity.z));
+    ui.sparusOdometryTable->item(2, 0)->setText(QString::number(trun2dec(sparusOdometryInfo->body_velocity.x)));
+    ui.sparusOdometryTable->item(2, 1)->setText(QString::number(trun2dec(sparusOdometryInfo->body_velocity.y)));
+    ui.sparusOdometryTable->item(2, 2)->setText(QString::number(trun2dec(sparusOdometryInfo->body_velocity.z)));
     ui.sparusOdometryTable->item(2, 3)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation_rate.roll)));
     ui.sparusOdometryTable->item(2, 4)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation_rate.pitch)));
     ui.sparusOdometryTable->item(2, 5)->setText(QString::number(rad2grad(sparusOdometryInfo->orientation_rate.yaw)));
@@ -1136,9 +1146,9 @@ void MainWindow::sparusOdometryCallback(const auv_msgs::NavSts::ConstPtr& sparus
 
 void MainWindow::sparusMergedWorldCallback(const auv_msgs::WorldWaypointReq::ConstPtr& sparusMergedWorldInfo)
 {
-    ui.sparusOdometryTable->item(1, 0)->setText(QString::number(sparusMergedWorldInfo->position.north));
-    ui.sparusOdometryTable->item(1, 1)->setText(QString::number(sparusMergedWorldInfo->position.east));
-    ui.sparusOdometryTable->item(1, 2)->setText(QString::number(sparusMergedWorldInfo->position.depth));
+    ui.sparusOdometryTable->item(1, 0)->setText(QString::number(trun2dec(sparusMergedWorldInfo->position.north)));
+    ui.sparusOdometryTable->item(1, 1)->setText(QString::number(trun2dec(sparusMergedWorldInfo->position.east)));
+    ui.sparusOdometryTable->item(1, 2)->setText(QString::number(trun2dec(sparusMergedWorldInfo->position.depth)));
     ui.sparusOdometryTable->item(1, 3)->setText(QString::number(rad2grad(sparusMergedWorldInfo->orientation.roll)));
     ui.sparusOdometryTable->item(1, 4)->setText(QString::number(rad2grad(sparusMergedWorldInfo->orientation.pitch)));
     ui.sparusOdometryTable->item(1, 5)->setText(QString::number(rad2grad(sparusMergedWorldInfo->orientation.yaw)));
@@ -1177,12 +1187,12 @@ void MainWindow::sparusMergedWorldCallback(const auv_msgs::WorldWaypointReq::Con
 
 void MainWindow::sparusMergedBodyVelCallback(const auv_msgs::BodyVelocityReq::ConstPtr& sparusMergedBodyVelInfo)
 {
-    ui.sparusOdometryTable->item(3, 0)->setText(QString::number(sparusMergedBodyVelInfo->twist.linear.x));
-    ui.sparusOdometryTable->item(3, 1)->setText(QString::number(sparusMergedBodyVelInfo->twist.linear.y));
-    ui.sparusOdometryTable->item(3, 2)->setText(QString::number(sparusMergedBodyVelInfo->twist.linear.z));
-    ui.sparusOdometryTable->item(3, 3)->setText(QString::number(sparusMergedBodyVelInfo->twist.angular.x));
-    ui.sparusOdometryTable->item(3, 4)->setText(QString::number(sparusMergedBodyVelInfo->twist.angular.y));
-    ui.sparusOdometryTable->item(3, 5)->setText(QString::number(sparusMergedBodyVelInfo->twist.angular.z));
+    ui.sparusOdometryTable->item(3, 0)->setText(QString::number(trun2dec(sparusMergedBodyVelInfo->twist.linear.x)));
+    ui.sparusOdometryTable->item(3, 1)->setText(QString::number(trun2dec(sparusMergedBodyVelInfo->twist.linear.y)));
+    ui.sparusOdometryTable->item(3, 2)->setText(QString::number(trun2dec(sparusMergedBodyVelInfo->twist.linear.z)));
+    ui.sparusOdometryTable->item(3, 3)->setText(QString::number(trun2dec(sparusMergedBodyVelInfo->twist.angular.x)));
+    ui.sparusOdometryTable->item(3, 4)->setText(QString::number(trun2dec(sparusMergedBodyVelInfo->twist.angular.y)));
+    ui.sparusOdometryTable->item(3, 5)->setText(QString::number(trun2dec(sparusMergedBodyVelInfo->twist.angular.z)));
 
     if (sparusMergedBodyVelInfo->disable_axis.x)
         ui.sparusOdometryTable->item(3, 0)->setForeground(Qt::gray);

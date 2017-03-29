@@ -63,7 +63,7 @@
          <locale language="English" country="Australia"/>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="mainTabs_vehicle">
          <attribute name="title">
@@ -120,7 +120,7 @@
                      <property name="minimumSize">
                       <size>
                        <width>125</width>
-                       <height>216</height>
+                       <height>150</height>
                       </size>
                      </property>
                      <property name="font">
@@ -155,78 +155,11 @@
                        <string>Autonomous</string>
                       </property>
                      </widget>
-                     <widget class="QLabel" name="label">
-                      <property name="geometry">
-                       <rect>
-                        <x>1</x>
-                        <y>49</y>
-                        <width>71</width>
-                        <height>31</height>
-                       </rect>
-                      </property>
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>30</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Robot
-depth</string>
-                      </property>
-                     </widget>
-                     <widget class="QDoubleSpinBox" name="g500DepthSpinBox">
-                      <property name="geometry">
-                       <rect>
-                        <x>45</x>
-                        <y>50</y>
-                        <width>70</width>
-                        <height>26</height>
-                       </rect>
-                      </property>
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>70</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>70</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="specialValueText">
-                       <string/>
-                      </property>
-                     </widget>
                      <widget class="QPushButton" name="g500MoveRobotButton">
                       <property name="geometry">
                        <rect>
                         <x>1</x>
-                        <y>90</y>
+                        <y>42</y>
                         <width>105</width>
                         <height>27</height>
                        </rect>
@@ -262,7 +195,7 @@ depth</string>
                       <property name="geometry">
                        <rect>
                         <x>1</x>
-                        <y>120</y>
+                        <y>72</y>
                         <width>105</width>
                         <height>27</height>
                        </rect>
@@ -298,7 +231,7 @@ depth</string>
                       <property name="geometry">
                        <rect>
                         <x>1</x>
-                        <y>150</y>
+                        <y>102</y>
                         <width>105</width>
                         <height>27</height>
                        </rect>
@@ -343,7 +276,7 @@ depth</string>
                      <property name="minimumSize">
                       <size>
                        <width>125</width>
-                       <height>225</height>
+                       <height>150</height>
                       </size>
                      </property>
                      <property name="title">
@@ -353,7 +286,7 @@ depth</string>
                       <property name="geometry">
                        <rect>
                         <x>0</x>
-                        <y>80</y>
+                        <y>43</y>
                         <width>105</width>
                         <height>27</height>
                        </rect>
@@ -413,7 +346,7 @@ depth</string>
                       <property name="geometry">
                        <rect>
                         <x>0</x>
-                        <y>110</y>
+                        <y>73</y>
                         <width>105</width>
                         <height>27</height>
                        </rect>
@@ -445,75 +378,11 @@ depth</string>
                        <string>Go to position</string>
                       </property>
                      </widget>
-                     <widget class="QLabel" name="label_2">
-                      <property name="geometry">
-                       <rect>
-                        <x>1</x>
-                        <y>40</y>
-                        <width>41</width>
-                        <height>41</height>
-                       </rect>
-                      </property>
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>30</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>21</height>
-                       </size>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Robot
-depth</string>
-                      </property>
-                     </widget>
-                     <widget class="QDoubleSpinBox" name="sparusDepthSpinBox">
-                      <property name="geometry">
-                       <rect>
-                        <x>47</x>
-                        <y>49</y>
-                        <width>70</width>
-                        <height>26</height>
-                       </rect>
-                      </property>
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>70</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>70</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                     </widget>
                      <widget class="QPushButton" name="sparusGoToSurfaceButton">
                       <property name="geometry">
                        <rect>
                         <x>1</x>
-                        <y>142</y>
+                        <y>105</y>
                         <width>105</width>
                         <height>27</height>
                        </rect>
@@ -2672,7 +2541,7 @@ grasping</string>
             </column>
             <column>
              <property name="text">
-              <string>Z</string>
+              <string>Z / Alt</string>
              </property>
             </column>
             <column>
@@ -2777,7 +2646,7 @@ grasping</string>
             </column>
             <column>
              <property name="text">
-              <string>Z</string>
+              <string>Z / Alt</string>
              </property>
             </column>
             <column>
@@ -3036,7 +2905,7 @@ grasping</string>
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
