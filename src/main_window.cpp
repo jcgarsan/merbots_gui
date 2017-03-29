@@ -562,7 +562,7 @@ void MainWindow::g500TopicsButtonClicked()
 
 void MainWindow::sparusTopicsButtonClicked()
 {
-	qDebug()<<"sparusTopicsButton clicked: reconnecting all the G500 topics";
+	qDebug()<<"sparusTopicsButton clicked: reconnecting all the Sparus topics";
 	sub_sparusOdometry.shutdown();
 	sub_sparusBattery.shutdown();
 	sub_sparusRunningtime.shutdown();
